@@ -10,81 +10,114 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; min-height: 100vh; color: #1a1d2e; }
-  .header { background: #ffffff; border-bottom: 1px solid #e4e6f0; padding: 14px 20px 12px; position: sticky; top: 0; z-index: 10; }
+  body { font-family: 'DM Sans', sans-serif; background: #f0f2f8; min-height: 100vh; color: #1a1d2e; }
+
+  /* HEADER */
+  .header { background: #ffffff; border-bottom: 1.5px solid #d8dce8; padding: 14px 20px 12px; position: sticky; top: 0; z-index: 10; }
   .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
   .header h1 { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; }
   .va-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.04em; }
-  .header p { font-size: 12px; color: #9ca3b8; font-weight: 300; }
+  .header p { font-size: 12px; color: #5a6280; font-weight: 400; }
   .progress-bar { height: 3px; background: #e4e6f0; margin-top: 10px; border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: #2563eb; border-radius: 2px; transition: width 0.4s ease; }
+
+  /* LAYOUT */
   .main { padding: 24px 20px; max-width: 560px; margin: 0 auto; }
   .screen { display: none; animation: fadeUp 0.22s ease; }
   .screen.active { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .step-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #b0b8d0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-  .question { font-size: 18px; font-weight: 500; color: #1a1d2e; line-height: 1.45; margin-bottom: 6px; }
-  .question-note { font-size: 13px; color: #6b7494; line-height: 1.55; margin-bottom: 22px; font-weight: 300; }
+
+  /* QUESTION SCREENS */
+  .step-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #7a84a0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .question { font-size: 19px; font-weight: 600; color: #1a1d2e; line-height: 1.4; margin-bottom: 6px; }
+  .question-note { font-size: 13.5px; color: #3d4460; line-height: 1.6; margin-bottom: 22px; font-weight: 400; }
   .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .opt-btn { background: #ffffff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 14px 16px; color: #3a3f58; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; text-align: left; cursor: pointer; transition: all 0.14s ease; display: flex; align-items: center; gap: 14px; }
+  .opt-btn { background: #ffffff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 14px 16px; color: #2a2f48; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; transition: all 0.14s ease; display: flex; align-items: center; gap: 14px; }
   .opt-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1a1d2e; }
   .opt-btn:active { transform: scale(0.99); }
-  .opt-icon { width: 34px; height: 34px; border-radius: 8px; background: #f0f4ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-family: 'DM Mono', monospace; color: #2563eb; font-weight: 500; }
+  .opt-icon { width: 34px; height: 34px; border-radius: 8px; background: #eef2ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-family: 'DM Mono', monospace; color: #2563eb; font-weight: 500; }
   .opt-label { flex: 1; line-height: 1.4; }
-  .opt-sub { font-size: 11px; color: #9ca3b8; margin-top: 3px; font-weight: 300; }
-  .back-btn { background: none; border: none; color: #b0b8d0; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; padding: 0; letter-spacing: 0.04em; transition: color 0.14s; }
-  .back-btn:hover { color: #6b7494; }
-  .home-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #b0b8d0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .opt-sub { font-size: 12px; color: #5a6280; margin-top: 3px; font-weight: 400; }
+  .back-btn { background: none; border: none; color: #7a84a0; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; padding: 0; letter-spacing: 0.04em; transition: color 0.14s; }
+  .back-btn:hover { color: #3d4460; }
+
+  /* HOME SCREEN */
+  .home-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #7a84a0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
   .home-title { font-size: 26px; font-weight: 600; color: #1a1d2e; line-height: 1.25; margin-bottom: 8px; }
   .home-title span { color: #2563eb; }
-  .home-sub { font-size: 13px; color: #6b7494; line-height: 1.6; margin-bottom: 18px; font-weight: 300; }
-  .site-note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92400e; line-height: 1.5; margin-bottom: 18px; }
+  .home-sub { font-size: 13.5px; color: #3d4460; line-height: 1.65; margin-bottom: 18px; font-weight: 400; }
+  .site-note { background: #fffbeb; border: 1px solid #f5c842; border-radius: 8px; padding: 11px 14px; font-size: 12.5px; color: #7a4a00; line-height: 1.55; margin-bottom: 18px; font-weight: 400; }
   .start-btn { width: 100%; background: #2563eb; border: none; border-radius: 10px; padding: 15px; color: #fff; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; text-transform: uppercase; }
   .start-btn:hover { background: #1d4fd8; }
-  .footnote { font-size: 11px; color: #c8cdd8; text-align: center; font-family: 'DM Mono', monospace; padding-top: 18px; }
+  .footnote { font-size: 11px; color: #9ca3b8; text-align: center; font-family: 'DM Mono', monospace; padding-top: 18px; }
+
+  /* RESULTS — intro */
   .result-intro { margin-bottom: 18px; }
-  .result-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #b0b8d0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-  .result-headline { font-size: 19px; font-weight: 600; color: #1a1d2e; line-height: 1.35; margin-bottom: 6px; }
-  .result-subhead { font-size: 13px; color: #6b7494; line-height: 1.55; font-weight: 300; }
-  .group-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
-  .group-label::after { content: ''; flex: 1; height: 1px; background: #e4e6f0; }
-  .dest-card { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 12px; margin-bottom: 11px; overflow: hidden; transition: border-color 0.14s; }
-  .dest-card.top { border-color: #2563eb; border-width: 2px; box-shadow: 0 4px 16px rgba(37,99,235,0.08); }
-  .dest-card.caution { border-left: 4px solid #f5c842; }
+  .result-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #7a84a0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .result-headline { font-size: 20px; font-weight: 600; color: #1a1d2e; line-height: 1.3; margin-bottom: 6px; }
+  .result-subhead { font-size: 13.5px; color: #3d4460; line-height: 1.6; font-weight: 400; }
+
+  /* RESULTS — group labels */
+  .group-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #7a84a0; letter-spacing: 0.08em; text-transform: uppercase; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .group-label::after { content: ''; flex: 1; height: 1px; background: #d8dce8; }
+
+  /* RESULTS — destination cards */
+  .dest-card { background: #fff; border: 1.5px solid #d8dce8; border-radius: 12px; margin-bottom: 11px; overflow: hidden; transition: border-color 0.14s; }
+  .dest-card.top { border-color: #2563eb; border-width: 2px; box-shadow: 0 4px 16px rgba(37,99,235,0.10); }
+  .dest-card.caution { border-left: 4px solid #e6a817; }
   .dest-head { padding: 13px 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; }
-  .dest-rank { width: 30px; height: 30px; border-radius: 8px; background: #f0f4ff; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dest-rank { width: 30px; height: 30px; border-radius: 8px; background: #eef2ff; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .dest-card.top .dest-rank { background: #2563eb; color: #fff; }
   .dest-main { flex: 1; min-width: 0; }
-  .dest-name { font-size: 14.5px; font-weight: 600; color: #1a1d2e; line-height: 1.35; }
-  .dest-name .full { font-weight: 400; color: #6b7494; font-size: 12.5px; }
+  .dest-name { font-size: 15px; font-weight: 600; color: #1a1d2e; line-height: 1.35; }
+  .dest-name .full { font-weight: 400; color: #5a6280; font-size: 13px; }
   .top-flag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe; padding: 1px 6px; border-radius: 10px; margin-bottom: 5px; }
-  .dest-tagline { font-size: 12px; color: #6b7494; line-height: 1.45; margin-top: 3px; font-weight: 300; }
-  .dest-toggle { color: #c8cdd8; font-size: 18px; line-height: 1; flex-shrink: 0; transition: transform 0.18s; user-select: none; }
+  .dest-tagline { font-size: 12.5px; color: #3d4460; line-height: 1.5; margin-top: 3px; font-weight: 400; }
+  .dest-toggle { color: #9ca3b8; font-size: 18px; line-height: 1; flex-shrink: 0; transition: transform 0.18s; user-select: none; }
   .dest-card.open .dest-toggle { transform: rotate(45deg); }
   .dest-body { display: none; padding: 0 16px 15px 58px; }
   .dest-card.open .dest-body { display: block; animation: fadeUp 0.18s ease; }
-  .req-row { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; line-height: 1.45; padding: 5px 0; color: #4a5070; border-top: 1px solid #f0f2f8; }
+
+  /* RESULTS — requirement rows */
+  .req-row { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; line-height: 1.5; padding: 6px 0; color: #2a2f48; border-top: 1px solid #eef0f6; }
   .req-row:first-child { border-top: none; }
-  .req-ic { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; margin-top: 1px; }
-  .req-ic.met { background: #dcfce7; color: #16a34a; }
-  .req-ic.warn { background: #fef9c3; color: #ca8a04; }
+  .req-ic { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; margin-top: 1px; }
+  .req-ic.met { background: #dcfce7; color: #15803d; }
+  .req-ic.warn { background: #fef3c7; color: #b45309; }
   .req-ic.block { background: #fee2e2; color: #dc2626; }
-  .req-ic.info { background: #dbeafe; color: #2563eb; }
-  .sw-flag { margin-top: 11px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 9px 12px; font-size: 12px; color: #1e40af; line-height: 1.5; display: flex; gap: 8px; }
+  .req-ic.info { background: #dbeafe; color: #1d4ed8; }
+
+  /* RESULTS — flag boxes */
+  .sw-flag { margin-top: 11px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 13px; font-size: 12.5px; color: #1e3a8a; line-height: 1.55; display: flex; gap: 8px; font-weight: 400; }
   .sw-flag .sw-ic { flex-shrink: 0; }
-  .downstream-flag { margin-top: 10px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 9px 12px; font-size: 12px; color: #9a3412; line-height: 1.5; display: flex; gap: 8px; }
-  .blocked-card { background: #fafbfc; border: 1px dashed #d8dce8; border-radius: 10px; margin-bottom: 9px; padding: 11px 16px; display: flex; align-items: flex-start; gap: 12px; opacity: 0.92; }
-  .blocked-rank { width: 30px; height: 30px; border-radius: 8px; background: #f3f4f8; color: #b0b8d0; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .blocked-name { font-size: 13.5px; font-weight: 500; color: #8a92ac; line-height: 1.35; }
-  .blocked-reason { font-size: 12px; color: #aab1c6; line-height: 1.45; margin-top: 2px; font-weight: 300; }
-  .next-steps { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 12px; padding: 15px 18px; margin: 22px 0 14px; }
-  .next-steps h3 { font-family: 'DM Mono', monospace; font-size: 11px; color: #2563eb; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 11px; }
-  .next-steps li { font-size: 12.5px; color: #4a5070; line-height: 1.55; margin-bottom: 8px; padding-left: 18px; position: relative; list-style: none; }
+  .downstream-flag { margin-top: 10px; background: #fff7ed; border: 1px solid #fdba74; border-radius: 8px; padding: 10px 13px; font-size: 12.5px; color: #7c2d12; line-height: 1.55; display: flex; gap: 8px; font-weight: 400; }
+
+  /* RESULTS — blocked cards */
+  .blocked-card { background: #f7f8fb; border: 1px dashed #c8cdd8; border-radius: 10px; margin-bottom: 9px; padding: 11px 16px; display: flex; align-items: flex-start; gap: 12px; }
+  .blocked-rank { width: 30px; height: 30px; border-radius: 8px; background: #eef0f6; color: #9ca3b8; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .blocked-name { font-size: 13.5px; font-weight: 500; color: #6b7494; line-height: 1.35; }
+  .blocked-reason { font-size: 12.5px; color: #5a6280; line-height: 1.5; margin-top: 2px; font-weight: 400; }
+
+  /* SW ACTION ITEMS BOX — prominent, above universal next steps */
+  .sw-action-box { background: #eff6ff; border: 2px solid #2563eb; border-radius: 12px; padding: 16px 18px; margin: 22px 0 14px; }
+  .sw-action-box h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #1d4ed8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .sw-action-item { display: flex; gap: 10px; margin-bottom: 12px; }
+  .sw-action-item:last-child { margin-bottom: 0; }
+  .sw-action-dot { width: 26px; height: 26px; border-radius: 50%; background: #2563eb; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; font-weight: 700; font-family: 'DM Mono', monospace; letter-spacing: 0.02em; }
+  .sw-action-text { font-size: 13px; color: #1e3a6e; line-height: 1.65; font-weight: 400; }
+  .sw-action-text strong { color: #1a1d2e; font-weight: 600; }
+
+  /* UNIVERSAL NEXT STEPS BOX */
+  .next-steps { background: #fff; border: 1.5px solid #d8dce8; border-radius: 12px; padding: 15px 18px; margin: 0 0 14px; }
+  .next-steps h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #5a6280; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 11px; }
+  .next-steps li { font-size: 13px; color: #2a2f48; line-height: 1.6; margin-bottom: 9px; padding-left: 18px; position: relative; list-style: none; font-weight: 400; }
   .next-steps li::before { content: '→'; position: absolute; left: 0; color: #2563eb; font-family: 'DM Mono', monospace; }
   .next-steps li:last-child { margin-bottom: 0; }
-  .restart-btn { width: 100%; background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 13px; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; }
+
+  /* RESTART + DISCLAIMER */
+  .restart-btn { width: 100%; background: #fff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 13px; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; }
   .restart-btn:hover { background: #f0f4ff; border-color: #2563eb; }
-  .disclaimer { font-size: 11px; color: #aab1c6; line-height: 1.55; text-align: center; padding: 16px 8px 4px; font-weight: 300; }
+  .disclaimer { font-size: 11.5px; color: #7a84a0; line-height: 1.6; text-align: center; padding: 16px 8px 4px; font-weight: 400; }
 </style>
 </head>
 <body>
@@ -747,17 +780,8 @@ function buildResult() {
     });
   }
 
-  html += '<div class="next-steps"><h3>Universal next steps</h3><ul>';
-  html += '<li>Loop in your team social worker / case manager early — many consults have multi-day lead times (Medi-Cal number ~2 weeks, PASSR before CNH consult, capacity declarations).</li>';
-  html += '<li>Verify insurance and benefits; SW can pursue NSC pension, Aid &amp; Attendance, or SSA/SSI/SSDI to expand options.</li>';
-  html += '<li>Confirm patient and family preference — it can override the "best fit" on paper.</li>';
-  if (state.cog === 'elope' || state.cog === 'impaired') {
-    html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
-  }
-  html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
-  html += '</ul>';
-
   // Conditional SW action items — CalVet and VASH
+  // Rendered BEFORE universal next steps so they are seen first
   // CalVet: non-skilled + dependent or assist + unsafe/homeless (custodial-needs profile)
   var calvetRelevant = (state.goal === 'active' && state.skilled === 'no' &&
     (state.func === 'dependent' || state.func === 'assist') &&
@@ -768,27 +792,36 @@ function buildResult() {
     (state.home === 'unsafe' || state.home === 'homeless'));
 
   if (calvetRelevant || vashRelevant) {
-    html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid #e4e6f0;">';
-    html += '<div style="font-family:DM Mono,monospace;font-size:10px;color:#9ca3b8;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">SW action items for this admission</div>';
+    html += '<div class="sw-action-box">';
+    html += '<h3>SW action items for this admission</h3>';
     if (calvetRelevant) {
-      html += '<div style="font-size:12.5px;color:#4a5070;line-height:1.55;margin-bottom:8px;padding-left:18px;position:relative;">' +
-        '<span style="position:absolute;left:0;color:#2563eb;font-family:DM Mono,monospace;">→</span>' +
-        '<strong>CalVet (state veterans home):</strong> This patient may benefit from long-term CalVet placement — SW can initiate the application during this admission. ' +
-        'Waitlist is typically ≥1 year so early referral matters. Eligible age ≥55 (waived for disabled or homeless veterans needing long-term care); no SC requirement. ' +
-        'Offers B&C, CNH-level, and memory care. Will not accept registered sex offenders or patients with severe behavioral issues.' +
-        '</div>';
+      html += '<div class="sw-action-item">' +
+        '<div class="sw-action-dot">SW</div>' +
+        '<div class="sw-action-text"><strong>CalVet (state veterans home):</strong> Worth discussing with SW during this admission. ' +
+        'CalVet is a state-funded veterans home offering B&C, CNH-level, and memory care — but waitlists are typically ≥1 year, so it is a longer-term possibility to plan for, not an immediate discharge option. ' +
+        'Eligible age ≥55 (waived for disabled or homeless veterans needing long-term care); no SC requirement. ' +
+        'Will not accept registered sex offenders or patients with severe behavioral issues.' +
+        '</div></div>';
     }
     if (vashRelevant) {
-      html += '<div style="font-size:12.5px;color:#4a5070;line-height:1.55;margin-bottom:8px;padding-left:18px;position:relative;">' +
-        '<span style="position:absolute;left:0;color:#2563eb;font-family:DM Mono,monospace;">→</span>' +
-        '<strong>VASH (VA Section-8 housing):</strong> This patient may be a candidate for VA subsidized housing — SW can initiate the referral during this admission. ' +
+      html += '<div class="sw-action-item">' +
+        '<div class="sw-action-dot">SW</div>' +
+        '<div class="sw-action-text"><strong>VASH (VA Section-8 housing):</strong> This patient may be a candidate for VA subsidized independent housing — SW can initiate the referral during this admission. ' +
         'Requires full independence in ADLs. Outpatient process taking weeks to months — not a discharge destination for this admission.' +
-        '</div>';
+        '</div></div>';
     }
     html += '</div>';
   }
 
-  html += '</div>';
+  html += '<div class="next-steps"><h3>Universal next steps</h3><ul>';
+  html += '<li>Loop in your team social worker / case manager early — many consults have multi-day lead times (Medi-Cal number ~2 weeks, PASSR before CNH consult, capacity declarations).</li>';
+  html += '<li>Verify insurance and benefits; SW can pursue NSC pension, Aid &amp; Attendance, or SSA/SSI/SSDI to expand options.</li>';
+  html += '<li>Confirm patient and family preference — it can override the "best fit" on paper.</li>';
+  if (state.cog === 'elope' || state.cog === 'impaired') {
+    html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
+  }
+  html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
+  html += '</ul></div>';
 
   document.getElementById('result-content').innerHTML = html;
 }
