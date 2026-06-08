@@ -595,35 +595,6 @@ var DEST = {
       ];
       return res('fit', reqs, 'SW coordinates GPD placement. New Directions requires active SUD; A Bridge Home is low-demand transitional housing.', 3);
     }
-  },
-
-  vash: {
-    name: 'VASH', full: 'VA Section-8 housing', group: 'home',
-    tagline: 'Subsidized independent housing — outpatient program, not an immediate disposition.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.func !== 'independent') return null;
-      if (s.home === 'safe') return null;
-      var reqs = [
-        met('Fully independent in ADLs (required)'),
-        blkr('Outpatient program — voucher takes weeks to months; NOT an immediate discharge destination')
-      ];
-      return res('caution', reqs, 'Refer to SW if the patient is interested — VASH is a longer-term housing plan, not a placement for this discharge.', 0);
-    }
-  },
-
-  patriot: {
-    name: 'Patriot House', full: 'on-campus lodging', group: 'home',
-    tagline: 'Campus lodging for patients needing frequent on-campus treatment far from home.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.func !== 'independent') return null;
-      var reqs = [
-        met('Independent in ADLs/iADLs (required)'),
-        info('For patients needing frequent infusions, chemotherapy, or radiation whose home is far from the VA')
-      ];
-      return res('caution', reqs, 'Niche option — only if the patient has recurring on-campus treatment and lives far away. Confirm with SW.', 1);
-    }
   }
 
 }; // end DEST
