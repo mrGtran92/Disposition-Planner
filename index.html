@@ -526,19 +526,6 @@ var DEST = {
     }
   },
 
-  calvet: {
-    name: 'CalVet', full: 'state veterans home', group: 'custodial',
-    tagline: 'State-funded campus housing from B&C through memory-care levels.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      var reqs = [
-        info('Age ≥55 (waived for disabled/homeless needing long-term care); no SC requirement'),
-        blkr('Long waitlist (often ≥1 year) — NOT a viable immediate disposition'),
-        info('Will not accept registered sex offenders or patients with severe behavioral issues')
-      ];
-      return res('caution', reqs, 'Treat CalVet as a longer-term plan only. SW can start the application during this admission.', 0);
-    }
-  },
 
   // ----------------------------------------------------------
   // HOME & HOUSING PROGRAMS
@@ -768,7 +755,40 @@ function buildResult() {
     html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
   }
   html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
-  html += '</ul></div>';
+  html += '</ul>';
+
+  // Conditional SW action items — CalVet and VASH
+  // CalVet: non-skilled + dependent or assist + unsafe/homeless (custodial-needs profile)
+  var calvetRelevant = (state.goal === 'active' && state.skilled === 'no' &&
+    (state.func === 'dependent' || state.func === 'assist') &&
+    (state.home === 'unsafe' || state.home === 'homeless'));
+  // VASH: non-skilled + independent + unsafe/homeless (independent but housing-insecure)
+  var vashRelevant = (state.goal === 'active' && state.skilled === 'no' &&
+    state.func === 'independent' &&
+    (state.home === 'unsafe' || state.home === 'homeless'));
+
+  if (calvetRelevant || vashRelevant) {
+    html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid #e4e6f0;">';
+    html += '<div style="font-family:DM Mono,monospace;font-size:10px;color:#9ca3b8;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">SW action items for this admission</div>';
+    if (calvetRelevant) {
+      html += '<div style="font-size:12.5px;color:#4a5070;line-height:1.55;margin-bottom:8px;padding-left:18px;position:relative;">' +
+        '<span style="position:absolute;left:0;color:#2563eb;font-family:DM Mono,monospace;">→</span>' +
+        '<strong>CalVet (state veterans home):</strong> This patient may benefit from long-term CalVet placement — SW can initiate the application during this admission. ' +
+        'Waitlist is typically ≥1 year so early referral matters. Eligible age ≥55 (waived for disabled or homeless veterans needing long-term care); no SC requirement. ' +
+        'Offers B&C, CNH-level, and memory care. Will not accept registered sex offenders or patients with severe behavioral issues.' +
+        '</div>';
+    }
+    if (vashRelevant) {
+      html += '<div style="font-size:12.5px;color:#4a5070;line-height:1.55;margin-bottom:8px;padding-left:18px;position:relative;">' +
+        '<span style="position:absolute;left:0;color:#2563eb;font-family:DM Mono,monospace;">→</span>' +
+        '<strong>VASH (VA Section-8 housing):</strong> This patient may be a candidate for VA subsidized housing — SW can initiate the referral during this admission. ' +
+        'Requires full independence in ADLs. Outpatient process taking weeks to months — not a discharge destination for this admission.' +
+        '</div>';
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
 
   document.getElementById('result-content').innerHTML = html;
 }
