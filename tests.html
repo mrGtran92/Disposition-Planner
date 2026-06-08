@@ -224,6 +224,8 @@ var PENDING_CLARIFICATIONS = [
 
 // ============================================================
 // ENGINE — loads and runs logic from index.html
+// Injected as a real <script> tag so DEST and all helpers land
+// on window/global scope correctly.
 // ============================================================
 function loadEngine(cb) {
   var xhr = new XMLHttpRequest();
@@ -232,18 +234,20 @@ function loadEngine(cb) {
     var m = xhr.responseText.match(/<script>([\s\S]*?)<\/script>/);
     if (!m) { cb(new Error('Could not extract script from index.html')); return; }
     try {
-      // Stub DOM so the script loads without errors
-      var fakeDoc = {
-        getElementById: function() { return { style:{}, innerHTML:'' }; },
-        querySelectorAll: function() { return []; }
-      };
-      var fakeWin = { scrollTo: function(){} };
-      var fn = new Function('document', 'window', m[1]);
-      fn(fakeDoc, fakeWin);
+      // Inject as a real <script> tag so DEST lands on window
+      var tag = document.createElement('script');
+      tag.textContent = m[1];
+      document.head.appendChild(tag);
+      if (typeof DEST === 'undefined') {
+        cb(new Error('DEST failed to initialize — check index.html for syntax errors'));
+        return;
+      }
       cb(null);
     } catch(e) { cb(e); }
   };
-  xhr.onerror = function() { cb(new Error('Could not load index.html — make sure both files are in the same folder.')); };
+  xhr.onerror = function() {
+    cb(new Error('Could not load index.html — make sure both files are in the same GitHub repo folder.'));
+  };
   xhr.send();
 }
 
