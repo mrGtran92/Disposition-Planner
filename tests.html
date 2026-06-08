@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disposition Planner — Test Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; color: #1a1d2e; padding: 24px 20px; }
+  .header { margin-bottom: 28px; }
+  h1 { font-family: 'DM Mono', monospace; font-size: 13px; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #9ca3b8; font-weight: 300; }
+  .summary { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 18px; font-family: 'DM Mono', monospace; }
+  .stat-num { font-size: 26px; font-weight: 500; }
+  .stat-label { font-size: 10px; color: #9ca3b8; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+  .stat.pass .stat-num { color: #16a34a; }
+  .stat.fail .stat-num { color: #dc2626; }
+  .stat.warn .stat-num { color: #ca8a04; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: #e4e6f0; }
+  .test-row { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: start; }
+  .test-row.fail { border-color: #fca5a5; background: #fff5f5; }
+  .test-row.warn-row { border-color: #fde68a; background: #fffdf0; }
+  .test-ic { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .test-ic.pass { background: #dcfce7; color: #16a34a; }
+  .test-ic.fail { background: #fee2e2; color: #dc2626; }
+  .test-ic.skip { background: #f3f4f8; color: #b0b8d0; }
+  .test-name { font-size: 13.5px; font-weight: 500; color: #1a1d2e; margin-bottom: 3px; }
+  .test-detail { font-size: 11.5px; color: #6b7494; line-height: 1.55; font-family: 'DM Mono', monospace; }
+  .test-detail .got { color: #dc2626; }
+  .test-detail .expected-val { color: #16a34a; }
+  .test-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; white-space: nowrap; align-self: start; }
+  .test-badge.pass { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+  .test-badge.fail { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+  .test-badge.skip { background: #f3f4f8; color: #b0b8d0; border: 1px solid #e4e6f0; }
+  .issues-box { background: #fff; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
+  .issues-box h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #dc2626; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  .issues-box li { font-size: 12.5px; color: #4a5070; line-height: 1.55; margin-bottom: 6px; padding-left: 16px; position: relative; list-style: none; }
+  .issues-box li::before { content: '✕'; position: absolute; left: 0; color: #dc2626; font-size: 10px; }
+  .all-pass { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #15803d; margin-bottom: 20px; font-weight: 500; }
+  .refresh-btn { background: #2563eb; border: none; border-radius: 8px; padding: 10px 18px; color: #fff; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 24px; }
+  .refresh-btn:hover { background: #1d4fd8; }
+  .log-note { font-family: 'DM Mono', monospace; font-size: 10px; color: #c8cdd8; margin-top: 28px; line-height: 1.7; }
+  .log-note a { color: #93c5fd; }
+  .pending-box { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 13px 16px; margin-bottom: 20px; }
+  .pending-box h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #92400e; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 9px; }
+  .pending-box li { font-size: 12px; color: #78350f; line-height: 1.6; margin-bottom: 5px; padding-left: 16px; position: relative; list-style: none; font-weight: 300; }
+  .pending-box li::before { content: '?'; position: absolute; left: 0; color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Disposition Planner · Test Dashboard</h1>
+  <p class="subtitle">Automated regression tests — run after every change to index.html</p>
+</div>
+
+<button class="refresh-btn" onclick="location.reload()">↺ Re-run tests</button>
+
+<div class="summary" id="summary"></div>
+<div id="pending-section"></div>
+<div id="issues-section"></div>
+<div id="results"></div>
+
+<p class="log-note">
+  HOW TO USE: Upload both index.html and tests.html to your GitHub repo.<br>
+  After any change to index.html, wait ~60 seconds for Pages to rebuild, then reload this page.<br>
+  All tests should show PASS. Any FAIL means a change broke something — investigate before sharing the tool.<br>
+  <br>
+  TO ADD A SCENARIO: Edit the SCENARIOS array at the top of the &lt;script&gt; in this file.<br>
+  Each scenario has: name, state (patient answers), type (top/contains/not_top), expected (destination key or array of keys).<br>
+  Destination keys: home_hospice · cnh_hospice · hugs · home_hh · cnh_skilled · clc_short · aru · ltac ·<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcfe_open · rcfe_memory · cnh_custodial · clc_long · clc_2n · calvet · home_indep · dom · gpd · vash · patriot
+</p>
+
+<script>
+// ============================================================
+// SCENARIOS — EDIT THIS SECTION TO ADD / CHANGE TEST CASES
+// Each object:
+//   name     : human-readable label shown in the dashboard
+//   state    : patient answers (omit keys that aren't asked on this branch)
+//   type     : 'top'      — checks that expected key is the #1 ranked result
+//              'contains' — checks that ALL keys in expected[] appear in fit results
+//              'not_top'  — checks that expected key is NOT ranked #1
+//   expected : destination key (string) for top/not_top, array of keys for contains
+//   note     : optional annotation shown in the dashboard
+// ============================================================
+var SCENARIOS = [
+  {
+    name: '01 · Clean home discharge',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'safe', sud:'no' },
+    type: 'top', expected: 'home_indep',
+    note: 'Fully independent, intact, safe home, no SUD — straightforward home discharge.'
+  },
+  {
+    name: '02 · Home with home health',
+    state: { goal:'active', skilled:'yes', func:'independent', cog:'intact', home:'safe' },
+    type: 'top', expected: 'home_hh',
+    note: 'Skilled need, independent, intact, safe home — home with HH beats SNF.'
+  },
+  {
+    name: '03 · SNF / skilled CNH (no safe home)',
+    state: { goal:'active', skilled:'yes', func:'assist', cog:'intact', home:'unsafe', fund:'medical', sc:'low' },
+    type: 'top', expected: 'cnh_skilled',
+    note: 'Skilled need, needs assistance, unsafe home — SNF is the top skilled option.'
+  },
+  {
+    name: '04 · ARU appears for skilled rehab candidate',
+    state: { goal:'active', skilled:'yes', func:'independent', cog:'intact', home:'safe' },
+    type: 'contains', expected: ['aru'],
+    note: 'ARU must appear in results for a skilled, independent patient.'
+  },
+  {
+    name: '05 · Comfort care — safe home → home hospice first',
+    state: { goal:'comfort', home:'safe' },
+    type: 'top', expected: 'home_hospice',
+    note: 'Comfort goal, safe home — home hospice should be #1.'
+  },
+  {
+    name: '06 · Comfort care — homeless → facility hospice first',
+    state: { goal:'comfort', home:'homeless' },
+    type: 'top', expected: 'cnh_hospice',
+    note: 'Comfort goal, homeless — CNH/facility hospice should be #1; home hospice blocked.'
+  },
+  {
+    name: '07 · HUGS never #1 (safe home comfort)',
+    state: { goal:'comfort', home:'safe' },
+    type: 'not_top', expected: 'hugs',
+    note: 'HUGS must never be ranked #1 — limited beds, always behind home/facility hospice.'
+  },
+  {
+    name: '08 · HUGS never #1 (homeless comfort)',
+    state: { goal:'comfort', home:'homeless' },
+    type: 'not_top', expected: 'hugs',
+    note: 'HUGS must never be ranked #1 even when home hospice is blocked.'
+  },
+  {
+    name: '09 · Custodial CNH with Medi-Cal',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'medical', sc:'low' },
+    type: 'top', expected: 'cnh_custodial',
+    note: 'No skilled need, dependent, impaired, unsafe home, Medi-Cal — custodial CNH.'
+  },
+  {
+    name: '10 · CLC long-stay, high SC',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'none', sc:'high' },
+    type: 'top', expected: 'clc_long',
+    note: '>70% SC, non-skilled, impaired, no funding — CLC long-stay should lead.'
+  },
+  {
+    name: '11 · CLC 2N for elopement risk',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'none', sc:'low' },
+    type: 'top', expected: 'clc_2n',
+    note: 'Severe impairment + elopement risk — locked 2N unit should be top.'
+  },
+  {
+    name: '12 · Homeless, independent, no SUD → GPD (not DOM)',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'no' },
+    type: 'top', expected: 'gpd',
+    note: 'Homeless + independent + no SUD → GPD, not DOM.'
+  },
+  {
+    name: '13 · DOM absent when no SUD',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'no' },
+    type: 'not_top', expected: 'dom',
+    note: 'DOM must not appear (even as top) when SUD answer is no.'
+  },
+  {
+    name: '14 · Homeless, independent, active SUD → both GPD and DOM appear',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'yes' },
+    type: 'contains', expected: ['gpd', 'dom'],
+    note: 'Homeless + SUD → both GPD and DOM must appear in results.'
+  },
+  {
+    name: '15 · SUD + safe home → DOM appears',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'safe', sud:'yes' },
+    type: 'contains', expected: ['dom'],
+    note: 'DOM is not only for homeless patients — safe home + active SUD + treatment interest also qualifies.'
+  },
+  {
+    name: '16 · RCFE for independent patient with private funds',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'unsafe', sud:'no', fund:'funds', sc:'low' },
+    type: 'top', expected: 'rcfe_open',
+    note: 'Non-skilled, independent, intact, private funds, unsafe home — RCFE should lead.'
+  },
+  {
+    name: '17 · Skilled + elopement risk → locked CNH flagged',
+    state: { goal:'active', skilled:'yes', func:'independent', cog:'elope', home:'safe' },
+    type: 'contains', expected: ['cnh_skilled'],
+    note: 'Skilled + elopement — CNH skilled must appear (with locked-unit warning).'
+  },
+  {
+    name: '18 · High SC custodial, no Medi-Cal → CLC long-stay',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'none', sc:'high' },
+    type: 'top', expected: 'clc_long',
+    note: 'High SC + no Medi-Cal + non-skilled — CLC long-stay should beat custodial CNH.'
+  },
+  {
+    name: '19 · Low SC + no funds + no Medi-Cal → custodial CNH flagged (not blocked)',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'homeless', fund:'none', sc:'low' },
+    type: 'contains', expected: ['cnh_custodial'],
+    note: 'No funding pathway — CNH custodial should still appear but flagged, not ruled out entirely.'
+  },
+  {
+    name: '20 · Comfort, unsafe home → both home hospice and CNH hospice appear',
+    state: { goal:'comfort', home:'unsafe' },
+    type: 'contains', expected: ['home_hospice', 'cnh_hospice'],
+    note: 'Ambiguous home situation — both options must be surfaced, not just one.'
+  }
+];
+
+// ============================================================
+// OPEN ISSUES LOG — items awaiting clinical clarification
+// These are NOT test failures — they are known uncertainties
+// to resolve with SW/CM or colleagues before finalizing logic.
+// ============================================================
+var PENDING_CLARIFICATIONS = [
+  'HOMELESS + MEDI-CAL → CUSTODIAL CNH: Does homelessness alone preclude long-term custodial CNH conversion even if Medi-Cal is present, or does Medi-Cal resolve the concern? Currently flagged conservatively. Confirm with SW/CM. (Encoded in: cnh_skilled, clc_short, aru downstream flag logic)',
+  'DOM SCREENING: Are there other formal screening requirements for DOM admission beyond active SUD + treatment willingness + independent ADLs + intact cognition? (e.g., mental health clearance, medical stability criteria)',
+  'ARU CRITERIA: Are there other PM&R acceptance criteria beyond tolerance of >3hrs/day therapy that should be surfaced in the tool? (e.g., specific diagnoses, medical stability requirements)'
+];
+
+// ============================================================
+// ENGINE — loads and runs logic from index.html
+// ============================================================
+function loadEngine(cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'index.html', true);
+  xhr.onload = function() {
+    var m = xhr.responseText.match(/<script>([\s\S]*?)<\/script>/);
+    if (!m) { cb(new Error('Could not extract script from index.html')); return; }
+    try {
+      // Stub DOM so the script loads without errors
+      var fakeDoc = {
+        getElementById: function() { return { style:{}, innerHTML:'' }; },
+        querySelectorAll: function() { return []; }
+      };
+      var fakeWin = { scrollTo: function(){} };
+      var fn = new Function('document', 'window', m[1]);
+      fn(fakeDoc, fakeWin);
+      cb(null);
+    } catch(e) { cb(e); }
+  };
+  xhr.onerror = function() { cb(new Error('Could not load index.html — make sure both files are in the same folder.')); };
+  xhr.send();
+}
+
+function evalScenario(scenario) {
+  // Build a clean state from the scenario definition
+  var s = Object.assign(
+    { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] },
+    scenario.state
+  );
+
+  // Collect all destination evaluations
+  var fits = [], blocked = [];
+  Object.keys(DEST).forEach(function(k) {
+    var r = DEST[k].eval(s);
+    if (!r) return;
+    if (r.status === 'blocked') blocked.push({ key:k, r:r });
+    else fits.push({ key:k, r:r });
+  });
+
+  fits.sort(function(a, b) {
+    var sa = a.r.status === 'fit' ? 0 : 1, sb = b.r.status === 'fit' ? 0 : 1;
+    if (sa !== sb) return sa - sb;
+    return b.r.score - a.r.score;
+  });
+
+  var fitKeys = fits.map(function(f) { return f.key; });
+  var topKey = fitKeys[0] || null;
+
+  var pass = false, detail = '';
+  if (scenario.type === 'top') {
+    pass = (topKey === scenario.expected);
+    detail = 'Expected top: ' + scenario.expected + ' | Got top: ' + (topKey || '(none)');
+  } else if (scenario.type === 'not_top') {
+    pass = (topKey !== scenario.expected);
+    detail = 'Must NOT be top: ' + scenario.expected + ' | Actual top: ' + (topKey || '(none)');
+  } else if (scenario.type === 'contains') {
+    var missing = scenario.expected.filter(function(k) { return fitKeys.indexOf(k) === -1; });
+    pass = (missing.length === 0);
+    detail = 'Must contain: [' + scenario.expected.join(', ') + '] | ' +
+      (pass ? 'All present ✓' : 'Missing: [' + missing.join(', ') + ']') +
+      ' | All fits: [' + fitKeys.join(', ') + ']';
+  }
+  return { pass:pass, detail:detail, fitKeys:fitKeys, topKey:topKey };
+}
+
+function render(results) {
+  var total = results.length;
+  var passes = results.filter(function(r) { return r.pass; }).length;
+  var fails = total - passes;
+
+  // Summary stats
+  var summaryEl = document.getElementById('summary');
+  summaryEl.innerHTML =
+    '<div class="stat pass"><div class="stat-num">' + passes + '</div><div class="stat-label">Passed</div></div>' +
+    '<div class="stat fail"><div class="stat-num">' + fails + '</div><div class="stat-label">Failed</div></div>' +
+    '<div class="stat"><div class="stat-num">' + total + '</div><div class="stat-label">Total</div></div>';
+
+  // Pending clarifications
+  if (PENDING_CLARIFICATIONS.length) {
+    var pEl = document.getElementById('pending-section');
+    var pHTML = '<div class="pending-box"><h3>Open clinical questions (' + PENDING_CLARIFICATIONS.length + ')</h3><ul>';
+    PENDING_CLARIFICATIONS.forEach(function(c) { pHTML += '<li>' + c + '</li>'; });
+    pHTML += '</ul></div>';
+    pEl.innerHTML = pHTML;
+  }
+
+  // Issues box
+  var iEl = document.getElementById('issues-section');
+  if (fails === 0) {
+    iEl.innerHTML = '<div class="all-pass">✓ All ' + total + ' tests passing — safe to deploy.</div>';
+  } else {
+    var failList = results.filter(function(r) { return !r.pass; });
+    var iHTML = '<div class="issues-box"><h3>' + fails + ' test' + (fails > 1 ? 's' : '') + ' failing</h3><ul>';
+    failList.forEach(function(r) { iHTML += '<li>' + r.name + ' — ' + r.detail + '</li>'; });
+    iHTML += '</ul></div>';
+    iEl.innerHTML = iHTML;
+  }
+
+  // Individual rows — failures first, then passes
+  var sorted = results.slice().sort(function(a, b) {
+    if (a.pass !== b.pass) return a.pass ? 1 : -1;
+    return 0;
+  });
+
+  var failsHTML = '', passesHTML = '';
+  sorted.forEach(function(r) {
+    var ic = r.pass ? '✓' : '✕';
+    var icClass = r.pass ? 'pass' : 'fail';
+    var rowClass = r.pass ? '' : 'fail';
+    var row = '<div class="test-row ' + rowClass + '">' +
+      '<div class="test-ic ' + icClass + '">' + ic + '</div>' +
+      '<div><div class="test-name">' + r.name + '</div>' +
+      '<div class="test-detail">' + r.detail.replace(/Got top: ([^|]+)/, function(m, g) {
+        return 'Got top: <span class="got">' + g.trim() + '</span>';
+      }) + '</div>' +
+      (r.note ? '<div class="test-detail" style="margin-top:3px;color:#b0b8d0;">' + r.note + '</div>' : '') +
+      '</div>' +
+      '<span class="test-badge ' + icClass + '">' + (r.pass ? 'PASS' : 'FAIL') + '</span>' +
+      '</div>';
+    if (r.pass) passesHTML += row;
+    else failsHTML += row;
+  });
+
+  var rEl = document.getElementById('results');
+  rEl.innerHTML = '';
+  if (failsHTML) {
+    rEl.innerHTML += '<div class="section-label">Failing tests</div>' + failsHTML;
+  }
+  if (passesHTML) {
+    rEl.innerHTML += '<div class="section-label">Passing tests</div>' + passesHTML;
+  }
+}
+
+function renderError(msg) {
+  document.getElementById('results').innerHTML =
+    '<div class="issues-box"><h3>Engine load error</h3><ul><li>' + msg + '</li></ul></div>';
+}
+
+// ============================================================
+// MAIN
+// ============================================================
+loadEngine(function(err) {
+  if (err) { renderError(err.message); return; }
+  var results = SCENARIOS.map(function(s) {
+    var r = evalScenario(s);
+    return Object.assign({ name: s.name, note: s.note || '' }, r);
+  });
+  render(results);
+});
+</script>
+</body>
+</html>
