@@ -34,8 +34,6 @@
   .opt-sub { font-size: 11px; color: #9ca3b8; margin-top: 3px; font-weight: 300; }
   .back-btn { background: none; border: none; color: #b0b8d0; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; padding: 0; letter-spacing: 0.04em; transition: color 0.14s; }
   .back-btn:hover { color: #6b7494; }
-
-  /* HOME */
   .home-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #b0b8d0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
   .home-title { font-size: 26px; font-weight: 600; color: #1a1d2e; line-height: 1.25; margin-bottom: 8px; }
   .home-title span { color: #2563eb; }
@@ -44,16 +42,12 @@
   .start-btn { width: 100%; background: #2563eb; border: none; border-radius: 10px; padding: 15px; color: #fff; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; text-transform: uppercase; }
   .start-btn:hover { background: #1d4fd8; }
   .footnote { font-size: 11px; color: #c8cdd8; text-align: center; font-family: 'DM Mono', monospace; padding-top: 18px; }
-
-  /* RESULTS */
   .result-intro { margin-bottom: 18px; }
   .result-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #b0b8d0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
   .result-headline { font-size: 19px; font-weight: 600; color: #1a1d2e; line-height: 1.35; margin-bottom: 6px; }
   .result-subhead { font-size: 13px; color: #6b7494; line-height: 1.55; font-weight: 300; }
-
   .group-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
   .group-label::after { content: ''; flex: 1; height: 1px; background: #e4e6f0; }
-
   .dest-card { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 12px; margin-bottom: 11px; overflow: hidden; transition: border-color 0.14s; }
   .dest-card.top { border-color: #2563eb; border-width: 2px; box-shadow: 0 4px 16px rgba(37,99,235,0.08); }
   .dest-card.caution { border-left: 4px solid #f5c842; }
@@ -78,18 +72,16 @@
   .req-ic.info { background: #dbeafe; color: #2563eb; }
   .sw-flag { margin-top: 11px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 9px 12px; font-size: 12px; color: #1e40af; line-height: 1.5; display: flex; gap: 8px; }
   .sw-flag .sw-ic { flex-shrink: 0; }
-
+  .downstream-flag { margin-top: 10px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 9px 12px; font-size: 12px; color: #9a3412; line-height: 1.5; display: flex; gap: 8px; }
   .blocked-card { background: #fafbfc; border: 1px dashed #d8dce8; border-radius: 10px; margin-bottom: 9px; padding: 11px 16px; display: flex; align-items: flex-start; gap: 12px; opacity: 0.92; }
   .blocked-rank { width: 30px; height: 30px; border-radius: 8px; background: #f3f4f8; color: #b0b8d0; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .blocked-name { font-size: 13.5px; font-weight: 500; color: #8a92ac; line-height: 1.35; }
   .blocked-reason { font-size: 12px; color: #aab1c6; line-height: 1.45; margin-top: 2px; font-weight: 300; }
-
   .next-steps { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 12px; padding: 15px 18px; margin: 22px 0 14px; }
   .next-steps h3 { font-family: 'DM Mono', monospace; font-size: 11px; color: #2563eb; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 11px; }
   .next-steps li { font-size: 12.5px; color: #4a5070; line-height: 1.55; margin-bottom: 8px; padding-left: 18px; position: relative; list-style: none; }
   .next-steps li::before { content: '→'; position: absolute; left: 0; color: #2563eb; font-family: 'DM Mono', monospace; }
   .next-steps li:last-child { margin-bottom: 0; }
-
   .restart-btn { width: 100%; background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 13px; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; }
   .restart-btn:hover { background: #f0f4ff; border-color: #2563eb; }
   .disclaimer { font-size: 11px; color: #aab1c6; line-height: 1.55; text-align: center; padding: 16px 8px 4px; font-weight: 300; }
@@ -120,7 +112,7 @@
 
   <!-- Q1: GOAL OF CARE -->
   <div class="screen" id="screen-q1">
-    <p class="step-label">Step 1 — Goal of care</p>
+    <p class="step-label">Step 1 of up to 7 — Goal of care</p>
     <p class="question">Is the goal of care comfort-focused / end-of-life?</p>
     <p class="question-note">If the patient is transitioning to comfort care, the disposition pathway is different and runs through Palliative Care.</p>
     <div class="options">
@@ -132,7 +124,7 @@
 
   <!-- Q2: SKILLED NEED -->
   <div class="screen" id="screen-q2">
-    <p class="step-label">Step 2 — Care needs</p>
+    <p class="step-label">Step 2 of up to 7 — Care needs</p>
     <p class="question">Does the patient have an ongoing <strong>skilled need</strong>?</p>
     <p class="question-note">Skilled needs include: IV antibiotics, daily complex wound care, ongoing PT/OT, or first-time tube feeds making up &gt;50% of daily nutrition. This is the biggest fork in the pathway.</p>
     <div class="options">
@@ -144,7 +136,7 @@
 
   <!-- Q3: FUNCTIONAL STATUS -->
   <div class="screen" id="screen-q3">
-    <p class="step-label">Step 3 — Functional status</p>
+    <p class="step-label">Step 3 of up to 7 — Functional status</p>
     <p class="question">What is the patient's functional status?</p>
     <p class="question-note">Independence in ADLs/iADLs gates many options. Several housing programs require full independence; facilities differ on transfer ability.</p>
     <div class="options">
@@ -155,9 +147,9 @@
     <button class="back-btn" onclick="goBack()">← back</button>
   </div>
 
-  <!-- Q4: COGNITION / ELOPEMENT -->
+  <!-- Q4: COGNITION -->
   <div class="screen" id="screen-q4">
-    <p class="step-label">Step 4 — Cognition &amp; safety</p>
+    <p class="step-label">Step 4 of up to 7 — Cognition &amp; safety</p>
     <p class="question">Cognitive status and elopement risk?</p>
     <p class="question-note">Severe impairment with elopement risk requires a locked/secure setting and drives DPOA / capacity-declaration requirements.</p>
     <div class="options">
@@ -168,9 +160,9 @@
     <button class="back-btn" onclick="goBack()">← back</button>
   </div>
 
-  <!-- Q5: HOME SAFETY (only on no-skilled / independent-ish branches) -->
+  <!-- Q5: HOME / HOUSING -->
   <div class="screen" id="screen-q5">
-    <p class="step-label">Step 5 — Home &amp; support</p>
+    <p class="step-label">Step 5 of up to 7 — Housing</p>
     <p class="question">Does the patient have safe, stable housing to return to?</p>
     <p class="question-note">This separates "home" pathways from housing-program and facility pathways.</p>
     <div class="options">
@@ -181,27 +173,39 @@
     <button class="back-btn" onclick="goBack()">← back</button>
   </div>
 
-  <!-- Q6: FINANCIAL (conditional — custodial facility branch) -->
+  <!-- Q6: SUBSTANCE USE DISORDER — shown only when relevant -->
   <div class="screen" id="screen-q6">
-    <p class="step-label">Step 6 — Funding &amp; eligibility</p>
-    <p class="question">What is the funding situation for a long-term facility?</p>
-    <p class="question-note">Custodial (long-term, non-skilled) facility placement is not covered by Medicare. This determines which custodial settings are realistic.</p>
+    <p class="step-label">Step 6 of up to 7 — Substance use</p>
+    <p class="question">Does the patient have an active substance use disorder and are they interested in receiving treatment?</p>
+    <p class="question-note">This opens the Domiciliary (DOM) residential treatment program as a disposition option. DOM requires both active SUD and willingness to engage in treatment.</p>
+    <div class="options">
+      <button class="opt-btn" onclick="answer('sud','yes')"><div class="opt-icon">Rx</div><div class="opt-label">Yes — active SUD, interested in treatment<div class="opt-sub">DOM becomes a viable option</div></div></button>
+      <button class="opt-btn" onclick="answer('sud','no')"><div class="opt-icon">—</div><div class="opt-label">No — no active SUD, or not interested in treatment<div class="opt-sub">DOM is not applicable</div></div></button>
+    </div>
+    <button class="back-btn" onclick="goBack()">← back</button>
+  </div>
+
+  <!-- Q7: FUNDING — shown only on custodial facility branches -->
+  <div class="screen" id="screen-q7">
+    <p class="step-label">Step 7 of up to 7 — Funding &amp; eligibility</p>
+    <p class="question">What is the funding situation for a long-term or custodial facility stay?</p>
+    <p class="question-note">Custodial (non-skilled, long-term) facility placement is not covered by Medicare. This determines which custodial settings are realistic.</p>
     <div class="options">
       <button class="opt-btn" onclick="answer('fund','medical')"><div class="opt-icon">MC</div><div class="opt-label">Has / can get Medi-Cal<div class="opt-sub">Opens custodial CNH placement</div></div></button>
-      <button class="opt-btn" onclick="answer('fund','funds')"><div class="opt-icon">$</div><div class="opt-label">Has private funds<div class="opt-sub">Can pay out of pocket (RCFE ~$2000+/mo)</div></div></button>
+      <button class="opt-btn" onclick="answer('fund','funds')"><div class="opt-icon">$</div><div class="opt-label">Has private funds<div class="opt-sub">Can pay out of pocket (RCFE ~$2,000+/mo)</div></div></button>
       <button class="opt-btn" onclick="answer('fund','none')"><div class="opt-icon">∅</div><div class="opt-label">Neither / unclear<div class="opt-sub">Needs benefits work-up with SW</div></div></button>
     </div>
     <button class="back-btn" onclick="goBack()">← back</button>
   </div>
 
-  <!-- Q7: SERVICE CONNECTION (conditional — CLC long-stay candidates) -->
-  <div class="screen" id="screen-q7">
-    <p class="step-label">Step 7 — Service connection</p>
-    <p class="question">What is the patient's service connection (SC)?</p>
-    <p class="question-note">Long-stay custodial placement at the on-campus CLC requires high service connection. Short-stay CLC has no SC requirement.</p>
+  <!-- Q8: SERVICE CONNECTION — shown only when CLC long-stay is plausible -->
+  <div class="screen" id="screen-q8">
+    <p class="step-label">Step 7 of up to 7 — Service connection</p>
+    <p class="question">What is the patient's VA service connection (SC) rating?</p>
+    <p class="question-note">Long-stay custodial placement at the on-campus CLC requires a high service connection rating. Short-stay CLC has no SC requirement.</p>
     <div class="options">
       <button class="opt-btn" onclick="answer('sc','high')"><div class="opt-icon">70+</div><div class="opt-label">&gt;70% SC<div class="opt-sub">Qualifies for CLC long-stay custodial</div></div></button>
-      <button class="opt-btn" onclick="answer('sc','mid')"><div class="opt-icon">60</div><div class="opt-label">&gt;60% SC + unemployability<div class="opt-sub">Veteran must apply for unemployability</div></div></button>
+      <button class="opt-btn" onclick="answer('sc','mid')"><div class="opt-icon">60</div><div class="opt-label">&gt;60% SC + unemployability<div class="opt-sub">Qualifies if unemployability is applied for</div></div></button>
       <button class="opt-btn" onclick="answer('sc','low')"><div class="opt-icon">&lt;</div><div class="opt-label">Below threshold / unknown<div class="opt-sub">CLC long-stay unlikely; short-stay still possible</div></div></button>
     </div>
     <button class="back-btn" onclick="goBack()">← back</button>
@@ -217,422 +221,588 @@
 </div>
 
 <script>
-  var state = { goal:null, skilled:null, func:null, cog:null, home:null, fund:null, sc:null, history:[] };
+// ============================================================
+// STATE
+// ============================================================
+var state = { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] };
 
-  // ---- DESTINATION KNOWLEDGE BASE ----
-  // Each destination is scored against state. status: 'fit' | 'caution' | 'blocked'
-  // evaluate() returns { status, reqs:[{ic,text}], sw, tagline, score }
-  // ic types: met / warn / block / info
-  var DEST = {
-    home_hh: {
-      name: 'Home with home health', full: '', group: 'skilled',
-      tagline: 'Skilled need met at home by visiting services.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-        if (s.cog === 'elope') return blk('Elopement risk makes unsupervised home unsafe.');
-        var reqs = [met('Has a skilled need that home health can deliver')];
-        var status = 'fit', score = 0;
-        if (s.home === 'safe') { reqs.push(met('Safe home to return to')); score += 3; }
-        else if (s.home === 'unsafe') { reqs.push(warn('Home support/safety is a concern — needs SW assessment')); status='caution'; score += 1; }
-        else { return blk('No stable housing to return to.'); }
-        if (s.func === 'dependent') { reqs.push(warn('High ADL dependence — confirm caregiver can manage at home')); status='caution'; }
-        else reqs.push(met('Functional status manageable at home'));
-        return res(status, reqs, 'Confirm home-health agency can cover the specific skilled need and start promptly. SW/CM sets this up.', score);
-      }
-    },
-    cnh_skilled: {
-      name: 'CNH / SNF', full: 'short-term skilled', group: 'skilled',
-      tagline: 'Short-term skilled stay in a community nursing facility.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-        var reqs = [met('Has a skilled need (Medicare may cover short-term skilled stay)')];
-        var status='fit', score=2;
-        reqs.push(info('Medicare covers skilled stay only after 3 consecutive inpatient midnights (not obs) + remaining Medicare days'));
-        if (s.cog === 'elope') { reqs.push(warn('Elopement risk → needs a secure/locked CNH (requires DPOA or conservator)')); status='caution'; }
-        return res(status, reqs, 'SW confirms PASSR Level 1 eval is complete BEFORE the CNH consult is placed — referrals cannot go out until this is done. For return to a prior CNH, contact Sylvia Durham or Caitlin Harbecke first. CNH will not accept patients in restraints or requiring a sitter.', score);
-      }
-    },
-    clc_short: {
-      name: 'CLC', full: 'short stay', group: 'skilled',
-      tagline: 'On-campus skilled/rehab short stay — no SC requirement.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-        var reqs = [met('Skilled / rehab need — short-stay CLC has no service-connection requirement'),
-                    info('Limited PT/OT beds; must be evaluated and accepted by CLC staff')];
-        return res('fit', reqs, 'CLC staff must evaluate and accept the patient for transfer. Flag early to SW.', 2);
-      }
-    },
-    aru: {
-      name: 'ARU', full: 'Acute Rehab Unit, 2E', group: 'skilled',
-      tagline: 'Intensive inpatient rehab — PM&R becomes primary.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-        if (s.func === 'dependent') return blk('Must tolerate >3 hrs/day of therapy — too dependent currently.');
-        var reqs = [met('Rehab-appropriate skilled need'),
-                    (s.func==='independent'||s.func==='assist') ? met('Likely able to participate in >3 hrs/day of PT/OT') : warn('Confirm ability to tolerate >3 hrs/day of therapy')];
-        reqs.push(info('PM&R becomes the primary team after transfer'));
-        return res('fit', reqs, 'Patient must be evaluated and accepted by the PM&R resident for transfer to ARU.', 2);
-      }
-    },
-    ltac: {
-      name: 'LTAC', full: 'Long-Term Acute Care', group: 'skilled',
-      tagline: 'For patients stable at PCU/MICU level needing prolonged acute care.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-        var reqs = [info('Typically for patients stable on PCU/MICU level of care needing prolonged acute care (e.g., vent weaning, complex wounds)'),
-                    warn('Requires Medicare / Medi-Cal')];
-        return res('caution', reqs, 'LTAC is SW-driven — discuss whether the acuity/skilled need actually fits LTAC vs CNH.', 1);
-      }
-    },
+// ============================================================
+// HELPER BUILDERS — produce requirement-row objects
+// ============================================================
+function met(t)  { return {ic:'met',   text:t}; }
+function warn(t) { return {ic:'warn',  text:t}; }
+function blkr(t) { return {ic:'block', text:t}; }
+function info(t) { return {ic:'info',  text:t}; }
+function res(status, reqs, sw, score, downstream) {
+  return { status:status, reqs:reqs, sw:sw||'', score:score||0, downstream:downstream||false };
+}
+function blk(reason) { return { status:'blocked', blockedReason:reason, score:-1 }; }
 
-    // ---- CUSTODIAL / NON-SKILLED FACILITY ----
-    rcfe_open: {
-      name: 'RCFE — open', full: 'B&C / ALF', group: 'custodial',
-      tagline: 'Non-medical assisted living; help with ADLs, not nursing-level.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.cog === 'elope') return null; // needs memory care instead
-        if (s.func === 'dependent') return blk('Must independently transfer bed↔wheelchair — too dependent for RCFE.');
-        var reqs = [met('No skilled need — custodial/assistance level fits RCFE'),
-                    (s.func!=='dependent') ? met('Can transfer independently (RCFE requirement)') : warn('Confirm independent transfers'),
-                    info('Requires 90 days sobriety and TB clearance')];
-        var status='fit', score=2;
-        if (s.fund === 'funds') { reqs.push(met('Has private funds (RCFE requires payment, ~$2000+/mo shared room)')); score+=2; }
-        else if (s.fund === 'medical') { reqs.push(block('RCFE is not covered by Medi-Cal — requires private funds')); status='caution'; }
-        else { reqs.push(warn('Funding unclear — RCFE requires private funds; explore A&A / pension / SSA with SW')); status='caution'; }
-        return res(status, reqs, 'SW can pursue NSC pension, Aid & Attendance, or SSA/SSI/SSDI to boost monthly income toward RCFE cost.', score);
-      }
-    },
-    rcfe_memory: {
-      name: 'RCFE — memory care', full: 'secured B&C / ALF', group: 'custodial',
-      tagline: 'Secured assisted living for cognitive impairment + elopement risk.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.cog !== 'elope' && s.cog !== 'impaired') return null;
-        if (s.func === 'dependent') return blk('Must independently transfer — too dependent for RCFE-level care.');
-        var reqs = [met('Cognitive impairment with safety/elopement concern fits secured memory care'),
-                    warn('Secured facilities cost more than open RCFE — requires private funds')];
-        if (s.cog === 'elope') reqs.push(info('Secured/locked setting needed for elopement risk'));
-        return res('caution', reqs, 'Secured RCFE requires private funds. Confirm transfer ability and pursue benefits with SW.', 2);
-      }
-    },
-    cnh_custodial: {
-      name: 'CNH — custodial', full: 'long-term, open or secure', group: 'custodial',
-      tagline: 'Long-term nursing-home placement for non-skilled custodial needs.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.func === 'independent' && s.cog === 'intact') return null; // overqualified — RCFE/housing more appropriate
-        var reqs = [met('Custodial nursing-home level of care')];
-        var status='fit', score=2;
-        if (s.fund === 'medical') { reqs.push(met('Has/can get Medi-Cal — covers long-term custodial CNH')); score+=2; }
-        else { reqs.push(block('Medicare does NOT cover custodial CNH — needs Medi-Cal or out-of-pocket')); status='caution'; }
-        if (s.cog === 'elope') reqs.push(warn('Secure/locked CNH required → needs DPOA or conservator'));
-        return res(status, reqs, 'SW confirms PASSR Level 1 before consult. Medi-Cal number takes ~2 weeks and facilities will not accept referrals without it. Hard-to-place groups: young, RSO, active substance use, >300 lbs, behavioral issues, Medi-Cal-only, or homeless.', score);
-      }
-    },
-    clc_long: {
-      name: 'CLC', full: 'long stay, on-campus', group: 'custodial',
-      tagline: 'Indefinite on-campus custodial living for high-SC veterans.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.cog === 'elope') return null; // 2N dementia care is the locked CLC route
-        var reqs = [];
-        var status='fit', score=2;
-        if (s.sc === 'high') { reqs.push(met('>70% SC — qualifies for CLC long-stay custodial')); score+=3; }
-        else if (s.sc === 'mid') { reqs.push(met('>60% SC + unemployability — qualifies if unemployability is applied for')); score+=2; }
-        else { return blk('CLC long-stay requires >70% SC (or >60% + unemployability). Short-stay CLC has no SC requirement.'); }
-        reqs.push(info('Must be evaluated and accepted by CLC staff'));
-        return res(status, reqs, 'Confirm SC status and CLC bed availability with SW. Veteran may need to apply for unemployability for the >60% pathway.', score);
-      }
-    },
-    clc_2n: {
-      name: 'CLC Dementia Care', full: '2N — locked', group: 'custodial',
-      tagline: 'Locked transitional unit for severe impairment + elopement risk.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.cog !== 'elope') return null;
-        var reqs = [met('Severe cognitive impairment + elopement risk fits the locked 2N unit'),
-                    block('Patient cannot be on restraints'),
-                    warn('Requires DPOA — if none and patient cannot assign one, primary team must submit capacity declaration paperwork BEFORE transfer')];
-        return res('caution', reqs, 'Start capacity-declaration paperwork early with SW if there is no DPOA — this is a common delay. Consider OPG referral if no surrogate exists.', 2);
-      }
-    },
-    calvet: {
-      name: 'CalVet', full: 'state veterans home', group: 'custodial',
-      tagline: 'State-funded campus housing, B&C through memory-care levels.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        var reqs = [info('Age ≥55 (waived for disabled/homeless needing long-term care); no SC requirement'),
-                    block('Long waitlist (often ≥1 year) — NOT an immediate disposition'),
-                    info('Will not accept registered sex offenders or severe behavioral issues')];
-        return res('caution', reqs, 'Treat CalVet as a longer-term plan, not a discharge destination for this admission. SW can start the application.', 0);
-      }
-    },
+// ============================================================
+// DOWNSTREAM DISPOSITION FLAG LOGIC
+// Triggers on short-stay destinations when patient has no clear
+// long-term housing or funding pathway after the short stay ends.
+// ============================================================
+function needsDownstreamFlag(s) {
+  // Only relevant for active-care, short-stay destinations
+  if (s.goal === 'comfort') return false;
+  // Safe home = patient has somewhere to return to after the short stay
+  if (s.home === 'safe') return false;
+  // Homeless with Medi-Cal: may be able to convert to long-term CNH,
+  // but this is unconfirmed — flag conservatively pending SW clarification
+  // TODO: confirm with SW/CM whether homelessness alone precludes
+  // long-term custodial CNH conversion even with Medi-Cal
+  return true;
+}
 
-    // ---- HOUSING / INDEPENDENT PROGRAMS (no skilled need, independent) ----
-    home_indep: {
-      name: 'Home', full: 'or shelter', group: 'home',
-      tagline: 'Discharge home — no skilled or custodial need.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.home === 'safe') {
-          var reqs=[met('No skilled need'), met('Safe, stable housing to return to')];
-          if (s.func==='dependent') { reqs.push(warn('High dependence — confirm caregiver support')); return res('caution',reqs,'Confirm caregiver capacity and outpatient follow-up.',2); }
-          return res('fit', reqs, 'Confirm outpatient follow-up and any equipment/caregiver needs with SW/CM.', 4);
-        }
-        return null;
-      }
-    },
-    patriot: {
-      name: 'Patriot House', full: 'on-campus lodging', group: 'home',
-      tagline: 'Campus lodging for patients needing frequent infusions/radiation far from home.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.func !== 'independent') return null;
-        var reqs = [met('Independent in ADLs/iADLs (required)'),
-                    info('For patients needing frequent infusions / chemo / radiation whose home is far away')];
-        return res('caution', reqs, 'Niche option — only if the patient has recurring on-campus treatment and lives far away. Confirm with SW.', 1);
-      }
-    },
-    vash: {
-      name: 'VASH', full: 'VA Section-8 housing', group: 'home',
-      tagline: 'Subsidized independent housing — outpatient application, not immediate.',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.func !== 'independent') return null;
-        if (s.home === 'safe') return null;
-        var reqs = [met('Fully independent in ADLs (required)'),
-                    block('Outpatient program, voucher takes weeks to months — NOT an immediate disposition')];
-        return res('caution', reqs, 'Refer to SW if the patient is interested — useful as a longer-term housing plan, not a discharge destination today.', 0);
-      }
-    },
-    dom: {
-      name: 'DOM', full: 'Domiciliary', group: 'home',
-      tagline: 'On-campus residential rehab (substance use / low-demand).',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.func !== 'independent') return null;
-        if (s.cog !== 'intact') return null;
-        var reqs = [met('Independent in ADLs incl. medication management (required)'),
-                    info('Residential Rehabilitation Treatment Program on campus'),
-                    warn('Requires a Suicide Risk Assessment and TB clearance')];
-        if (s.home==='homeless'||s.home==='unsafe') reqs.push(met('Housing-insecure veteran — DOM does not require homelessness but it fits'));
-        return res('fit', reqs, 'Patient does not need to be homeless to receive DOM treatment. SW coordinates; if DOM is full, Tarzana may be offered.', s.home!=='safe'?3:1);
-      }
-    },
-    gpd: {
-      name: 'GPD', full: 'Grant & Per Diem', group: 'home',
-      tagline: 'Transitional housing for homeless veterans (SUD or low-demand).',
-      eval: function(s){
-        if (s.goal !== 'active' || s.skilled === 'yes') return null;
-        if (s.func !== 'independent') return null;
-        if (s.home !== 'homeless') return null;
-        var reqs = [met('Homeless veteran (required for GPD SUD track)'),
-                    met('Independent in ADLs incl. medication management'),
-                    info('On-campus: New Directions (SUD + low-demand), A Bridge Home (low-demand)')];
-        return res('fit', reqs, 'SW coordinates GPD placement. Patient must be homeless for the substance-use-disorder track.', 3);
-      }
-    },
+var DOWNSTREAM_MSG = '⚠ Downstream disposition concern: This is a short-term placement. Confirm with SW that the patient has a viable plan for after this stay ends (return home, long-term facility, or housing program). ' +
+  ('{home_note}') + ' Receiving facilities may decline if no exit plan exists.';
 
-    // ---- COMFORT / HOSPICE ----
-    home_hospice: {
-      name: 'Home with hospice', full: '', group: 'comfort',
-      tagline: 'Comfort care at home with a community hospice benefit — the default when home is viable.',
-      eval: function(s){
-        if (s.goal !== 'comfort') return null;
-        if (s.home === 'homeless') return blk('No stable home for home hospice — pursue facility hospice instead.');
-        var reqs = [met('Comfort-focused goal of care'),
-                    (s.home==='safe')?met('Home available for hospice services'):warn('Home support uncertain — Palliative/SW to assess feasibility')];
-        return res(s.home==='safe'?'fit':'caution', reqs, 'Palliative Care + SW arrange the home hospice benefit and caregiver support. This is generally the first-line comfort disposition when home is feasible.', s.home==='safe'?5:3);
-      }
-    },
-    cnh_hospice: {
-      name: 'CNH / facility with hospice', full: '', group: 'comfort',
-      tagline: 'Comfort care in a nursing facility with a hospice benefit — first-line when home is not an option.',
-      eval: function(s){
-        if (s.goal !== 'comfort') return null;
-        var reqs = [met('Comfort-focused goal of care'),
-                    info('Hospice benefit layered onto a CNH/SNF placement')];
-        // When home isn't viable, facility hospice becomes the lead option.
-        var homeViable = (s.home === 'safe');
-        if (!homeViable) reqs.push(met('Home hospice not viable — facility hospice is the practical route'));
-        return res(homeViable ? 'caution' : 'fit', reqs, 'Palliative Care + SW coordinate facility selection and the hospice benefit. CNH placement caveats still apply (PASSR, Medi-Cal/funds).', homeViable ? 3 : 5);
-      }
-    },
-    hugs: {
-      name: 'HUGS', full: 'inpatient hospice, Sepulveda VA', group: 'comfort',
-      tagline: 'VA inpatient hospice unit — limited beds; reserve for select cases where home and facility hospice are not feasible.',
-      eval: function(s){
-        if (s.goal !== 'comfort') return null;
-        var reqs = [met('Comfort-focused goal of care'),
-                    block('Very limited bed availability — frequently not an option; do not assume a bed exists'),
-                    warn('Prognosis of <6 months required'),
-                    info('Best suited to patients with complex symptom burden or no viable home/facility hospice option')];
-        // Deliberately low score so HUGS sits below home and facility hospice.
-        return res('caution', reqs, 'Consult Palliative Care early to assess HUGS eligibility AND current bed availability — many patients who qualify on paper cannot be transferred. Have a home or facility hospice plan in parallel.', 1);
-      }
+function downstreamText(s) {
+  var note = '';
+  if (s.home === 'homeless') {
+    if (s.fund === 'medical') {
+      note = 'Patient is homeless with Medi-Cal — confirm with SW whether Medi-Cal alone is sufficient for long-term custodial CNH conversion after a skilled stay, or whether stable housing is also required (currently unconfirmed).';
+    } else {
+      note = 'Patient is homeless with no confirmed funding for long-term placement — SW work-up for Medi-Cal, benefits, and housing programs is needed in parallel.';
     }
-  };
+  } else if (s.home === 'unsafe') {
+    note = 'Home support/safety is a concern — confirm with SW what the long-term plan is if the patient cannot safely return home after the short stay.';
+  }
+  return DOWNSTREAM_MSG.replace('{home_note}', note);
+}
 
-  // helper builders
-  function met(t){ return {ic:'met', text:t}; }
-  function warn(t){ return {ic:'warn', text:t}; }
-  function block(t){ return {ic:'block', text:t}; }
-  function info(t){ return {ic:'info', text:t}; }
-  function res(status, reqs, sw, score){ return {status:status, reqs:reqs, sw:sw, score:score||0}; }
-  function blk(reason){ return {status:'blocked', blockedReason:reason, score:-1}; }
+// ============================================================
+// DESTINATION KNOWLEDGE BASE
+// Each destination: eval(state) → result object or null (not applicable)
+// ============================================================
+var DEST = {
 
-  // ---- NAVIGATION ----
-  var ORDER_BASE = ['q1']; // dynamic from there
-  function setProgress(p){ document.getElementById('progress').style.width = p + '%'; }
-  function show(id){ document.querySelectorAll('.screen').forEach(function(e){e.classList.remove('active');}); document.getElementById('screen-'+id).classList.add('active'); window.scrollTo(0,0); }
+  // ----------------------------------------------------------
+  // COMFORT / HOSPICE
+  // ----------------------------------------------------------
+  home_hospice: {
+    name: 'Home with hospice', full: '', group: 'comfort',
+    tagline: 'Comfort care at home with a community hospice benefit — default when home is viable.',
+    eval: function(s) {
+      if (s.goal !== 'comfort') return null;
+      if (s.home === 'homeless') return blk('No stable home for home hospice — pursue facility hospice instead.');
+      var reqs = [
+        met('Comfort-focused goal of care'),
+        s.home === 'safe' ? met('Home available for hospice services') : warn('Home support uncertain — Palliative/SW to assess feasibility')
+      ];
+      return res(
+        s.home === 'safe' ? 'fit' : 'caution',
+        reqs,
+        'Palliative Care + SW arrange the home hospice benefit and caregiver support. First-line when home is feasible.',
+        s.home === 'safe' ? 5 : 3
+      );
+    }
+  },
 
-  function start(){ state={goal:null,skilled:null,func:null,cog:null,home:null,fund:null,sc:null,history:[]}; state.history=['q1']; show('q1'); setProgress(14); }
+  cnh_hospice: {
+    name: 'CNH / facility with hospice', full: '', group: 'comfort',
+    tagline: 'Comfort care in a nursing facility — first-line when home is not an option.',
+    eval: function(s) {
+      if (s.goal !== 'comfort') return null;
+      var homeViable = (s.home === 'safe');
+      var reqs = [
+        met('Comfort-focused goal of care'),
+        homeViable ? info('Alternative if home hospice becomes unworkable') : met('Home hospice not viable — facility hospice is the practical route')
+      ];
+      return res(
+        homeViable ? 'caution' : 'fit',
+        reqs,
+        'Palliative Care + SW coordinate facility selection and the hospice benefit. CNH placement caveats still apply (PASSR, Medi-Cal/funds).',
+        homeViable ? 3 : 5
+      );
+    }
+  },
 
-  function answer(key, val){
-    state[key] = val;
-    var next = nextScreen();
-    state.history.push(next);
-    show(next === 'result' ? 'result' : next);
-    if (next === 'result') { buildResult(); setProgress(100); }
-    else setProgress(progressFor(next));
+  hugs: {
+    name: 'HUGS', full: 'inpatient hospice, Sepulveda VA', group: 'comfort',
+    tagline: 'VA inpatient hospice — limited beds; for select cases where home and facility hospice are not feasible.',
+    eval: function(s) {
+      if (s.goal !== 'comfort') return null;
+      var reqs = [
+        met('Comfort-focused goal of care'),
+        blkr('Very limited bed availability — frequently not an option; do not assume a bed exists'),
+        warn('Prognosis of <6 months required'),
+        info('Best suited to patients with complex symptom burden or no viable home/facility hospice option')
+      ];
+      // Deliberately low score — always ranked below home hospice and facility hospice
+      return res('caution', reqs,
+        'Consult Palliative Care early to assess HUGS eligibility AND current bed availability. Many patients who qualify cannot be transferred. Always have a home or facility hospice plan in parallel.',
+        1
+      );
+    }
+  },
+
+  // ----------------------------------------------------------
+  // SKILLED-NEED PATHWAYS
+  // ----------------------------------------------------------
+  home_hh: {
+    name: 'Home with home health', full: '', group: 'skilled',
+    tagline: 'Skilled need met at home by visiting services.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
+      if (s.cog === 'elope') return blk('Elopement risk makes unsupervised home unsafe.');
+      if (s.home === 'homeless') return blk('No stable housing to return to.');
+      var reqs = [ met('Has a skilled need that home health can deliver') ];
+      var status = 'fit', score = 0;
+      if (s.home === 'safe') { reqs.push(met('Safe home to return to')); score = 3; }
+      else { reqs.push(warn('Home support/safety is a concern — needs SW assessment')); status = 'caution'; score = 1; }
+      if (s.func === 'dependent') { reqs.push(warn('High ADL dependence — confirm caregiver can manage at home')); status = 'caution'; }
+      else reqs.push(met('Functional status manageable at home'));
+      return res(status, reqs, 'Confirm home-health agency can cover the specific skilled need and start promptly. SW/CM sets this up.', score);
+    }
+  },
+
+  cnh_skilled: {
+    name: 'CNH / SNF', full: 'short-term skilled', group: 'skilled',
+    tagline: 'Short-term skilled stay in a community nursing facility.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
+      var reqs = [
+        met('Has a skilled need (Medicare may cover short-term skilled stay)'),
+        info('Medicare covers skilled stay only after 3 consecutive inpatient midnights (not obs) + remaining Medicare days')
+      ];
+      var status = 'fit', score = 2;
+      if (s.cog === 'elope') { reqs.push(warn('Elopement risk → needs a secure/locked CNH (requires DPOA or conservator)')); status = 'caution'; }
+      var ds = needsDownstreamFlag(s);
+      return res(status, reqs,
+        'SW confirms PASSR Level 1 eval is complete BEFORE the CNH consult is placed — referrals cannot go out until this is done. For return to a prior CNH, contact Sylvia Durham or Caitlin Harbecke first. CNH will not accept patients in restraints or requiring a sitter.',
+        score, ds
+      );
+    }
+  },
+
+  clc_short: {
+    name: 'CLC', full: 'short stay', group: 'skilled',
+    tagline: 'On-campus skilled/rehab short stay — no SC requirement.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
+      var reqs = [
+        met('Skilled / rehab need — short-stay CLC has no service-connection requirement'),
+        info('Limited PT/OT beds; must be evaluated and accepted by CLC staff')
+      ];
+      var ds = needsDownstreamFlag(s);
+      return res('fit', reqs, 'CLC staff must evaluate and accept the patient for transfer. Flag early to SW.', 2, ds);
+    }
+  },
+
+  aru: {
+    name: 'ARU', full: 'Acute Rehab Unit, 2E', group: 'skilled',
+    tagline: 'Intensive inpatient rehab — PM&R becomes the primary team.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
+      if (s.func === 'dependent') return blk('Must tolerate >3 hrs/day of therapy — too functionally dependent currently.');
+      var reqs = [
+        met('Rehab-appropriate skilled need'),
+        s.func === 'independent' ? met('Likely able to participate in >3 hrs/day of PT/OT') : warn('Confirm ability to tolerate >3 hrs/day of PT/OT — required for ARU'),
+        info('PM&R becomes the primary team after transfer; must be evaluated and accepted by PM&R')
+      ];
+      var ds = needsDownstreamFlag(s);
+      return res('fit', reqs, 'Patient must be evaluated and accepted by the PM&R resident prior to ARU transfer.', 2, ds);
+    }
+  },
+
+  ltac: {
+    name: 'LTAC', full: 'Long-Term Acute Care', group: 'skilled',
+    tagline: 'For patients stable at PCU/MICU level needing prolonged acute care.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
+      var reqs = [
+        info('Typically for patients stable at PCU/MICU level needing prolonged acute care (e.g., vent weaning, complex wounds)'),
+        warn('Requires Medicare / Medi-Cal')
+      ];
+      return res('caution', reqs, 'LTAC is SW-driven — confirm whether the acuity and skilled need actually fits LTAC vs CNH/SNF.', 1);
+    }
+  },
+
+  // ----------------------------------------------------------
+  // CUSTODIAL / LONG-TERM FACILITY
+  // ----------------------------------------------------------
+  rcfe_open: {
+    name: 'RCFE — open', full: 'Board & Care / ALF', group: 'custodial',
+    tagline: 'Non-medical assisted living; help with ADLs, not nursing-level care.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.cog === 'elope') return null; // memory-care RCFE is a separate destination
+      if (s.func === 'dependent') return blk('Must independently transfer bed↔wheelchair — too dependent for RCFE.');
+      var reqs = [
+        met('No skilled need — custodial/assistance level fits RCFE'),
+        met('Can transfer independently (RCFE requirement)'),
+        info('Requires 90 days sobriety and TB clearance')
+      ];
+      var status = 'fit', score = 2;
+      if (s.fund === 'funds') { reqs.push(met('Has private funds (RCFE requires payment, ~$2,000+/mo shared room)')); score += 2; }
+      else if (s.fund === 'medical') { reqs.push(blkr('RCFE is NOT covered by Medi-Cal — requires private funds')); status = 'caution'; }
+      else if (s.fund === 'none') { reqs.push(warn('Funding unclear — RCFE requires private funds; explore Aid & Attendance / NSC pension / SSA with SW')); status = 'caution'; }
+      return res(status, reqs, 'SW can pursue NSC pension, Aid & Attendance, or SSA/SSI/SSDI to boost monthly income toward RCFE cost.', score);
+    }
+  },
+
+  rcfe_memory: {
+    name: 'RCFE — memory care', full: 'secured Board & Care / ALF', group: 'custodial',
+    tagline: 'Secured assisted living for cognitive impairment with elopement risk.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.cog !== 'elope' && s.cog !== 'impaired') return null;
+      if (s.func === 'dependent') return blk('Must independently transfer — too dependent for RCFE-level care.');
+      var reqs = [
+        met('Cognitive impairment with safety/elopement concern fits secured memory care'),
+        warn('Secured facilities cost more than open RCFE — requires private funds')
+      ];
+      if (s.cog === 'elope') reqs.push(info('Locked/secured setting addresses elopement risk'));
+      // Score deliberately lower than clc_2n (score 2) so that on-campus locked unit
+      // is always recommended first when elopement is present; RCFE memory care is
+      // an alternative for patients with private funds and independent transfers.
+      return res('caution', reqs, 'Secured RCFE requires private funds. Confirm independent transfer ability and pursue benefits with SW.', 1);
+    }
+  },
+
+  cnh_custodial: {
+    name: 'CNH — custodial', full: 'long-term, open or secure', group: 'custodial',
+    tagline: 'Long-term nursing-home placement for custodial needs.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      // If fully independent and cognitively intact — RCFE or housing is more appropriate
+      if (s.func === 'independent' && s.cog === 'intact') return null;
+      var reqs = [ met('Custodial nursing-home level of care') ];
+      var status = 'fit', score = 2;
+      if (s.fund === 'medical') { reqs.push(met('Has/can get Medi-Cal — covers long-term custodial CNH')); score += 2; }
+      else if (s.fund === 'none') { reqs.push(blkr('Medicare does NOT cover custodial CNH — needs Medi-Cal or private funds; SW work-up required')); status = 'caution'; }
+      else if (s.fund === 'funds') { reqs.push(info('Private funds can cover custodial CNH until spent down to Medi-Cal eligibility')); }
+      if (s.cog === 'elope') reqs.push(warn('Elopement risk → secure/locked CNH required; DPOA or conservator needed'));
+      return res(status, reqs,
+        'SW confirms PASSR Level 1 before consult. Medi-Cal number takes ~2 weeks and facilities will not accept referrals without it. Hard-to-place: young patients, RSO, active substance use, >300 lbs, behavioral issues, Medi-Cal-only, or homeless.',
+        score
+      );
+    }
+  },
+
+  clc_long: {
+    name: 'CLC', full: 'long stay, on-campus', group: 'custodial',
+    tagline: 'Indefinite on-campus custodial living — requires high service connection.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.cog === 'elope') return null; // CLC 2N is the locked route
+      if (!s.sc) return null;
+      if (s.sc === 'high') {
+        return res('fit',
+          [ met('>70% SC — qualifies for CLC long-stay custodial'), info('Must be evaluated and accepted by CLC staff') ],
+          'Confirm SC status and CLC bed availability with SW.',
+          5
+        );
+      }
+      if (s.sc === 'mid') {
+        return res('caution',
+          [ met('>60% SC + unemployability — qualifies if unemployability is applied for'), warn('Veteran must actively apply for unemployability rating') ],
+          'Veteran may need to apply for unemployability. Confirm with SW and confirm CLC bed availability.',
+          3
+        );
+      }
+      // sc === 'low'
+      return blk('CLC long-stay requires >70% SC (or >60% + unemployability). Short-stay CLC has no SC requirement.');
+    }
+  },
+
+  clc_2n: {
+    name: 'CLC Dementia Care', full: '2N — locked', group: 'custodial',
+    tagline: 'Locked transitional unit for severe cognitive impairment + elopement risk.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.cog !== 'elope') return null;
+      var reqs = [
+        met('Severe cognitive impairment + elopement risk fits the locked 2N unit'),
+        blkr('Patient cannot be on restraints'),
+        warn('Requires DPOA — if none and patient cannot assign one, primary team must submit capacity declaration paperwork BEFORE transfer')
+      ];
+      return res('caution', reqs,
+        'Start capacity-declaration paperwork early with SW if there is no DPOA — this is a common and significant delay. Consider OPG referral if no surrogate exists.',
+        4
+      );
+    }
+  },
+
+  calvet: {
+    name: 'CalVet', full: 'state veterans home', group: 'custodial',
+    tagline: 'State-funded campus housing from B&C through memory-care levels.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      var reqs = [
+        info('Age ≥55 (waived for disabled/homeless needing long-term care); no SC requirement'),
+        blkr('Long waitlist (often ≥1 year) — NOT a viable immediate disposition'),
+        info('Will not accept registered sex offenders or patients with severe behavioral issues')
+      ];
+      return res('caution', reqs, 'Treat CalVet as a longer-term plan only. SW can start the application during this admission.', 0);
+    }
+  },
+
+  // ----------------------------------------------------------
+  // HOME & HOUSING PROGRAMS
+  // ----------------------------------------------------------
+  home_indep: {
+    name: 'Home', full: '', group: 'home',
+    tagline: 'Discharge home — no skilled or custodial need.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.home !== 'safe') return null;
+      var reqs = [ met('No skilled need'), met('Safe, stable housing to return to') ];
+      if (s.func === 'dependent') {
+        reqs.push(warn('High ADL dependence — confirm adequate caregiver support at home'));
+        return res('caution', reqs, 'Confirm caregiver capacity and outpatient follow-up with SW/CM.', 2);
+      }
+      return res('fit', reqs, 'Confirm outpatient follow-up and any durable medical equipment or caregiver needs with SW/CM.', 4);
+    }
+  },
+
+  dom: {
+    name: 'DOM', full: 'Domiciliary', group: 'home',
+    tagline: 'On-campus residential SUD treatment program — requires active SUD + treatment interest.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.func !== 'independent') return null;
+      if (s.cog !== 'intact') return null;
+      // DOM requires active SUD + willingness to engage in treatment
+      if (s.sud !== 'yes') return null;
+      var reqs = [
+        met('Active SUD with interest in treatment (required for DOM)'),
+        met('Independent in ADLs including medication management (required)'),
+        met('Cognitively intact (required)'),
+        info('Residential Rehabilitation Treatment Program on campus'),
+        warn('Requires Suicide Risk Assessment and TB clearance')
+      ];
+      return res('fit', reqs,
+        'Patient does not need to be homeless to receive DOM treatment — it is open to all veterans with active SUD seeking treatment. SW coordinates; if DOM is full, Tarzana may be offered as an alternative.',
+        s.home === 'homeless' ? 4 : 3
+      );
+    }
+  },
+
+  gpd: {
+    name: 'GPD', full: 'Grant & Per Diem', group: 'home',
+    tagline: 'Transitional housing for homeless veterans.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.func !== 'independent') return null;
+      if (s.home !== 'homeless') return null;
+      var reqs = [
+        met('Homeless veteran (required for GPD)'),
+        met('Independent in ADLs including medication management'),
+        info('On-campus options: New Directions (SUD + low-demand), A Bridge Home (low-demand)')
+      ];
+      return res('fit', reqs, 'SW coordinates GPD placement. New Directions requires active SUD; A Bridge Home is low-demand transitional housing.', 3);
+    }
+  },
+
+  vash: {
+    name: 'VASH', full: 'VA Section-8 housing', group: 'home',
+    tagline: 'Subsidized independent housing — outpatient program, not an immediate disposition.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.func !== 'independent') return null;
+      if (s.home === 'safe') return null;
+      var reqs = [
+        met('Fully independent in ADLs (required)'),
+        blkr('Outpatient program — voucher takes weeks to months; NOT an immediate discharge destination')
+      ];
+      return res('caution', reqs, 'Refer to SW if the patient is interested — VASH is a longer-term housing plan, not a placement for this discharge.', 0);
+    }
+  },
+
+  patriot: {
+    name: 'Patriot House', full: 'on-campus lodging', group: 'home',
+    tagline: 'Campus lodging for patients needing frequent on-campus treatment far from home.',
+    eval: function(s) {
+      if (s.goal !== 'active' || s.skilled === 'yes') return null;
+      if (s.func !== 'independent') return null;
+      var reqs = [
+        met('Independent in ADLs/iADLs (required)'),
+        info('For patients needing frequent infusions, chemotherapy, or radiation whose home is far from the VA')
+      ];
+      return res('caution', reqs, 'Niche option — only if the patient has recurring on-campus treatment and lives far away. Confirm with SW.', 1);
+    }
   }
 
-  // Decide the next screen given current state — this encodes which conditional
-  // questions are actually relevant, so users only see questions that change the result.
-  function nextScreen(){
-    if (state.goal === 'comfort') {
-      // comfort branch: just need home situation to rank home vs HUGS vs facility
-      if (state.home === null) return 'q5';
-      return 'result';
-    }
-    if (state.skilled === null) return 'q2';
-    if (state.skilled === 'yes') {
-      // skilled branch: function + cognition + home; no funding/SC needed
-      if (state.func === null) return 'q3';
-      if (state.cog === null) return 'q4';
-      if (state.home === null) return 'q5';
-      return 'result';
-    }
-    // non-skilled branch
-    if (state.func === null) return 'q3';
-    if (state.cog === null) return 'q4';
+}; // end DEST
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function setProgress(p) { document.getElementById('progress').style.width = p + '%'; }
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(e) { e.classList.remove('active'); });
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function start() {
+  state = { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] };
+  state.history = ['q1'];
+  show('q1');
+  setProgress(12);
+}
+
+function answer(key, val) {
+  state[key] = val;
+  var next = nextScreen();
+  state.history.push(next);
+  if (next === 'result') { show('result'); buildResult(); setProgress(100); }
+  else { show(next); setProgress(progressFor(next)); }
+}
+
+function nextScreen() {
+  // --- COMFORT BRANCH: only needs housing to rank the three options ---
+  if (state.goal === 'comfort') {
     if (state.home === null) return 'q5';
-    // funding only matters if a custodial facility is plausible:
-    // i.e. not (fully independent AND intact AND has safe home) — that's a pure home/housing case
-    var custodialPlausible = !(state.func === 'independent' && state.cog === 'intact' && state.home === 'safe');
-    if (custodialPlausible && state.fund === null) return 'q6';
-    // SC only matters if CLC long-stay is in play: non-skilled, not elopement (that's 2N), custodial plausible
-    var clcPlausible = custodialPlausible && state.cog !== 'elope';
-    if (clcPlausible && state.sc === null) return 'q7';
     return 'result';
   }
 
-  function progressFor(id){
-    var map = {q1:14,q2:28,q3:42,q4:56,q5:70,q6:84,q7:92,result:100};
-    return map[id] || 50;
+  // --- ACTIVE CARE BRANCH ---
+  if (state.skilled === null) return 'q2';
+  if (state.func === null) return 'q3';
+  if (state.cog === null) return 'q4';
+  if (state.home === null) return 'q5';
+
+  // SUD question: only relevant on non-skilled, independent, intact-cognition branch
+  // (the only branch where DOM is potentially applicable)
+  var sudRelevant = (state.skilled === 'no' && state.func === 'independent' && state.cog === 'intact');
+  if (sudRelevant && state.sud === null) return 'q6';
+
+  // Funding: only when a custodial facility is plausible
+  // (not: fully independent + intact cognition + safe home — that's pure home/housing)
+  var custodialPlausible = !(state.func === 'independent' && state.cog === 'intact' && state.home === 'safe');
+  if (custodialPlausible && state.fund === null) return 'q7';
+
+  // SC: only when CLC long-stay is plausible (non-skilled, not elopement risk, custodial branch)
+  var clcPlausible = (state.skilled === 'no') && (state.cog !== 'elope') && custodialPlausible;
+  if (clcPlausible && state.sc === null) return 'q8';
+
+  return 'result';
+}
+
+function progressFor(id) {
+  var map = { q1:12, q2:24, q3:36, q4:48, q5:60, q6:72, q7:84, q8:92 };
+  return map[id] || 50;
+}
+
+function goBack() {
+  if (state.history.length <= 1) { restart(); return; }
+  var current = state.history.pop();
+  var clearMap = { q1:'goal', q2:'skilled', q3:'func', q4:'cog', q5:'home', q6:'sud', q7:'fund', q8:'sc' };
+  if (clearMap[current]) state[clearMap[current]] = null;
+  var prev = state.history[state.history.length - 1];
+  show(prev);
+  setProgress(progressFor(prev));
+}
+
+function restart() { show('home'); setProgress(0); state = { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] }; }
+
+// ============================================================
+// RESULT BUILD
+// ============================================================
+var GROUP_LABELS = {
+  comfort:   'Comfort-focused options',
+  skilled:   'Skilled-need pathways',
+  custodial: 'Custodial / long-term facilities',
+  home:      'Home & housing programs'
+};
+var GROUP_ORDER_ACTIVE  = ['home', 'skilled', 'custodial'];
+var GROUP_ORDER_COMFORT = ['comfort'];
+
+function buildResult() {
+  var fits = [], blocked = [];
+  Object.keys(DEST).forEach(function(k) {
+    var r = DEST[k].eval(state);
+    if (!r) return;
+    if (r.status === 'blocked') blocked.push({ key:k, d:DEST[k], r:r });
+    else fits.push({ key:k, d:DEST[k], r:r });
+  });
+
+  fits.sort(function(a, b) {
+    var sa = a.r.status === 'fit' ? 0 : 1, sb = b.r.status === 'fit' ? 0 : 1;
+    if (sa !== sb) return sa - sb;
+    return b.r.score - a.r.score;
+  });
+
+  var html = '';
+  var top = fits[0];
+
+  html += '<div class="result-intro">';
+  html += '<p class="result-eyebrow">Disposition options</p>';
+  if (top) {
+    html += '<p class="result-headline">Start with: ' + top.d.name +
+      (top.d.full ? ' <span style="font-weight:400;color:#6b7494">('+top.d.full+')</span>' : '') + '</p>';
+    html += '<p class="result-subhead">' + top.d.tagline +
+      ' Below is the full filtered list — most cases need more than one option on the table. Confirm everything with SW/CM.</p>';
+  } else {
+    html += '<p class="result-headline">No clear standard pathway matched.</p>';
+    html += '<p class="result-subhead">This combination needs direct discussion with your social worker and case manager. The ruled-out options below show why.</p>';
   }
+  html += '</div>';
 
-  function goBack(){
-    if (state.history.length <= 1) { restart(); return; }
-    var current = state.history.pop();
-    // clear the answer tied to the screen we are leaving
-    var clearMap = {q1:'goal',q2:'skilled',q3:'func',q4:'cog',q5:'home',q6:'fund',q7:'sc'};
-    if (clearMap[current]) state[clearMap[current]] = null;
-    var prev = state.history[state.history.length-1];
-    show(prev);
-    setProgress(progressFor(prev));
-  }
-
-  function restart(){ start(); show('home'); setProgress(0); state.history=[]; }
-
-  // ---- RESULT BUILD ----
-  var GROUP_LABELS = { comfort:'Comfort-focused options', skilled:'Skilled-need pathways', custodial:'Custodial / long-term facilities', home:'Home & housing programs' };
-  var GROUP_ORDER_ACTIVE = ['home','skilled','custodial'];
-  var GROUP_ORDER_COMFORT = ['comfort'];
-
-  function buildResult(){
-    var fits = [], blocked = [];
-    Object.keys(DEST).forEach(function(k){
-      var d = DEST[k];
-      var r = d.eval(state);
-      if (!r) return;
-      if (r.status === 'blocked') blocked.push({key:k, d:d, r:r});
-      else fits.push({key:k, d:d, r:r});
-    });
-    // sort fits: status (fit before caution) then score desc
-    fits.sort(function(a,b){
-      var sa = a.r.status==='fit'?0:1, sb = b.r.status==='fit'?0:1;
-      if (sa !== sb) return sa - sb;
-      return b.r.score - a.r.score;
-    });
-
-    var html = '';
-    var top = fits[0];
-    // intro
-    html += '<div class="result-intro">';
-    html += '<p class="result-eyebrow">Disposition options</p>';
-    if (top) {
-      html += '<p class="result-headline">Start with: ' + top.d.name + (top.d.full? ' <span style="font-weight:400;color:#6b7494">('+top.d.full+')</span>':'') + '</p>';
-      html += '<p class="result-subhead">' + top.d.tagline + ' Below is the full filtered list — most cases need more than one option on the table. Confirm everything with SW/CM.</p>';
-    } else {
-      html += '<p class="result-headline">No clear standard pathway matched.</p>';
-      html += '<p class="result-subhead">This combination needs direct discussion with your social worker and case manager. The ruled-out options below explain why.</p>';
-    }
-    html += '</div>';
-
-    // grouped fits
-    var groupOrder = state.goal==='comfort' ? GROUP_ORDER_COMFORT : GROUP_ORDER_ACTIVE;
-    var rank = 1;
-    groupOrder.forEach(function(g){
-      var inGroup = fits.filter(function(f){ return f.d.group === g; });
-      if (!inGroup.length) return;
-      html += '<div class="group-label">' + GROUP_LABELS[g] + '</div>';
-      inGroup.forEach(function(f){
-        var isTop = (top && f.key === top.key);
-        var caution = f.r.status === 'caution';
-        html += '<div class="dest-card '+(isTop?'top ':'')+(caution?'caution':'')+'" onclick="toggleCard(this)">';
-        html += '<div class="dest-head">';
-        html += '<div class="dest-rank">'+rank+'</div>';
-        html += '<div class="dest-main">';
-        if (isTop) html += '<span class="top-flag">Top suggestion</span><br>';
-        html += '<span class="dest-name">'+f.d.name + (f.d.full?' <span class="full">· '+f.d.full+'</span>':'')+'</span>';
-        html += '<div class="dest-tagline">'+f.d.tagline+'</div>';
-        html += '</div>';
-        html += '<div class="dest-toggle">+</div>';
-        html += '</div>';
-        html += '<div class="dest-body">';
-        f.r.reqs.forEach(function(rq){
-          var sym = rq.ic==='met'?'✓':rq.ic==='warn'?'!':rq.ic==='block'?'✕':'i';
-          html += '<div class="req-row"><span class="req-ic '+rq.ic+'">'+sym+'</span><span>'+rq.text+'</span></div>';
-        });
-        if (f.r.sw) html += '<div class="sw-flag"><span class="sw-ic">👥</span><span><strong>Confirm with SW/CM:</strong> '+f.r.sw+'</span></div>';
-        html += '</div></div>';
-        rank++;
+  var groupOrder = state.goal === 'comfort' ? GROUP_ORDER_COMFORT : GROUP_ORDER_ACTIVE;
+  var rank = 1;
+  groupOrder.forEach(function(g) {
+    var inGroup = fits.filter(function(f) { return f.d.group === g; });
+    if (!inGroup.length) return;
+    html += '<div class="group-label">' + GROUP_LABELS[g] + '</div>';
+    inGroup.forEach(function(f) {
+      var isTop = (top && f.key === top.key);
+      var caution = f.r.status === 'caution';
+      html += '<div class="dest-card ' + (isTop ? 'top ' : '') + (caution ? 'caution' : '') + '" onclick="toggleCard(this)">';
+      html += '<div class="dest-head">';
+      html += '<div class="dest-rank">' + rank + '</div>';
+      html += '<div class="dest-main">';
+      if (isTop) html += '<span class="top-flag">Top suggestion</span><br>';
+      html += '<span class="dest-name">' + f.d.name +
+        (f.d.full ? ' <span class="full">· ' + f.d.full + '</span>' : '') + '</span>';
+      html += '<div class="dest-tagline">' + f.d.tagline + '</div>';
+      html += '</div>';
+      html += '<div class="dest-toggle">+</div>';
+      html += '</div>';
+      html += '<div class="dest-body">';
+      f.r.reqs.forEach(function(rq) {
+        var sym = rq.ic === 'met' ? '✓' : rq.ic === 'warn' ? '!' : rq.ic === 'block' ? '✕' : 'i';
+        html += '<div class="req-row"><span class="req-ic ' + rq.ic + '">' + sym + '</span><span>' + rq.text + '</span></div>';
       });
+      if (f.r.downstream) {
+        html += '<div class="downstream-flag"><span>🔄</span><span>' + downstreamText(state) + '</span></div>';
+      }
+      if (f.r.sw) {
+        html += '<div class="sw-flag"><span class="sw-ic">👥</span><span><strong>Confirm with SW/CM:</strong> ' + f.r.sw + '</span></div>';
+      }
+      html += '</div></div>';
+      rank++;
     });
+  });
 
-    // blocked / ruled out
-    if (blocked.length) {
-      html += '<div class="group-label">Ruled out for this patient</div>';
-      blocked.forEach(function(b){
-        html += '<div class="blocked-card"><div class="blocked-rank">✕</div><div><div class="blocked-name">'+b.d.name+(b.d.full?' ('+b.d.full+')':'')+'</div><div class="blocked-reason">'+b.r.blockedReason+'</div></div></div>';
-      });
-    }
-
-    // next steps
-    html += '<div class="next-steps"><h3>Universal next steps</h3><ul>';
-    html += '<li>Loop in your team social worker / case manager early — many of these consults have multi-day lead times (Medi-Cal number ~2 weeks, PASSR before CNH, capacity declarations).</li>';
-    html += '<li>Verify insurance and benefits; SW can pursue NSC pension, Aid &amp; Attendance, or SSA/SSI/SSDI to expand options.</li>';
-    html += '<li>Confirm patient and family preference — it can override the "best fit" on paper.</li>';
-    if (state.cog==='elope' || state.cog==='impaired') html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
-    html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
-    html += '</ul></div>';
-
-    document.getElementById('result-content').innerHTML = html;
+  if (blocked.length) {
+    html += '<div class="group-label">Ruled out for this patient</div>';
+    blocked.forEach(function(b) {
+      html += '<div class="blocked-card"><div class="blocked-rank">✕</div><div>' +
+        '<div class="blocked-name">' + b.d.name + (b.d.full ? ' (' + b.d.full + ')' : '') + '</div>' +
+        '<div class="blocked-reason">' + b.r.blockedReason + '</div>' +
+        '</div></div>';
+    });
   }
 
-  function toggleCard(el){ el.classList.toggle('open'); }
+  html += '<div class="next-steps"><h3>Universal next steps</h3><ul>';
+  html += '<li>Loop in your team social worker / case manager early — many consults have multi-day lead times (Medi-Cal number ~2 weeks, PASSR before CNH consult, capacity declarations).</li>';
+  html += '<li>Verify insurance and benefits; SW can pursue NSC pension, Aid &amp; Attendance, or SSA/SSI/SSDI to expand options.</li>';
+  html += '<li>Confirm patient and family preference — it can override the "best fit" on paper.</li>';
+  if (state.cog === 'elope' || state.cog === 'impaired') {
+    html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
+  }
+  html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
+  html += '</ul></div>';
+
+  document.getElementById('result-content').innerHTML = html;
+}
+
+function toggleCard(el) { el.classList.toggle('open'); }
 </script>
 </body>
 </html>
