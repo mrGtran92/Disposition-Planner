@@ -294,7 +294,7 @@ var DEST = {
       return res(
         s.home === 'safe' ? 'fit' : 'caution',
         reqs,
-        'Palliative Care + SW arrange the home hospice benefit and caregiver support. First-line when home is feasible.',
+        'Palliative Care + SW arrange the home hospice benefit. Important: hospice agencies do not provide 24/7 caregiving — confirm that adequate caregiver support is available from family, the patient, or privately hired caregivers before pursuing this option.',
         s.home === 'safe' ? 5 : 3
       );
     }
@@ -313,7 +313,7 @@ var DEST = {
       return res(
         homeViable ? 'caution' : 'fit',
         reqs,
-        'Palliative Care + SW coordinate facility selection and the hospice benefit. CNH placement caveats still apply (PASSR, Medi-Cal/funds).',
+        'Palliative Care + SW coordinate facility selection and the hospice Medicare benefit — a separate payor source (Medi-Cal/private funds) is generally not required when hospice is the goal of care. Confirm with SW whether PASSR is required in this context.',
         homeViable ? 3 : 5
       );
     }
@@ -326,7 +326,7 @@ var DEST = {
       if (s.goal !== 'comfort') return null;
       var reqs = [
         met('Comfort-focused goal of care'),
-        blkr('Very limited bed availability — frequently not an option; do not assume a bed exists'),
+        warn('Very limited bed availability — confirm with Palliative Care whether a bed is currently open'),
         warn('Prognosis of <6 months required'),
         info('Best suited to patients with complex symptom burden or no viable home/facility hospice option')
       ];
@@ -371,7 +371,7 @@ var DEST = {
       if (s.cog === 'elope') { reqs.push(warn('Elopement risk → needs a secure/locked CNH (requires DPOA or conservator)')); status = 'caution'; }
       var ds = needsDownstreamFlag(s);
       return res(status, reqs,
-        'SW confirms PASSR Level 1 eval is complete BEFORE the CNH consult is placed — referrals cannot go out until this is done. For return to a prior CNH, contact Sylvia Durham or Caitlin Harbecke first. CNH will not accept patients in restraints or requiring a sitter.',
+        'SW confirms PASSR Level 1 eval is complete BEFORE the CNH consult is placed — referrals cannot go out until this is done. For return to a prior CNH, contact the CNH coordinator team first. CNH will not accept patients in restraints or requiring a safety attendant.',
         score, ds
       );
     }
@@ -476,7 +476,7 @@ var DEST = {
       else if (s.fund === 'funds') { reqs.push(info('Private funds can cover custodial CNH until spent down to Medi-Cal eligibility')); }
       if (s.cog === 'elope') reqs.push(warn('Elopement risk → secure/locked CNH required; DPOA or conservator needed'));
       return res(status, reqs,
-        'SW confirms PASSR Level 1 before consult. Medi-Cal number takes ~2 weeks and facilities will not accept referrals without it. Hard-to-place: young patients, RSO, active substance use, >300 lbs, behavioral issues, Medi-Cal-only, or homeless.',
+        'SW confirms PASSR Level 1 before consult. Medi-Cal number takes ~2 weeks and facilities will not accept referrals without it. Hard-to-place: young patients, registered sex offenders (RSO), active substance use, >300 lbs, behavioral issues, Medi-Cal-only, or homeless.',
         score
       );
     }
