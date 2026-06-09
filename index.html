@@ -444,18 +444,6 @@ var DEST = {
     }
   },
 
-  ltac: {
-    name: 'LTAC', full: 'Long-Term Acute Care', group: 'skilled',
-    tagline: 'For patients stable at PCU/MICU level needing prolonged acute care.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-      var reqs = [
-        info('Typically for patients stable at PCU/MICU level needing prolonged acute care (e.g., vent weaning, complex wounds)'),
-        warn('Requires Medicare / Medi-Cal')
-      ];
-      return res('caution', reqs, 'LTAC is SW-driven — confirm whether the acuity and skilled need actually fits LTAC vs CNH/SNF.', 1);
-    }
-  },
 
   // ----------------------------------------------------------
   // CUSTODIAL / LONG-TERM FACILITY
