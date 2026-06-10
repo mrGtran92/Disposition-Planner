@@ -41,6 +41,14 @@
   .back-btn { background: none; border: none; color: #7a84a0; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; padding: 0; letter-spacing: 0.04em; transition: color 0.14s; }
   .back-btn:hover { color: #3d4460; }
 
+  /* ANSWER SUMMARY STRIP */
+  .answer-summary { margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .answer-summary-label { width: 100%; font-family: 'DM Mono', monospace; font-size: 9px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+  .answer-chip { display: flex; align-items: center; gap: 5px; background: #f0f2f8; border: 1px solid #d8dce8; border-radius: 20px; padding: 3px 10px 3px 8px; max-width: 100%; }
+  .answer-chip-step { font-family: 'DM Mono', monospace; font-size: 9px; color: #7a84a0; white-space: nowrap; }
+  .answer-chip-step::after { content: '·'; margin-left: 5px; color: #d8dce8; }
+  .answer-chip-val { font-size: 11.5px; color: #2a2f48; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
   /* HOME SCREEN */
   .home-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: #7a84a0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
   .home-title { font-size: 26px; font-weight: 600; color: #1a1d2e; line-height: 1.25; margin-bottom: 8px; }
@@ -115,8 +123,11 @@
   .next-steps li:last-child { margin-bottom: 0; }
 
   /* RESTART + DISCLAIMER */
-  .restart-btn { width: 100%; background: #fff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 13px; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; }
+  .result-actions { display: flex; gap: 10px; margin-bottom: 12px; }
+  .restart-btn { flex: 1; background: #fff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 13px; color: #2563eb; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; }
   .restart-btn:hover { background: #f0f4ff; border-color: #2563eb; }
+  .result-back-btn { background: #fff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 13px 18px; color: #7a84a0; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; white-space: nowrap; }
+  .result-back-btn:hover { background: #f7f8fb; border-color: #9ca3b8; color: #3d4460; }
   .disclaimer { font-size: 11.5px; color: #7a84a0; line-height: 1.6; text-align: center; padding: 16px 8px 4px; font-weight: 400; }
   .bounceback-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #1e3a6e; line-height: 1.55; margin-bottom: 12px; font-weight: 400; }
   .bounceback-note a { color: #2563eb; font-weight: 500; text-decoration: none; }
@@ -148,7 +159,7 @@
 
   <!-- Q1: GOAL OF CARE -->
   <div class="screen" id="screen-q1">
-    <p class="step-label">Step 1 of up to 7 — Goal of care</p>
+    <p class="step-label" id="label-q1">Step 1 — Goal of care</p>
     <p class="question">Is the goal of care comfort-focused / end-of-life?</p>
     <p class="question-note">If the patient is transitioning to comfort care, the disposition pathway is different and runs through Palliative Care.</p>
     <div class="options">
@@ -160,7 +171,7 @@
 
   <!-- Q2: SKILLED NEED -->
   <div class="screen" id="screen-q2">
-    <p class="step-label">Step 2 of up to 7 — Care needs</p>
+    <p class="step-label" id="label-q2">Step 2 — Care needs</p>
     <p class="question">Does the patient have an ongoing <strong>skilled need</strong>?</p>
     <p class="question-note">Skilled needs include: IV antibiotics, daily complex wound care, ongoing PT/OT, or first-time tube feeds making up &gt;50% of daily nutrition. This is the biggest fork in the pathway.</p>
     <div class="options">
@@ -172,7 +183,7 @@
 
   <!-- Q3: FUNCTIONAL STATUS -->
   <div class="screen" id="screen-q3">
-    <p class="step-label">Step 3 of up to 7 — Functional status</p>
+    <p class="step-label" id="label-q3">Step 3 — Functional status</p>
     <p class="question">What is the patient's functional status?</p>
     <p class="question-note">Independence in ADLs/iADLs gates many options. Several housing programs require full independence; facilities differ on transfer ability.</p>
     <div class="options">
@@ -185,7 +196,7 @@
 
   <!-- Q4: COGNITION -->
   <div class="screen" id="screen-q4">
-    <p class="step-label">Step 4 of up to 7 — Cognition &amp; safety</p>
+    <p class="step-label" id="label-q4">Step 4 — Cognition &amp; safety</p>
     <p class="question">Cognitive status and elopement risk?</p>
     <p class="question-note">Severe impairment with elopement risk requires a locked/secure setting and drives DPOA / capacity-declaration requirements.</p>
     <div class="options">
@@ -198,7 +209,7 @@
 
   <!-- Q5: HOME / HOUSING -->
   <div class="screen" id="screen-q5">
-    <p class="step-label">Step 5 of up to 7 — Housing</p>
+    <p class="step-label" id="label-q5">Step 5 — Housing</p>
     <p class="question">Does the patient have safe, stable housing to return to?</p>
     <p class="question-note">This separates "home" pathways from housing-program and facility pathways.</p>
     <div class="options">
@@ -211,7 +222,7 @@
 
   <!-- Q6: SUBSTANCE USE DISORDER — shown only when relevant -->
   <div class="screen" id="screen-q6">
-    <p class="step-label">Step 6 of up to 7 — Substance use</p>
+    <p class="step-label" id="label-q6">Step — Substance use</p>
     <p class="question">Does the patient have an active substance use disorder and are they interested in receiving treatment?</p>
     <p class="question-note">This opens the Domiciliary (DOM) residential treatment program as a disposition option. DOM requires both active SUD and willingness to engage in treatment.</p>
     <div class="options">
@@ -223,7 +234,7 @@
 
   <!-- Q7: FUNDING — shown only on custodial facility branches -->
   <div class="screen" id="screen-q7">
-    <p class="step-label">Step 7 of up to 7 — Funding &amp; eligibility</p>
+    <p class="step-label" id="label-q7">Step — Funding &amp; eligibility</p>
     <p class="question">What is the funding situation for a long-term or custodial facility stay?</p>
     <p class="question-note">Custodial (non-skilled, long-term) facility placement is not covered by Medicare. This determines which custodial settings are realistic.</p>
     <div class="options">
@@ -236,7 +247,7 @@
 
   <!-- Q8: SERVICE CONNECTION — shown only when CLC long-stay is plausible -->
   <div class="screen" id="screen-q8">
-    <p class="step-label">Step 7 of up to 7 — Service connection</p>
+    <p class="step-label" id="label-q8">Step — Service connection</p>
     <p class="question">What is the patient's VA service connection (SC) rating?</p>
     <p class="question-note">Long-stay custodial placement at the on-campus CLC requires a high service connection rating. Short-stay CLC has no SC requirement.</p>
     <div class="options">
@@ -251,7 +262,10 @@
   <div class="screen" id="screen-result">
     <div id="result-content"></div>
     <div class="bounceback-note">📋 For additional disposition reference information, visit <a href="https://tinyurl.com/vagladispo" target="_blank">tinyurl.com/vagladispo →</a></div>
-    <button class="restart-btn" onclick="restart()">↺ Start over</button>
+    <div class="result-actions">
+      <button class="result-back-btn" onclick="resultGoBack()">← Back</button>
+      <button class="restart-btn" onclick="restart()">↺ Start over</button>
+    </div>
     <p class="disclaimer">This tool reflects general VA GLA disposition logic and cannot account for bed availability, facility-specific acceptance, insurance verification, capacity/legal timelines, or patient and family preference. Always confirm the plan with your social worker, case manager, and the accepting service.</p>
   </div>
 
@@ -615,10 +629,79 @@ var DEST = {
 // NAVIGATION
 // ============================================================
 function setProgress(p) { document.getElementById('progress').style.width = p + '%'; }
+// Human-readable labels for each answer value
+var ANSWER_LABELS = {
+  goal:    { comfort:'Comfort / hospice', active:'Active / curative care' },
+  skilled: { yes:'Has a skilled need', no:'No skilled need' },
+  func:    { independent:'Independent ADLs', assist:'Needs some assistance', dependent:'Largely dependent' },
+  cog:     { intact:'Cognitively intact', impaired:'Impaired, no elopement risk', elope:'Severe impairment + elopement risk' },
+  home:    { safe:'Safe home', unsafe:'Housing concern', homeless:'Homeless / no stable housing' },
+  sud:     { yes:'Active SUD, wants treatment', no:'No SUD / not interested' },
+  fund:    { medical:'Has / can get Medi-Cal', funds:'Has private funds', none:'No funding / unclear' },
+  sc:      { high:'>70% SC', mid:'>60% SC + unemployability', low:'Below threshold / unknown' }
+};
+var STEP_NAMES = { q1:'Goal of care', q2:'Skilled need', q3:'Function', q4:'Cognition', q5:'Housing', q6:'Substance use', q7:'Funding', q8:'Service connection' };
+// Order in which questions appear (for summary display)
+var QUESTION_ORDER = ['q1','q2','q3','q4','q5','q6','q7','q8'];
+var STATE_KEYS =     ['goal','skilled','func','cog','home','sud','fund','sc'];
+
+function updateStepLabel(id) {
+  var el = document.getElementById('label-' + id);
+  if (!el) return;
+  // Count how many questions have been answered so far (before this one)
+  var answered = 0;
+  var idx = QUESTION_ORDER.indexOf(id);
+  for (var i = 0; i < idx; i++) {
+    if (state[STATE_KEYS[i]] !== null) answered++;
+  }
+  var stepNum = answered + 1;
+  // Estimate total: count questions that will be asked given current state
+  // Use a simple heuristic: history length so far + 1 for this screen
+  el.textContent = 'Step ' + stepNum + ' — ' + STEP_NAMES[id];
+}
+
+function renderAnswerSummary(currentId) {
+  // Build the list of answered questions before the current screen
+  var items = [];
+  var idx = QUESTION_ORDER.indexOf(currentId);
+  for (var i = 0; i < idx; i++) {
+    var key = STATE_KEYS[i];
+    var val = state[key];
+    if (val === null) continue;
+    var label = (ANSWER_LABELS[key] && ANSWER_LABELS[key][val]) ? ANSWER_LABELS[key][val] : val;
+    items.push({ step: STEP_NAMES[QUESTION_ORDER[i]], answer: label });
+  }
+  // Find or create summary element inside this screen
+  var screen = document.getElementById('screen-' + currentId);
+  if (!screen) return;
+  var existing = screen.querySelector('.answer-summary');
+  if (items.length === 0) {
+    if (existing) existing.remove();
+    return;
+  }
+  if (!existing) {
+    existing = document.createElement('div');
+    existing.className = 'answer-summary';
+    // Insert before the options div
+    var opts = screen.querySelector('.options');
+    if (opts) screen.insertBefore(existing, opts);
+    else screen.appendChild(existing);
+  }
+  var html = '<div class="answer-summary-label">Your answers so far</div>';
+  items.forEach(function(item) {
+    html += '<div class="answer-chip"><span class="answer-chip-step">' + item.step + '</span><span class="answer-chip-val">' + item.answer + '</span></div>';
+  });
+  existing.innerHTML = html;
+}
+
 function show(id) {
   document.querySelectorAll('.screen').forEach(function(e) { e.classList.remove('active'); });
   document.getElementById('screen-' + id).classList.add('active');
   window.scrollTo(0, 0);
+  if (id !== 'home' && id !== 'result') {
+    updateStepLabel(id);
+    renderAnswerSummary(id);
+  }
 }
 
 function start() {
@@ -712,6 +795,29 @@ function buildResult() {
 
   var html = '';
   var top = fits[0];
+
+  // Answer summary at top of results
+  html += '<div class="answer-summary" style="margin-bottom:20px;">';
+  html += '<div class="answer-summary-label">Your answers</div>';
+  var RESULT_LABELS = {
+    goal:    { comfort:'Comfort / hospice', active:'Active / curative care' },
+    skilled: { yes:'Has a skilled need', no:'No skilled need' },
+    func:    { independent:'Independent ADLs', assist:'Needs some assistance', dependent:'Largely dependent' },
+    cog:     { intact:'Cognitively intact', impaired:'Impaired, no elopement risk', elope:'Severe impairment + elopement risk' },
+    home:    { safe:'Safe home', unsafe:'Housing concern', homeless:'Homeless / no stable housing' },
+    sud:     { yes:'Active SUD, wants treatment', no:'No SUD / not interested' },
+    fund:    { medical:'Has / can get Medi-Cal', funds:'Has private funds', none:'No funding / unclear' },
+    sc:      { high:'>70% SC', mid:'>60% SC + unemployability', low:'Below threshold / unknown' }
+  };
+  var RESULT_STEP_NAMES = { goal:'Goal of care', skilled:'Skilled need', func:'Function', cog:'Cognition', home:'Housing', sud:'Substance use', fund:'Funding', sc:'Service connection' };
+  var RESULT_KEY_ORDER = ['goal','skilled','func','cog','home','sud','fund','sc'];
+  RESULT_KEY_ORDER.forEach(function(key) {
+    var val = state[key];
+    if (val === null) return;
+    var label = (RESULT_LABELS[key] && RESULT_LABELS[key][val]) ? RESULT_LABELS[key][val] : val;
+    html += '<div class="answer-chip"><span class="answer-chip-step">' + RESULT_STEP_NAMES[key] + '</span><span class="answer-chip-val">' + label + '</span></div>';
+  });
+  html += '</div>';
 
   html += '<div class="result-intro">';
   html += '<p class="result-eyebrow">Disposition options</p>';
@@ -816,6 +922,16 @@ function buildResult() {
   html += '</ul></div>';
 
   document.getElementById('result-content').innerHTML = html;
+}
+
+function resultGoBack() {
+  // Pop 'result' off history, then show the last question screen.
+  // Do NOT call goBack() — that would pop and clear one more answer.
+  state.history.pop(); // removes 'result'
+  var prev = state.history[state.history.length - 1];
+  if (!prev || prev === 'home') { restart(); return; }
+  show(prev);
+  setProgress(progressFor(prev));
 }
 
 function toggleCard(el) { el.classList.toggle('open'); }
