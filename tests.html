@@ -208,6 +208,58 @@ var SCENARIOS = [
     state: { goal:'comfort', home:'unsafe' },
     type: 'contains', expected: ['home_hospice', 'cnh_hospice'],
     note: 'Ambiguous home situation — both options must be surfaced, not just one.'
+  },
+
+  // ── FIDUCIARY / REPRESENTATIVE PAYEE FLAG TESTS ──────────────────────────
+  // type: 'flag_fires' checks the fiduciary trigger condition directly.
+  // Trigger: goal=active + skilled=no + cog!==intact + fund=funds
+  {
+    name: '21 · Fiduciary flag fires: impaired + no-skilled + private funds',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'funds', sc:'low' },
+    type: 'flag_fires', expected: 'fiduciary',
+    note: 'Cognitively impaired + non-skilled + private funds → fiduciary flag must appear in SW action items.'
+  },
+  {
+    name: '22 · Fiduciary flag fires: elopement risk + no-skilled + private funds',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'elope', home:'unsafe', fund:'funds', sc:'low' },
+    type: 'flag_fires', expected: 'fiduciary',
+    note: 'Elopement risk + non-skilled + private funds → fiduciary flag must fire.'
+  },
+  {
+    name: '23 · Fiduciary flag fires: dependent + impaired + homeless + private funds',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'homeless', fund:'funds', sc:'low' },
+    type: 'flag_fires', expected: 'fiduciary',
+    note: 'Fully dependent + impaired + homeless + private funds → fiduciary flag must fire.'
+  },
+  {
+    name: '24 · No fiduciary flag: intact cognition',
+    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'unsafe', fund:'funds', sc:'low' },
+    type: 'flag_fires', expected: 'no_fiduciary',
+    note: 'Cognitively intact — fiduciary flag must NOT fire even with private funds.'
+  },
+  {
+    name: '25 · No fiduciary flag: Medi-Cal (not private funds)',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'medical', sc:'low' },
+    type: 'flag_fires', expected: 'no_fiduciary',
+    note: 'Medi-Cal pathway — fiduciary flag must NOT fire.'
+  },
+  {
+    name: '26 · No fiduciary flag: skilled branch',
+    state: { goal:'active', skilled:'yes', func:'independent', cog:'impaired', home:'unsafe', fund:'funds' },
+    type: 'flag_fires', expected: 'no_fiduciary',
+    note: 'Skilled branch — fiduciary flag must NOT fire even with impaired cognition + private funds.'
+  },
+  {
+    name: '27 · No fiduciary flag: comfort goal',
+    state: { goal:'comfort', home:'safe', cog:'impaired', fund:'funds' },
+    type: 'flag_fires', expected: 'no_fiduciary',
+    note: 'Comfort branch — fiduciary flag must NOT fire.'
+  },
+  {
+    name: '28 · No fiduciary flag: no funds',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'none', sc:'low' },
+    type: 'flag_fires', expected: 'no_fiduciary',
+    note: 'No private funds — fiduciary flag must NOT fire.'
   }
 ];
 
@@ -289,6 +341,17 @@ function evalScenario(scenario) {
     detail = 'Must contain: [' + scenario.expected.join(', ') + '] | ' +
       (pass ? 'All present ✓' : 'Missing: [' + missing.join(', ') + ']') +
       ' | All fits: [' + fitKeys.join(', ') + ']';
+  } else if (scenario.type === 'flag_fires') {
+    // Check the fiduciary trigger condition directly against the scenario state
+    var fires = (s.goal === 'active' && s.skilled === 'no' &&
+      s.cog !== 'intact' && s.fund === 'funds');
+    if (scenario.expected === 'fiduciary') {
+      pass = fires;
+      detail = 'Fiduciary flag should fire | fires: ' + fires;
+    } else if (scenario.expected === 'no_fiduciary') {
+      pass = !fires;
+      detail = 'Fiduciary flag should NOT fire | fires: ' + fires;
+    }
   }
   return { pass:pass, detail:detail, fitKeys:fitKeys, topKey:topKey };
 }
