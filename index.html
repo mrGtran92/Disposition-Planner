@@ -908,6 +908,24 @@ function buildResult() {
         'Requires full independence in ADLs. Outpatient process taking weeks to months — not a discharge destination for this admission.' +
         '</div></div>';
     }
+
+    // Fiduciary / representative payee flag
+    // Trigger: active care + no skilled need + cognitively impaired (any level) + private funds
+    // Rationale: cognitively impaired patients headed toward private-pay custodial facilities
+    // (RCFE, CNH) may be unable to prudently manage their own finances. Without a fiduciary
+    // or representative payee in place, the facility cannot be paid. This process is slow
+    // and should start immediately — same family as DPOA/capacity-declaration delays.
+    var fiduciaryRelevant = (state.goal === 'active' && state.skilled === 'no' &&
+      state.cog !== 'intact' && state.fund === 'funds');
+    if (fiduciaryRelevant) {
+      html += '<div class="sw-action-item">' +
+        '<div class="sw-action-dot">SW</div>' +
+        '<div class="sw-action-text"><strong>Fiduciary / representative payee:</strong> This patient has cognitive impairment and private funds are part of the payment plan. ' +
+        'If they cannot prudently manage their own finances and there is no DPOA or existing legal financial arrangement, ' +
+        'the process of appointing a VA fiduciary or SSA representative payee should be started as soon as possible — ' +
+        'this takes significant time, and a facility cannot be paid without it. Discuss with SW early.' +
+        '</div></div>';
+    }
     html += '</div>';
   }
 
