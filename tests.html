@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: #f5f6fa; color: #1a1d2e; padding: 24px 20px; }
+  body { font-family: 'DM Sans', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; background: #f5f6fa; color: #1a1d2e; padding: 24px 20px; }
   .header { margin-bottom: 28px; }
-  h1 { font-family: 'DM Mono', monospace; font-size: 13px; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+  h1 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 13px; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
   .subtitle { font-size: 13px; color: #9ca3b8; font-weight: 300; }
   .summary { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
-  .stat { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 18px; font-family: 'DM Mono', monospace; }
+  .stat { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 18px; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; }
   .stat-num { font-size: 26px; font-weight: 500; }
   .stat-label { font-size: 10px; color: #9ca3b8; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
   .stat.pass .stat-num { color: #16a34a; }
   .stat.fail .stat-num { color: #dc2626; }
   .stat.warn .stat-num { color: #ca8a04; }
-  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: #e4e6f0; }
   .test-row { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: start; }
   .test-row.fail { border-color: #fca5a5; background: #fff5f5; }
@@ -29,26 +29,26 @@
   .test-ic.fail { background: #fee2e2; color: #dc2626; }
   .test-ic.skip { background: #f3f4f8; color: #b0b8d0; }
   .test-name { font-size: 13.5px; font-weight: 500; color: #1a1d2e; margin-bottom: 3px; }
-  .test-detail { font-size: 11.5px; color: #6b7494; line-height: 1.55; font-family: 'DM Mono', monospace; }
+  .test-detail { font-size: 11.5px; color: #6b7494; line-height: 1.55; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; }
   .test-detail .got { color: #dc2626; }
   .test-detail .expected-val { color: #16a34a; }
-  .test-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; white-space: nowrap; align-self: start; }
+  .test-badge { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; white-space: nowrap; align-self: start; }
   .test-badge.pass { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
   .test-badge.fail { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
   .test-badge.skip { background: #f3f4f8; color: #b0b8d0; border: 1px solid #e4e6f0; }
   .issues-box { background: #fff; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
-  .issues-box h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #dc2626; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  .issues-box h3 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #dc2626; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
   .issues-box li { font-size: 12.5px; color: #4a5070; line-height: 1.55; margin-bottom: 6px; padding-left: 16px; position: relative; list-style: none; }
   .issues-box li::before { content: '✕'; position: absolute; left: 0; color: #dc2626; font-size: 10px; }
   .all-pass { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #15803d; margin-bottom: 20px; font-weight: 500; }
-  .refresh-btn { background: #2563eb; border: none; border-radius: 8px; padding: 10px 18px; color: #fff; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 24px; }
+  .refresh-btn { background: #2563eb; border: none; border-radius: 8px; padding: 10px 18px; color: #fff; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 11px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 24px; }
   .refresh-btn:hover { background: #1d4fd8; }
-  .log-note { font-family: 'DM Mono', monospace; font-size: 10px; color: #c8cdd8; margin-top: 28px; line-height: 1.7; }
+  .log-note { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #c8cdd8; margin-top: 28px; line-height: 1.7; }
   .log-note a { color: #93c5fd; }
   .pending-box { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 13px 16px; margin-bottom: 20px; }
-  .pending-box h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: #92400e; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 9px; }
+  .pending-box h3 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #92400e; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 9px; }
   .pending-box li { font-size: 12px; color: #78350f; line-height: 1.6; margin-bottom: 5px; padding-left: 16px; position: relative; list-style: none; font-weight: 300; }
-  .pending-box li::before { content: '?'; position: absolute; left: 0; color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; }
+  .pending-box li::before { content: '?'; position: absolute; left: 0; color: #ca8a04; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -72,8 +72,9 @@
   <br>
   TO ADD A SCENARIO: Edit the SCENARIOS array at the top of the &lt;script&gt; in this file.<br>
   Each scenario has: name, state (patient answers), type (top/contains/not_top), expected (destination key or array of keys).<br>
-  Destination keys: home_hospice · cnh_hospice · hugs · home_hh · cnh_skilled · clc_short · aru · ltac ·<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcfe_open · rcfe_memory · cnh_custodial · clc_long · clc_2n · calvet · home_indep · dom · gpd
+  Destination keys: home_hospice · cnh_hospice · hugs · home_hh · cnh_skilled · clc_short · aru ·<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcfe_open · rcfe_memory · cnh_custodial · clc_long · clc_2n · home_indep · dom · gpd<br>
+  SW action item keys (flag_fires): calvet · vash · fiduciary
 </p>
 
 <script>
@@ -85,7 +86,12 @@
 //   type     : 'top'      — checks that expected key is the #1 ranked result
 //              'contains' — checks that ALL keys in expected[] appear in fit results
 //              'not_top'  — checks that expected key is NOT ranked #1
-//   expected : destination key (string) for top/not_top, array of keys for contains
+//              'not_contains' — checks that NONE of the keys in expected[] appear in fit results
+//              'display_top'  — checks that expected key is the FIRST card shown on screen (#1)
+//              'do_first'     — checks the plan-at-a-glance "Do first" list mentions every phrase in expected[]
+//              'flag_fires'   — checks the SW action items box: expected 'fiduciary' (must show)
+//                               or 'no_fiduciary' (must not show)
+//   expected : destination key (string) for top/not_top/display_top, array of keys for contains/not_contains
 //   note     : optional annotation shown in the dashboard
 // ============================================================
 var SCENARIOS = [
@@ -164,8 +170,8 @@ var SCENARIOS = [
   {
     name: '13 · DOM absent when no SUD',
     state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'no' },
-    type: 'not_top', expected: 'dom',
-    note: 'DOM must not appear (even as top) when SUD answer is no.'
+    type: 'not_contains', expected: ['dom'],
+    note: 'DOM must not appear at all when SUD answer is no.'
   },
   {
     name: '14 · Homeless, independent, active SUD → both GPD and DOM appear',
@@ -211,7 +217,7 @@ var SCENARIOS = [
   },
 
   // ── FIDUCIARY / REPRESENTATIVE PAYEE FLAG TESTS ──────────────────────────
-  // type: 'flag_fires' checks the fiduciary trigger condition directly.
+  // type: 'flag_fires' checks swActionItems() — the same function that builds the SW box.
   // Trigger: goal=active + skilled=no + cog!==intact + fund=funds
   {
     name: '21 · Fiduciary flag fires: impaired + no-skilled + private funds',
@@ -260,6 +266,60 @@ var SCENARIOS = [
     state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'none', sc:'low' },
     type: 'flag_fires', expected: 'no_fiduciary',
     note: 'No private funds — fiduciary flag must NOT fire.'
+  },
+  {
+    name: '29 · Fiduciary flag fires with a SAFE home (no CalVet/VASH)',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'funds', sc:'low' },
+    type: 'flag_fires', expected: 'fiduciary',
+    note: 'Regression: fiduciary item used to render only when CalVet or VASH also applied, so it never showed with a safe home.'
+  },
+
+  // ── DISPLAY ORDER ────────────────────────────────────────────────────────
+  {
+    name: '30 · Top suggestion is card #1 even when Home also fits',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'medical', sc:'low' },
+    type: 'display_top', expected: 'cnh_custodial',
+    note: 'Regression: cards were numbered by fixed group order, so Home showed as #1 and the Top suggestion as #2.'
+  },
+  {
+    name: '31 · Top suggestion is card #1 on the skilled branch',
+    state: { goal:'active', skilled:'yes', func:'assist', cog:'intact', home:'unsafe', fund:'medical' },
+    type: 'display_top', expected: 'cnh_skilled',
+    note: 'Skilled pathways group must lead when it holds the top-ranked option.'
+  },
+
+  // ── ELOPEMENT RANKING (confirmed intended behavior, Oct 2026) ─────────────
+  {
+    name: '32 · Elopement + Medi-Cal → custodial CNH leads, 2N still shown',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
+    type: 'top', expected: 'cnh_custodial',
+    note: 'With a funding pathway, custodial CNH (secure unit) ranks above locked CLC 2N. Intended.'
+  },
+  {
+    name: '33 · Elopement + Medi-Cal → 2N and RCFE memory care both listed',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
+    type: 'contains', expected: ['clc_2n', 'rcfe_memory'],
+    note: 'Locked alternatives must remain on the list below custodial CNH.'
+  },
+
+  // ── PLAN AT A GLANCE: "Do first" list ────────────────────────────────────
+  {
+    name: '34 · Do first: skilled + homeless → PASRR and exit plan',
+    state: { goal:'active', skilled:'yes', func:'dependent', cog:'intact', home:'homeless', fund:'none' },
+    type: 'do_first', expected: ['PASRR', 'exit plan'],
+    note: 'Top option is CNH/SNF with a downstream concern — both must surface in Do first.'
+  },
+  {
+    name: '35 · Do first: fiduciary item surfaces',
+    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'funds', sc:'low' },
+    type: 'do_first', expected: ['fiduciary'],
+    note: 'SW action items must be carried into the glance box.'
+  },
+  {
+    name: '36 · Do first: elopement → capacity / DPOA reminder',
+    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
+    type: 'do_first', expected: ['capacity'],
+    note: 'Impaired cognition without a capacity step in the top SW note → add the capacity-declaration reminder.'
   }
 ];
 
@@ -290,8 +350,8 @@ function loadEngine(cb) {
       var tag = document.createElement('script');
       tag.textContent = m[1];
       document.head.appendChild(tag);
-      if (typeof DEST === 'undefined') {
-        cb(new Error('DEST failed to initialize — check index.html for syntax errors'));
+      if (typeof DEST === 'undefined' || typeof rankDestinations === 'undefined' || typeof swActionItems === 'undefined') {
+        cb(new Error('DEST / rankDestinations / swActionItems failed to initialize — check index.html for syntax errors'));
         return;
       }
       cb(null);
@@ -310,20 +370,9 @@ function evalScenario(scenario) {
     scenario.state
   );
 
-  // Collect all destination evaluations
-  var fits = [], blocked = [];
-  Object.keys(DEST).forEach(function(k) {
-    var r = DEST[k].eval(s);
-    if (!r) return;
-    if (r.status === 'blocked') blocked.push({ key:k, r:r });
-    else fits.push({ key:k, r:r });
-  });
-
-  fits.sort(function(a, b) {
-    var sa = a.r.status === 'fit' ? 0 : 1, sb = b.r.status === 'fit' ? 0 : 1;
-    if (sa !== sb) return sa - sb;
-    return b.r.score - a.r.score;
-  });
+  // Rank with the exact functions index.html uses to draw the results page
+  var fits = rankDestinations(s).fits;
+  var shownFirst = displayOrder(fits)[0] || null;
 
   var fitKeys = fits.map(function(f) { return f.key; });
   var topKey = fitKeys[0] || null;
@@ -341,10 +390,23 @@ function evalScenario(scenario) {
     detail = 'Must contain: [' + scenario.expected.join(', ') + '] | ' +
       (pass ? 'All present ✓' : 'Missing: [' + missing.join(', ') + ']') +
       ' | All fits: [' + fitKeys.join(', ') + ']';
+  } else if (scenario.type === 'not_contains') {
+    var present = scenario.expected.filter(function(k) { return fitKeys.indexOf(k) !== -1; });
+    pass = (present.length === 0);
+    detail = 'Must NOT contain: [' + scenario.expected.join(', ') + '] | ' +
+      (pass ? 'None present ✓' : 'Present: [' + present.join(', ') + ']') +
+      ' | All fits: [' + fitKeys.join(', ') + ']';
+  } else if (scenario.type === 'display_top') {
+    pass = (shownFirst === scenario.expected && topKey === scenario.expected);
+    detail = 'Expected card #1 + top: ' + scenario.expected + ' | Got top: ' + (topKey || '(none)') + ' | Card #1 shown: ' + (shownFirst || '(none)');
+  } else if (scenario.type === 'do_first') {
+    var doFirst = doFirstItems(s, fits).join(' | ');
+    var missingPhrases = scenario.expected.filter(function(t) { return doFirst.toLowerCase().indexOf(t.toLowerCase()) === -1; });
+    pass = (missingPhrases.length === 0);
+    detail = 'Must mention: [' + scenario.expected.join(', ') + '] | ' + (pass ? 'All present ✓' : 'Missing: [' + missingPhrases.join(', ') + ']') + ' | Do first: ' + doFirst;
   } else if (scenario.type === 'flag_fires') {
-    // Check the fiduciary trigger condition directly against the scenario state
-    var fires = (s.goal === 'active' && s.skilled === 'no' &&
-      s.cog !== 'intact' && s.fund === 'funds');
+    // Same function that decides what goes in the SW action items box
+    var fires = swActionItems(s).indexOf('fiduciary') !== -1;
     if (scenario.expected === 'fiduciary') {
       pass = fires;
       detail = 'Fiduciary flag should fire | fires: ' + fires;
