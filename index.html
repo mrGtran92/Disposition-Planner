@@ -1,450 +1,433 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-text="md">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Disposition Planner — VA GMed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  /* System fallbacks keep the layout intact if Google Fonts is blocked on the network */
+  /* Layout: questions on the left (top on a phone), a live list of every destination on the right. */
   :root {
-    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --font-mono: 'DM Mono', ui-monospace, 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
+    --bg: #f3f4f8; --surface: #ffffff; --surface-2: #eceef5; --line: #d8dce8; --line-strong: #868da8;
+    --fg: #171a2b; --fg-2: #434964; --fg-3: #5a6180;
+    --accent: #2f5bd8; --accent-soft: #e8eeff; --on-accent: #ffffff;
+    --ok: #1c7c44; --ok-soft: #e2f3e9;
+    --warn: #9a5b00; --warn-soft: #fcf0d9;
+    --neutral-soft: #e6e8f0;
+    --shadow: 0 1px 2px rgba(23, 26, 43, .05), 0 4px 14px rgba(23, 26, 43, .05);
+    --sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --r: 12px; --r-sm: 10px;
   }
-  /* Text scale: all font sizes are rem, so the A−/A+ toggle only changes html font-size */
-  html { font-size: 100%; -webkit-text-size-adjust: 100%; }
-  html[data-text="sm"] { font-size: 90%; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e111c; --surface: #171b2b; --surface-2: #1f2438; --line: #2c3249; --line-strong: #6b7499;
+      --fg: #eef0f8; --fg-2: #bcc1d8; --fg-3: #9da3bf;
+      --accent: #88a5ff; --accent-soft: #1e2950; --on-accent: #0e111c;
+      --ok: #62d394; --ok-soft: #12301f; --warn: #f1b45c; --warn-soft: #33250f;
+      --neutral-soft: #262b40;
+      --shadow: none; color-scheme: dark;
+    }
+  }
+  /* Text size (A− / A+): everything is sized in rem, so this scales the whole page. */
+  html[data-text="sm"] { font-size: 93.75%; }
+  html[data-text="md"] { font-size: 100%; }
   html[data-text="lg"] { font-size: 112.5%; }
   html[data-text="xl"] { font-size: 125%; }
-  body { font-family: var(--font-sans); background: #f0f2f8; min-height: 100vh; color: #1a1d2e; font-size: 1rem; }
-  button { font-family: inherit; }
-  .ic { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-  button:focus-visible { outline: 3px solid #93b4f5; outline-offset: 2px; }
 
-  /* HEADER */
-  .header { background: #ffffff; border-bottom: 1.5px solid #d8dce8; padding: 12px 20px 10px; position: sticky; top: 0; z-index: 10; }
-  .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2px; }
-  .header h1 { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .va-badge { font-family: var(--font-mono); font-size: 0.75rem; color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.04em; white-space: nowrap; }
-  .text-size { display: flex; border: 1.5px solid #d8dce8; border-radius: 8px; overflow: hidden; }
-  .text-size button { background: #fff; border: none; color: #2a2f48; font-weight: 600; min-width: 40px; min-height: 34px; cursor: pointer; line-height: 1; }
-  .text-size button + button { border-left: 1.5px solid #d8dce8; }
-  .text-size button:hover:not(:disabled) { background: #f0f4ff; color: #2563eb; }
-  .text-size button:disabled { color: #b8bfd0; cursor: default; }
-  .text-size .ts-sm { font-size: 0.8125rem; }
-  .text-size .ts-lg { font-size: 1.0625rem; }
-  .header p { font-size: 0.875rem; color: #5a6280; font-weight: 400; }
-  .progress-bar { height: 4px; background: #e4e6f0; margin-top: 10px; border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: #2563eb; border-radius: 2px; transition: width 0.4s ease; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 1rem; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, p, ul, dl, dd { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  button { font: inherit; color: inherit; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-  /* LAYOUT */
-  .main { padding: 24px 20px 40px; max-width: 640px; margin: 0 auto; }
-  .main.wide { max-width: 980px; }
-  @media (min-width: 820px) {
-    /* Open card on the left, guidance boxes beside it on the right */
-    .dest-row.open.has-notes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
-    .dest-row.open.has-notes .dest-notes { margin-top: 0; }
+  .top { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
+  .top-in, .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .top-in { padding-block: 10px; display: flex; align-items: center; gap: 8px; }
+  .top h1 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; margin-right: auto; }
+  .top h1 small { font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--fg-3); margin-left: 6px; }
+  @media (max-width: 480px) { .top h1 small { display: none; } }
+  .tbtn { border: 1px solid var(--line-strong); background: var(--surface); border-radius: var(--r-sm); min-height: 44px; min-width: 44px; padding: 6px 12px; font-weight: 500; cursor: pointer; }
+  .tbtn:disabled { opacity: .45; cursor: default; }
+  .tsize { display: inline-flex; }
+  .tsize .tbtn:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); font-size: .875rem; }
+  .tsize .tbtn:last-child { border-radius: 0 var(--r-sm) var(--r-sm) 0; border-left: 0; font-size: 1.0625rem; }
+
+  .wrap { padding-block: 16px 96px; display: grid; gap: 20px; }
+  @media (min-width: 920px) {
+    .wrap { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); align-items: start; padding-block: 24px 40px; }
+    .jump { display: none !important; }
   }
-  .screen { display: none; animation: fadeUp 0.22s ease; }
-  .screen.active { display: block; }
-  .question:focus, .home-title:focus, .result-headline:focus { outline: none; }
-  /* Respect the device's "reduce motion" setting */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* QUESTION SCREENS */
-  .step-label { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-  .question { font-size: 1.375rem; font-weight: 600; color: #1a1d2e; line-height: 1.35; margin-bottom: 8px; }
-  .question-note { font-size: 1rem; color: #3d4460; line-height: 1.6; margin-bottom: 22px; font-weight: 400; }
-  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .opt-btn { background: #ffffff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 15px 16px; color: #2a2f48; font-family: var(--font-sans); font-size: 1rem; font-weight: 500; text-align: left; cursor: pointer; transition: all 0.14s ease; display: flex; align-items: center; gap: 14px; }
-  .opt-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1a1d2e; }
-  .opt-btn:active { transform: scale(0.99); }
-  .opt-btn.selected { border-color: #2563eb; border-width: 2px; padding: 14.5px 15.5px; background: #f0f4ff; }
-  .opt-btn.selected .opt-icon { background: #2563eb; color: #fff; }
-  .opt-icon .ic { width: 1.25em; height: 1.25em; }
-  .opt-icon { width: 2.375rem; height: 2.375rem; border-radius: 8px; background: #eef2ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.875rem; font-family: var(--font-mono); color: #2563eb; font-weight: 500; }
-  .opt-label { flex: 1; line-height: 1.4; }
-  .opt-sub { font-size: 0.875rem; color: #5a6280; margin-top: 3px; font-weight: 400; }
-  /* Back / Home: outlined buttons so they read as controls, not footnotes */
-  .step-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
-  .back-btn, .home-btn { background: #fff; border: 1.5px solid #b8bfd0; border-radius: 10px; color: #2a2f48; font-family: var(--font-sans); font-size: 1rem; font-weight: 600; cursor: pointer; min-height: 46px; padding: 0 18px; transition: all 0.14s; }
-  .back-btn:hover, .home-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1d4ed8; }
-  .home-btn { color: #2563eb; border-color: #93b4f5; }
+  /* ── Questions ── */
+  .ask { display: grid; gap: 14px; min-width: 0; }
+  .lede { font-size: .9375rem; color: var(--fg-2); }
+  .q { display: grid; gap: 2px; }
+  .q-label { font-weight: 600; font-size: .9375rem; }
+  .q-hint { font-size: .8125rem; color: var(--fg-3); }
+  .opts { display: flex; gap: 6px; flex-wrap: wrap; }
+  .opts button { flex: 1 1 6.6em; min-width: min-content; max-width: 100%; min-height: 46px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--surface); font-weight: 500; font-size: .9375rem; line-height: 1.2; cursor: pointer; }
+  .opts button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+  .skipped { font-size: .8125rem; color: var(--fg-3); }
+  .opt-tag { font-weight: 400; font-size: .8125rem; color: var(--fg-3); margin-left: 4px; }
+  .q-top:has(.opt-tag) { min-height: 44px; }
+  .opts.bars button { flex: 1 1 40%; }
+  .after { display: grid; gap: 2px; margin-top: 6px; }
+  .after h2 { font-size: 1.0625rem; font-weight: 700; }
+  .after-note { font-size: .875rem; color: var(--fg-2); }
+  .q-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .why { border: 0; background: none; padding: 4px 0 4px 12px; min-height: 44px; font-size: .8125rem; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; font-size: .875rem; background: var(--surface-2); border-radius: var(--r-sm); padding: 10px 12px; }
+  .defs dt { font-weight: 600; } .defs dd { color: var(--fg-2); }
 
-  /* ANSWER SUMMARY STRIP */
-  .answer-summary { margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .answer-summary-label { width: 100%; font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
-  .answer-summary-label .hint { text-transform: none; letter-spacing: 0; font-family: var(--font-sans); color: #6b7494; }
-  .answer-chip { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #d8dce8; border-radius: 20px; padding: 5px 12px 5px 10px; min-height: 34px; max-width: 100%; cursor: pointer; text-align: left; transition: all 0.14s ease; }
-  .answer-chip:hover { border-color: #2563eb; background: #f0f4ff; }
-  .answer-chip-step { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; white-space: nowrap; }
-  .answer-chip-step::after { content: '·'; margin-left: 6px; color: #b8bfd0; }
-  .answer-chip-val { font-size: 0.875rem; color: #2a2f48; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .answer-chip-edit { font-size: 0.75rem; color: #2563eb; margin-left: 2px; }
+  /* ── Board ── */
+  .board { display: grid; gap: 14px; min-width: 0; scroll-margin-top: 96px; }
+  .sum { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  .sum b { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.01em; }
+  .sum span { color: var(--fg-2); font-size: .9375rem; }
+  .today { background: var(--accent-soft); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 6px; }
+  .today h2 { font-family: var(--mono); font-size: .75rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .today li { font-size: .9375rem; padding-left: 18px; position: relative; }
+  .today li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
 
-  /* HOME SCREEN */
-  .home-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-  .home-title { font-size: 1.875rem; font-weight: 600; color: #1a1d2e; line-height: 1.2; margin-bottom: 10px; }
-  .home-title span { color: #2563eb; }
-  .home-sub { font-size: 1rem; color: #3d4460; line-height: 1.65; margin-bottom: 18px; font-weight: 400; }
-  .site-note { display: flex; gap: 10px; background: #fffbeb; border: 1px solid #f5c842; border-radius: 8px; padding: 12px 14px; font-size: 0.9375rem; color: #7a4a00; line-height: 1.55; margin-bottom: 18px; font-weight: 400; }
-  .start-btn { width: 100%; background: #2563eb; border: none; border-radius: 10px; padding: 16px; color: #fff; font-family: var(--font-mono); font-size: 1rem; letter-spacing: 0.05em; cursor: pointer; transition: all 0.14s; text-transform: uppercase; }
-  .start-btn:hover { background: #1d4fd8; }
-  .footnote { font-size: 0.8125rem; color: #6b7494; text-align: center; font-family: var(--font-mono); padding-top: 18px; line-height: 1.7; }
-  .footnote .credit { color: #2563eb; }
+  .list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+  .grp { font-family: var(--mono); font-size: .75rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); padding: 10px 14px 6px; background: var(--surface-2); }
+  .d + .d, .grp + .d, .d + .grp { border-top: 1px solid var(--line); }
+  .d-head { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: start; text-align: left; background: none; border: 0; padding: 12px 14px; min-height: 52px; cursor: pointer; }
+  .ic { width: 26px; height: 26px; border-radius: 99px; display: grid; place-items: center; font-weight: 700; font-size: .875rem; background: var(--neutral-soft); color: var(--fg-3); }
+  .d[data-st="yes"] .ic { background: var(--ok-soft); color: var(--ok); }
+  .d[data-st="if"] .ic { background: var(--warn-soft); color: var(--warn); }
+  .d[data-st="out"] .ic { background: transparent; color: var(--fg-3); border: 1px solid var(--line-strong); }
+  .d-name { font-weight: 600; }
+  .d-name small { font-weight: 400; font-size: .875rem; color: var(--fg-2); }
+  .d-line { display: block; font-size: .875rem; color: var(--fg-2); }
+  .d[data-st="if"] .d-line, .d-line.chk { color: var(--warn); }
+  .d[data-st="out"] .d-name { color: var(--fg-2); font-weight: 500; }
+  .first { display: block; font-family: var(--mono); font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
+  .pill { font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; background: var(--neutral-soft); color: var(--fg-2); }
+  .d[data-st="yes"] .pill { background: var(--ok-soft); color: var(--ok); }
+  .d[data-st="if"] .pill { background: var(--warn-soft); color: var(--warn); }
+  .exit { display: inline-block; margin-top: 4px; font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--warn-soft); color: var(--warn); }
+  .d-body { padding: 0 14px 14px 52px; font-size: .9375rem; }
+  .d-body dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-3); margin-top: 8px; }
+  .d-body dt:first-child { margin-top: 0; }
+  .d-body dd { color: var(--fg-2); }
+  .out-toggle { width: 100%; text-align: left; background: var(--surface-2); border: 0; border-top: 1px solid var(--line); padding: 12px 14px; min-height: 48px; font-weight: 600; color: var(--fg-2); cursor: pointer; display: flex; justify-content: space-between; }
+  .foot { font-size: .8125rem; color: var(--fg-3); display: grid; gap: 6px; }
 
-  /* RESULTS — intro */
-  .result-intro { margin-bottom: 18px; }
-  .result-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-  .result-headline { font-size: 1.5rem; font-weight: 600; color: #1a1d2e; line-height: 1.3; margin-bottom: 6px; }
-  .result-headline .full { font-weight: 400; color: #5a6280; }
-  .result-subhead { font-size: 1rem; color: #3d4460; line-height: 1.6; font-weight: 400; }
+  .jump { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: .9375rem; }
+  .jump button { border: 0; background: var(--accent); color: var(--on-accent); border-radius: var(--r-sm); min-height: 44px; padding: 8px 16px; font-weight: 600; cursor: pointer; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
-  .results-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin: 4px 0 -8px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.875rem; color: #5a6280; }
-  .status-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; line-height: 1.4; padding: 2px 9px; border-radius: 20px; border: 1px solid; white-space: nowrap; }
-  .status-tag.fit { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
-  .status-tag.caution { color: #92400e; background: #fffbeb; border-color: #fcd34d; }
-  .status-tag.exit { color: #9a3412; background: #fff7ed; border-color: #fdba74; }
-  .dest-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
-  .group-banner { margin: 0 0 11px; }
-  .expand-all-btn { background: #fff; border: 1.5px solid #b8bfd0; border-radius: 8px; color: #2a2f48; font-size: 0.875rem; font-weight: 600; min-height: 38px; padding: 0 14px; cursor: pointer; transition: all 0.14s; }
-  .expand-all-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1d4ed8; }
-
-  /* GLOSSARY — tappable acronyms and their definition popover */
+  /* ── Glossary: tap an underlined term ── */
   .term { background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: help; border-bottom: 1.5px dotted currentColor; line-height: inherit; }
   .term:hover, .term[aria-expanded="true"] { border-bottom-style: solid; }
-  #term-pop { position: absolute; z-index: 20; max-width: min(340px, calc(100vw - 16px)); background: #fff; border: 1.5px solid #b8bfd0; border-radius: 10px; padding: 10px 13px; box-shadow: 0 6px 20px rgba(26,29,46,0.14); font-size: 0.9375rem; line-height: 1.5; color: #2a2f48; }
+  #term-pop { position: absolute; z-index: 30; max-width: min(340px, calc(100vw - 16px)); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 10px; padding: 10px 13px; box-shadow: 0 6px 20px rgba(23, 26, 43, .14); font-size: .9375rem; line-height: 1.5; color: var(--fg-2); }
   #term-pop[hidden] { display: none; }
-  .term-pop-title { font-weight: 600; color: #1a1d2e; }
-  .term-pop-title span { font-weight: 400; color: #5a6280; }
-  .term-pop-def { margin-top: 3px; color: #3d4460; }
-
-  /* RESULTS — compact answers bar */
-  .answer-compact { width: 100%; display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid #d8dce8; border-radius: 10px; padding: 9px 14px; margin-bottom: 10px; cursor: pointer; text-align: left; color: #2a2f48; transition: border-color 0.14s; }
-  .answer-compact:hover { border-color: #2563eb; }
-  .answer-compact-text { flex: 1; min-width: 0; font-size: 0.875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .answer-compact-edit { font-size: 0.875rem; font-weight: 600; color: #2563eb; white-space: nowrap; }
-  .answer-compact .chev { display: inline-block; transition: transform 0.18s; }
-  .answer-compact[aria-expanded="true"] .chev { transform: rotate(180deg); }
-  #result-answers { margin-bottom: 18px; }
-  #result-answers[hidden] { display: none; }
-
-  /* RESULTS — plan at a glance */
-  .glance { background: #fff; border: 2px solid #2563eb; border-radius: 12px; padding: 12px 16px 8px; margin: 4px 0 18px; }
-  .glance-title { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #1d4ed8; margin-bottom: 4px; }
-  .glance-row { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid #eef0f6; font-size: 0.9375rem; line-height: 1.5; }
-  .glance-title + .glance-row { border-top: none; }
-  .glance-k { flex: 0 0 6.5rem; color: #5a6280; font-size: 0.875rem; padding-top: 1px; }
-  .glance-v { flex: 1; min-width: 0; color: #2a2f48; }
-  .glance-v .status-tag { margin: 2px 4px 0 0; }
-  .glance-opt { margin-right: 4px; }
-  .glance-opt strong { font-weight: 600; color: #1a1d2e; }
-  .glance-v.muted { color: #4a5070; }
-  .glance-note { color: #6b7494; font-size: 0.875rem; }
-  .glance-do { list-style: none; }
-  .glance-do li { position: relative; padding-left: 16px; margin-bottom: 4px; }
-  .glance-do li:last-child { margin-bottom: 0; }
-  .glance-more { display: block; width: calc(100% + 32px); margin: 8px -16px -8px; padding: 11px 16px; background: #eff6ff; border: none; border-top: 1px solid #bfdbfe; border-radius: 0 0 10px 10px; color: #1d4ed8; font-size: 0.9375rem; font-weight: 600; text-align: left; cursor: pointer; transition: background 0.14s; }
-  .glance-more:hover { background: #dbeafe; }
-  #result-details { scroll-margin-top: 110px; }
-  #result-details:focus { outline: none; }
-  .glance-do li::before { content: '→'; position: absolute; left: 0; color: #2563eb; font-family: var(--font-mono); }
-  @media (max-width: 480px) {
-    .answer-compact-text { white-space: normal; }
-    .glance-row { flex-direction: column; gap: 2px; }
-    .glance-k { flex-basis: auto; }
-  }
-
-  /* RESULTS — group labels */
-  .group-label { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.08em; text-transform: uppercase; margin: 24px 0 10px; display: flex; align-items: center; gap: 8px; }
-  .group-label::after { content: ''; flex: 1; height: 1px; background: #d8dce8; }
-  .group-label .ic { width: 1.5em; height: 1.5em; color: #2563eb; }
-
-  /* RESULTS — destination cards */
-  .dest-row { margin-bottom: 11px; }
-  .dest-card { background: #fff; border: 1.5px solid #d8dce8; border-radius: 12px; overflow: hidden; transition: border-color 0.14s; }
-  .dest-card.top { border-color: #2563eb; border-width: 2px; box-shadow: 0 4px 16px rgba(37,99,235,0.10); }
-  .dest-card.caution { border-left: 4px solid #e6a817; }
-  .dest-head { width: 100%; background: none; border: none; text-align: left; color: inherit; padding: 14px 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; }
-  .dest-head:focus-visible { outline-offset: -3px; }
-  .dest-rank { width: 2rem; height: 2rem; border-radius: 8px; background: #eef2ff; color: #2563eb; font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .dest-card.top .dest-rank { background: #2563eb; color: #fff; }
-  .dest-main { display: block; flex: 1; min-width: 0; }
-  .dest-name { font-size: 1.0625rem; font-weight: 600; color: #1a1d2e; line-height: 1.35; }
-  .dest-name .full { font-weight: 400; color: #5a6280; font-size: 0.9375rem; }
-  .top-flag { display: inline-block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; padding: 1px 7px; border-radius: 10px; margin-bottom: 5px; }
-  .dest-tagline { display: block; font-size: 0.9375rem; color: #3d4460; line-height: 1.5; margin-top: 3px; font-weight: 400; }
-  .dest-toggle { color: #6b7494; font-size: 1.375rem; line-height: 1; flex-shrink: 0; transition: transform 0.18s; user-select: none; }
-  .dest-row.open .dest-toggle { transform: rotate(45deg); }
-  .dest-body { display: none; padding: 0 16px 16px calc(2rem + 28px); }
-  .dest-row.open .dest-body { display: block; animation: fadeUp 0.18s ease; }
-  .dest-notes { display: none; margin-top: 8px; flex-direction: column; gap: 10px; }
-  .dest-row.open .dest-notes { display: flex; animation: fadeUp 0.18s ease; }
-  .dest-notes .downstream-flag, .dest-notes .sw-flag { margin-top: 0; }
-
-  /* RESULTS — requirement rows */
-  .req-row { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9375rem; line-height: 1.5; padding: 7px 0; color: #2a2f48; border-top: 1px solid #eef0f6; }
-  .req-row:first-child { border-top: none; }
-  .req-ic { flex-shrink: 0; width: 1.25rem; height: 1.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; margin-top: 1px; }
-  .req-ic.met { background: #dcfce7; color: #15803d; }
-  .req-ic.warn { background: #fef3c7; color: #b45309; }
-  .req-ic.block { background: #fee2e2; color: #dc2626; }
-  .req-ic.info { background: #dbeafe; color: #1d4ed8; }
-
-  /* RESULTS — flag boxes */
-  .sw-flag { margin-top: 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 11px 14px; font-size: 0.9375rem; color: #1e3a8a; line-height: 1.55; display: flex; gap: 10px; font-weight: 400; }
-  [data-icon] { display: inline-flex; flex-shrink: 0; }
-  .site-note .ic, .bounceback-note .ic, .sw-flag .ic, .downstream-flag .ic { margin-top: 0.2em; }
-  .downstream-flag strong { font-weight: 600; }
-  .downstream-flag { margin-top: 10px; background: #fff7ed; border: 1px solid #fdba74; border-radius: 8px; padding: 11px 14px; font-size: 0.9375rem; color: #7c2d12; line-height: 1.55; display: flex; gap: 10px; font-weight: 400; }
-
-  /* RESULTS — blocked cards */
-  .blocked-card { background: #f7f8fb; border: 1px dashed #c8cdd8; border-radius: 10px; margin-bottom: 9px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; }
-  .blocked-rank { width: 2rem; height: 2rem; border-radius: 8px; background: #eef0f6; color: #6b7494; font-size: 0.9375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .blocked-name { font-size: 1rem; font-weight: 500; color: #4a5070; line-height: 1.35; }
-  .blocked-reason { font-size: 0.9375rem; color: #5a6280; line-height: 1.5; margin-top: 2px; font-weight: 400; }
-
-  /* SW ACTION ITEMS BOX — prominent, above universal next steps */
-  .sw-action-box { background: #eff6ff; border: 2px solid #2563eb; border-radius: 12px; padding: 16px 18px; margin: 24px 0 14px; }
-  .sw-action-box h3 { font-family: var(--font-mono); font-size: 0.75rem; color: #1d4ed8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
-  .sw-action-item { display: flex; gap: 10px; margin-bottom: 14px; }
-  .sw-action-item:last-child { margin-bottom: 0; }
-  .sw-action-dot { width: 1.75rem; height: 1.75rem; border-radius: 50%; background: #2563eb; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; color: #fff; font-weight: 700; font-family: var(--font-mono); letter-spacing: 0.02em; }
-  .sw-action-text { font-size: 0.9375rem; color: #1e3a6e; line-height: 1.65; font-weight: 400; }
-  .sw-action-text strong { color: #1a1d2e; font-weight: 600; }
-
-  /* UNIVERSAL NEXT STEPS BOX */
-  .next-steps { background: #fff; border: 1.5px solid #d8dce8; border-radius: 12px; padding: 16px 18px; margin: 0 0 14px; }
-  .next-steps h3 { font-family: var(--font-mono); font-size: 0.75rem; color: #5a6280; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 11px; }
-  .next-steps li { font-size: 0.9375rem; color: #2a2f48; line-height: 1.6; margin-bottom: 10px; padding-left: 20px; position: relative; list-style: none; font-weight: 400; }
-  .next-steps li::before { content: '→'; position: absolute; left: 0; color: #2563eb; font-family: var(--font-mono); }
-  .next-steps li:last-child { margin-bottom: 0; }
-
-  /* RESTART + DISCLAIMER */
-  .result-actions { display: flex; gap: 10px; margin-bottom: 12px; }
-  .restart-btn { flex: 1; background: #fff; border: 1.5px solid #93b4f5; border-radius: 10px; padding: 14px; color: #2563eb; font-family: var(--font-sans); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.14s; }
-  .restart-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1d4ed8; }
-  .result-back-btn { background: #fff; border: 1.5px solid #b8bfd0; border-radius: 10px; padding: 14px 18px; color: #2a2f48; font-family: var(--font-sans); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.14s; white-space: nowrap; }
-  .result-back-btn:hover { background: #f0f4ff; border-color: #2563eb; color: #1d4ed8; }
-  .disclaimer { font-size: 0.8125rem; color: #5a6280; line-height: 1.6; text-align: center; padding: 16px 8px 4px; font-weight: 400; }
-  .bounceback-note { display: flex; gap: 10px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 11px 14px; font-size: 0.9375rem; color: #1e3a6e; line-height: 1.55; margin-bottom: 12px; font-weight: 400; }
-  .bounceback-note a { color: #1d4ed8; font-weight: 500; text-decoration: none; }
-  .bounceback-note a:hover { text-decoration: underline; }
-
-  @media (max-width: 480px) {
-    .header { padding: 10px 16px 8px; }
-    .header p { display: none; }
-    .main { padding: 20px 16px 36px; }
-    .question { font-size: 1.25rem; }
-    .home-title { font-size: 1.625rem; }
-    .result-headline { font-size: 1.3125rem; }
-    .dest-body { padding-left: 16px; }
-  }
+  .term-pop-title { font-weight: 600; color: var(--fg); }
+  .term-pop-title span { font-weight: 400; color: var(--fg-3); }
+  .term-pop-def { margin-top: 3px; }
 </style>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8b13dbcebaf64ce992b73d0cac8e5dfc"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
-    <h1>Disposition Planner</h1>
-    <div class="header-right">
-      <div class="text-size" role="group" aria-label="Text size">
-        <button type="button" class="ts-sm" id="text-smaller" onclick="changeTextSize(-1)" aria-label="Smaller text">A−</button>
-        <button type="button" class="ts-lg" id="text-larger" onclick="changeTextSize(1)" aria-label="Larger text">A+</button>
-      </div>
-      <span class="va-badge">VA GLA</span>
-    </div>
+<header class="top"><div class="top-in">
+  <h1>Disposition Planner<small>VA GLA · GMed</small></h1>
+  <div class="tsize" role="group" aria-label="Text size">
+    <button type="button" class="tbtn" id="text-smaller" aria-label="Smaller text">A−</button>
+    <button type="button" class="tbtn" id="text-larger" aria-label="Larger text">A+</button>
   </div>
-  <p>Narrow down safe discharge destinations step by step</p>
-  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
-</div>
+  <button type="button" class="tbtn" id="clear">Clear</button>
+</div></header>
 
-<div class="main">
-
-  <!-- HOME -->
-  <div class="screen active" id="screen-home">
-    <p class="home-eyebrow">VA GLA · General Medicine</p>
-    <p class="home-title">Where can this patient <span>safely go?</span></p>
-    <p class="home-sub">A starting-point decision aid for discharge planning from acute inpatient General Medicine. Answer a few questions to narrow the field of disposition options and see what to confirm with your social worker or case manager.</p>
-    <div class="site-note"><span data-icon="alert"></span><span>This is a guide, not a determination. Final disposition always depends on bed availability, patient/family preference, insurance verification, and the judgment of SW, case management, and the accepting facility. Assumes the patient is medically stable to leave acute medicine.</span></div>
-    <button class="start-btn" onclick="start()">Begin →</button>
-    <p class="footnote">Based on the VA GLA Transitions of Care Primer<br><span class="credit">Created by George Tran, MD</span> · Last updated October 2026</p>
-  </div>
-
-  <!-- Q1: GOAL OF CARE -->
-  <div class="screen" id="screen-q1">
-    <p class="step-label" id="label-q1">Step 1 — Goal of care</p>
-    <p class="question">Is the goal of care comfort-focused / end-of-life?</p>
-    <p class="question-note">If the patient is transitioning to comfort care, the disposition pathway is different and runs through Palliative Care.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('goal','comfort')"><div class="opt-icon" data-icon="moon"></div><div class="opt-label">Yes — comfort-focused / hospice<div class="opt-sub">Prognosis-limited, transitioning away from curative care</div></div></button>
-      <button class="opt-btn" onclick="answer('goal','active')"><div class="opt-icon" data-icon="pulse"></div><div class="opt-label">No — continuing active / curative care<div class="opt-sub">Standard disposition planning</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q2: SKILLED NEED -->
-  <div class="screen" id="screen-q2">
-    <p class="step-label" id="label-q2">Step 2 — Care needs</p>
-    <p class="question">Does the patient have an ongoing <strong>skilled need</strong>?</p>
-    <p class="question-note">Skilled needs include: IV antibiotics, daily complex wound care, ongoing PT/OT, or first-time tube feeds making up &gt;50% of daily nutrition. This is the biggest fork in the pathway.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('skilled','yes')"><div class="opt-icon" data-icon="medical"></div><div class="opt-label">Yes — has a skilled need<div class="opt-sub">Opens skilled facility / home-health / rehab options</div></div></button>
-      <button class="opt-btn" onclick="answer('skilled','no')"><div class="opt-icon" data-icon="none"></div><div class="opt-label">No skilled need<div class="opt-sub">Custodial, housing, or independent-living pathway</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q3: FUNCTIONAL STATUS -->
-  <div class="screen" id="screen-q3">
-    <p class="step-label" id="label-q3">Step 3 — Functional status</p>
-    <p class="question">What is the patient's functional status?</p>
-    <p class="question-note">Independence in ADLs/iADLs gates many options. Several housing programs require full independence; facilities differ on transfer ability.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('func','independent')"><div class="opt-icon" data-icon="standing"></div><div class="opt-label">Independent in ADLs &amp; iADLs<div class="opt-sub">Including independent medication management</div></div></button>
-      <button class="opt-btn" onclick="answer('func','assist')"><div class="opt-icon" data-icon="cane"></div><div class="opt-label">Needs some assistance<div class="opt-sub">Can transfer bed↔chair but needs help with some ADLs</div></div></button>
-      <button class="opt-btn" onclick="answer('func','dependent')"><div class="opt-icon" data-icon="bed"></div><div class="opt-label">Largely dependent<div class="opt-sub">Significant ADL dependence / cannot transfer independently</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q4: COGNITION -->
-  <div class="screen" id="screen-q4">
-    <p class="step-label" id="label-q4">Step 4 — Cognition &amp; safety</p>
-    <p class="question">Cognitive status and elopement risk?</p>
-    <p class="question-note">Severe impairment with elopement risk requires a locked/secure setting and drives DPOA / capacity-declaration requirements.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('cog','intact')"><div class="opt-icon" data-icon="checkCircle"></div><div class="opt-label">Cognitively intact<div class="opt-sub">Has decision-making capacity</div></div></button>
-      <button class="opt-btn" onclick="answer('cog','impaired')"><div class="opt-icon" data-icon="wave"></div><div class="opt-label">Impaired, not an elopement risk<div class="opt-sub">Some cognitive impairment but not a wandering/exit risk</div></div></button>
-      <button class="opt-btn" onclick="answer('cog','elope')"><div class="opt-icon" data-icon="exit"></div><div class="opt-label">Severe impairment + elopement risk<div class="opt-sub">Wandering / exit-seeking — needs a locked setting</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q5: HOME / HOUSING -->
-  <div class="screen" id="screen-q5">
-    <p class="step-label" id="label-q5">Step 5 — Housing</p>
-    <p class="question">Does the patient have safe, stable housing to return to?</p>
-    <p class="question-note">This separates "home" pathways from housing-program and facility pathways.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('home','safe')"><div class="opt-icon" data-icon="home"></div><div class="opt-label">Yes — safe home, with caregiver support if needed</div></button>
-      <button class="opt-btn" onclick="answer('home','unsafe')"><div class="opt-icon" data-icon="homeAlert"></div><div class="opt-label">Has housing, but support / safety is a concern</div></button>
-      <button class="opt-btn" onclick="answer('home','homeless')"><div class="opt-icon" data-icon="tent"></div><div class="opt-label">Homeless or no stable housing</div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q6: SUBSTANCE USE DISORDER — shown only when relevant -->
-  <div class="screen" id="screen-q6">
-    <p class="step-label" id="label-q6">Step — Substance use</p>
-    <p class="question">Does the patient have an active substance use disorder and are they interested in receiving treatment?</p>
-    <p class="question-note">This opens the Domiciliary (DOM) residential treatment program as a disposition option. DOM requires both active SUD and willingness to engage in treatment.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('sud','yes')"><div class="opt-icon" data-icon="capsule"></div><div class="opt-label">Yes — active SUD, interested in treatment<div class="opt-sub">DOM becomes a viable option</div></div></button>
-      <button class="opt-btn" onclick="answer('sud','no')"><div class="opt-icon" data-icon="none"></div><div class="opt-label">No — no active SUD, or not interested in treatment<div class="opt-sub">DOM is not applicable</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q7: FUNDING — shown only on custodial facility branches -->
-  <div class="screen" id="screen-q7">
-    <p class="step-label" id="label-q7">Step — Funding &amp; eligibility</p>
-    <p class="question">What is the funding situation for a long-term or custodial facility stay?</p>
-    <p class="question-note">Custodial (non-skilled, long-term) facility placement is not covered by Medicare. This determines which custodial settings are realistic.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('fund','medical')"><div class="opt-icon" data-icon="card"></div><div class="opt-label">Has / can get Medi-Cal<div class="opt-sub">Opens custodial CNH placement</div></div></button>
-      <button class="opt-btn" onclick="answer('fund','funds')"><div class="opt-icon" data-icon="dollar"></div><div class="opt-label">Has private funds<div class="opt-sub">Can pay out of pocket (RCFE ~$2,000+/mo)</div></div></button>
-      <button class="opt-btn" onclick="answer('fund','none')"><div class="opt-icon" data-icon="question"></div><div class="opt-label">Neither / unclear<div class="opt-sub">Needs benefits work-up with SW</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- Q8: SERVICE CONNECTION — shown only when CLC long-stay is plausible -->
-  <div class="screen" id="screen-q8">
-    <p class="step-label" id="label-q8">Step — Service connection</p>
-    <p class="question">What is the patient's VA service connection (SC) rating?</p>
-    <p class="question-note">Long-stay custodial placement at the on-campus CLC requires a high service connection rating. Short-stay CLC has no SC requirement.</p>
-    <div class="options">
-      <button class="opt-btn" onclick="answer('sc','high')"><div class="opt-icon" data-icon="shieldCheck"></div><div class="opt-label">&gt;70% SC<div class="opt-sub">Qualifies for CLC long-stay custodial</div></div></button>
-      <button class="opt-btn" onclick="answer('sc','mid')"><div class="opt-icon" data-icon="shieldPlus"></div><div class="opt-label">&gt;60% SC + unemployability<div class="opt-sub">Qualifies if unemployability is applied for</div></div></button>
-      <button class="opt-btn" onclick="answer('sc','low')"><div class="opt-icon" data-icon="shieldMinus"></div><div class="opt-label">Below threshold / unknown<div class="opt-sub">CLC long-stay unlikely; short-stay still possible</div></div></button>
-    </div>
-    <div class="step-nav"><button class="back-btn" onclick="history.back()">← Back</button><button class="home-btn" onclick="restart()">⌂ Home</button></div>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="screen" id="screen-result">
-    <div id="result-content"></div>
-    <div class="bounceback-note"><span data-icon="clipboard"></span><span>For additional disposition reference information, visit <a href="https://tinyurl.com/vagladispo" target="_blank" rel="noopener">tinyurl.com/vagladispo →</a></span></div>
-    <div class="result-actions">
-      <button class="result-back-btn" onclick="history.back()">← Back</button>
-      <button class="restart-btn" onclick="restart()">↺ Start over</button>
-    </div>
-    <p class="disclaimer">This tool reflects general VA GLA disposition logic and cannot account for bed availability, facility-specific acceptance, insurance verification, capacity/legal timelines, or patient and family preference. Always confirm the plan with your social worker, case manager, and the accepting service.</p>
-  </div>
-
-</div>
-
+<main class="wrap">
+  <section class="ask" id="ask" aria-label="About the patient"></section>
+  <section class="board" id="board" aria-label="Disposition options" tabindex="-1"></section>
+</main>
+<div class="jump" id="jump"><span id="jump-text"></span><button type="button" id="jump-btn">Options ↓</button></div>
+<div class="sr" id="live" aria-live="polite"></div>
 <div id="term-pop" role="note" aria-live="polite" hidden></div>
 
+<!-- ============================================================
+     dp-logic: the rules. The only place outcomes are decided.
+     tests.html and checks/check.py load this block by its id.
+     ============================================================ -->
+<script id="dp-logic">
+// Questions, in the order shown. extra = shown only once the first forks are answered.
+// Each option: [answer code, label, what it means].
+var QUESTIONS = [
+  { k:'goal', label:'Goal of care', opts:[
+    ['active','Active care','Continuing active or curative care'],
+    ['comfort','Comfort-focused','Prognosis-limited, moving away from curative care. Runs through Palliative Care'] ] },
+  { k:'skilled', label:'Skilled need', hint:'IV antibiotics, daily complex wound care, ongoing PT/OT, or first-time tube feeds over 50% of nutrition', opts:[
+    ['yes','Yes','Opens skilled facility, home health and rehab options'],
+    ['no','No','Custodial, housing or independent-living options'] ] },
+  { k:'func', label:'Function', opts:[
+    ['independent','Independent','ADLs and iADLs, including managing own medications'],
+    ['assist','Some help','Transfers bed to chair alone; needs help with some ADLs'],
+    ['dependent','Dependent','Significant ADL dependence, or cannot transfer alone'] ] },
+  { k:'cog', label:'Cognition', opts:[
+    ['intact','Intact','Has decision-making capacity'],
+    ['impaired','Impaired','Some impairment, not a wandering or exit risk'],
+    ['elope','Elopement risk','Severe impairment with wandering or exit-seeking. Needs a locked setting'] ] },
+  { k:'home', label:'Housing', opts:[
+    ['safe','Safe home','With caregiver support if needed'],
+    ['unsafe','Home, support a concern','Has housing, but support or safety is a concern'],
+    ['homeless','No stable housing','Homeless or no stable housing'] ] },
+  { k:'surr', extra:true, label:'Surrogate decision-maker', opts:[
+    ['yes','DPOA or conservator','Already in place'],
+    ['no','None yet','No DPOA or conservator. If the patient cannot assign one, a capacity declaration is needed'] ] },
+  { k:'sud', extra:true, label:'Active substance use', opts:[
+    ['no','No','No active substance use disorder'],
+    ['yes','Yes, wants treatment','Opens the DOM'],
+    ['declines','Yes, not interested','Active use, not interested in treatment'] ] },
+  { k:'fund', extra:true, label:'Paying for long-term care', opts:[
+    ['medical','Medi-Cal','Has it or can get it. Covers custodial CNH; Medicare does not'],
+    ['funds','Private funds','Can pay out of pocket'],
+    ['none','Neither yet','Needs a benefits work-up with SW'] ] },
+  { k:'sc', extra:true, label:'Service connection', opts:[
+    ['high','70% or more','Qualifies for CLC long stay; VA may also pay for a CNH'],
+    ['mid','60% + unemployability','Veteran must apply for unemployability'],
+    ['low','Lower or unknown','CLC long stay unlikely; short stay still possible'] ] }
+];
+
+// A rule is [level, test, text]. level 'no' rules the destination out; 'if' makes it a Check.
+// Every test is false while its question is unanswered.
+var comfortOnly = ['no', function(s){ return s.goal === 'active'; }, 'Comfort-focused care only'];
+var activeOnly  = ['no', function(s){ return s.goal === 'comfort'; }, 'Goal is comfort: see hospice options'];
+var needsSkill  = ['no', function(s){ return s.skilled === 'no'; }, 'No skilled need'];
+var noSkill     = ['no', function(s){ return s.skilled === 'yes'; }, 'Skilled need: use a skilled option'];
+var noLongTermNeed = ['no', function(s){ return s.func === 'independent' && s.cog === 'intact' && s.home === 'safe'; }, 'Independent with a safe home: no long-term care need'];
+var notLocked   = ['if', function(s){ return s.cog === 'elope'; }, 'Not a locked unit: see CLC Dementia Care'];
+var sobriety    = ['if', function(s){ return s.sud === 'yes' || s.sud === 'declines'; }, 'Active substance use: some may need 90 days sobriety'];
+var lockedCnh   = ['if', function(s){ return s.cog === 'elope' && s.surr !== 'yes'; }, 'Locked CNH needs a DPOA or conservator'];
+var offRestraints = ['if', function(s){ return s.b_restraint === 'yes'; }, 'Must be off restraints and sitter before a CNH will accept'];
+var hardRso     = ['if', function(s){ return s.b_rso === 'yes'; }, 'Harder to place: registered sex offender'];
+var hardBari    = ['if', function(s){ return s.b_bari === 'yes'; }, 'Harder to place: over 300 lb'];
+var hardBehav   = ['if', function(s){ return s.b_behav === 'yes'; }, 'Harder to place: behavioral issues'];
+function shortStayExit(s) { return s.home === 'unsafe' || s.home === 'homeless'; }
+
+// Destinations, least restrictive first within each group. The first one that fits is marked "Consider first".
+var DEST = [
+  { id:'home_indep', grp:'Home and housing', name:'Home', consult:'', what:'Discharge home, no skilled or custodial need.',
+    rules:[ activeOnly,
+      ['no', function(s){ return s.skilled === 'yes'; }, 'Skilled need: see Home with home health'],
+      ['no', function(s){ return s.home === 'homeless'; }, 'No stable housing'],
+      ['if', function(s){ return s.home === 'unsafe'; }, 'Home support is a concern: SW to assess'],
+      ['if', function(s){ return s.cog === 'elope'; }, 'Elopement risk: needs round-the-clock supervision at home'],
+      ['if', function(s){ return s.func === 'dependent'; }, 'Confirm a caregiver can manage at home'] ],
+    sw:'Confirm follow-up, equipment and caregiver needs with SW/CM.' },
+  { id:'home_hh', grp:'Home and housing', name:'Home with home health', consult:'SW/CM', what:'Skilled need met at home by visiting services.',
+    rules:[ activeOnly, needsSkill,
+      ['no', function(s){ return s.home === 'homeless'; }, 'No stable housing'],
+      ['if', function(s){ return s.cog === 'elope'; }, 'Elopement risk: needs round-the-clock supervision at home'],
+      ['if', function(s){ return s.home === 'unsafe'; }, 'Home support is a concern: SW to assess'],
+      ['if', function(s){ return s.func === 'dependent'; }, 'Confirm a caregiver can manage at home'] ],
+    sw:'Confirm the agency can cover the specific skilled need and start promptly.' },
+  { id:'dom', grp:'Home and housing', name:'DOM', sub:'Domiciliary', consult:'DOM', what:'On-campus residential SUD treatment program.',
+    rules:[ activeOnly, noSkill,
+      ['no', function(s){ return s.func === 'assist' || s.func === 'dependent'; }, 'Must be independent in ADLs and medications'],
+      ['no', function(s){ return s.cog === 'impaired' || s.cog === 'elope'; }, 'Must be cognitively intact'],
+      ['no', function(s){ return s.sud === 'no' || s.sud === 'declines'; }, 'Needs active SUD and interest in treatment'] ],
+    notes:['Suicide Risk Assessment and TB clearance', 'Does not need to be homeless'],
+    sw:'SW coordinates. If the DOM is full, Tarzana may be offered.' },
+  { id:'gpd', grp:'Home and housing', name:'GPD', sub:'Grant and Per Diem', consult:'GPD/CERS', what:'Transitional housing for homeless veterans.',
+    rules:[ activeOnly, noSkill,
+      ['no', function(s){ return s.home === 'safe' || s.home === 'unsafe'; }, 'For homeless veterans'],
+      ['no', function(s){ return s.func === 'assist' || s.func === 'dependent'; }, 'Must be independent in ADLs and medications'],
+      ['no', function(s){ return s.cog === 'elope'; }, 'Elopement risk: needs a locked setting'] ],
+    notes:['On campus: New Directions (SUD treatment and low-demand), A Bridge Home (low-demand)'],
+    sw:'SW coordinates placement. The New Directions treatment program requires active SUD.' },
+
+  { id:'aru', grp:'Short stay: skilled or rehab', name:'ARU', sub:'Acute Rehab Unit, 2E', consult:'ARU', what:'Intensive inpatient rehab. PM&R becomes the primary team.', exit:shortStayExit,
+    rules:[ activeOnly, needsSkill,
+      ['no', function(s){ return s.func === 'dependent'; }, 'Cannot yet do over 3 hours of therapy a day'],
+      ['if', function(s){ return s.func === 'assist'; }, 'Confirm over 3 hours of PT/OT a day is tolerated'], notLocked ],
+    sw:'The PM&R resident must evaluate and accept before transfer.' },
+  { id:'clc_short', grp:'Short stay: skilled or rehab', name:'CLC', sub:'short stay', consult:'CLC', what:'On-campus skilled or rehab short stay.', exit:shortStayExit,
+    rules:[ activeOnly, needsSkill, notLocked ],
+    notes:['No SC requirement', 'Limited PT/OT beds'],
+    sw:'CLC staff must evaluate and accept. Flag early to SW.' },
+  { id:'cnh_skilled', grp:'Short stay: skilled or rehab', name:'CNH / SNF', sub:'short-term skilled', consult:'CNH', what:'Short-term skilled stay in a community nursing facility.', exit:shortStayExit,
+    rules:[ activeOnly, needsSkill,
+      lockedCnh, offRestraints, hardRso, hardBari, hardBehav ],
+    notes:['Medicare pays after 3 consecutive inpatient midnights (not obs) with Medicare days remaining', 'Will not accept restraints or a sitter'],
+    sw:'PASRR Level 1 before the consult. Returning to a prior CNH: contact the CNH coordinators first.' },
+
+  { id:'rcfe_open', grp:'Long-term', name:'RCFE', sub:'board and care / assisted living', consult:'Community resident care', what:'Non-medical assisted living. Help with ADLs, not nursing-level care.',
+    rules:[ activeOnly, noSkill, noLongTermNeed,
+      ['no', function(s){ return s.cog === 'elope'; }, 'Elopement risk: needs a secured setting'],
+      ['no', function(s){ return s.func === 'dependent'; }, 'Must transfer bed to wheelchair alone'],
+      ['if', function(s){ return s.fund === 'medical'; }, 'Medi-Cal does not pay room and board: ask SW about the Assisted Living Waiver'],
+      ['if', function(s){ return s.fund === 'none'; }, 'Needs private funds: benefits work-up with SW'],
+      sobriety ],
+    notes:['Requires patient funds', 'TB clearance'],
+    sw:'SW can pursue NSC pension, Aid & Attendance, or SSA/SSI/SSDI toward the cost.' },
+  { id:'rcfe_memory', grp:'Long-term', name:'RCFE, secured', sub:'memory care', consult:'Community resident care', what:'Secured assisted living for cognitive impairment.',
+    rules:[ activeOnly, noSkill,
+      ['no', function(s){ return s.cog === 'intact'; }, 'For cognitive impairment'],
+      ['no', function(s){ return s.func === 'dependent'; }, 'Must transfer bed to wheelchair alone'],
+      ['if', function(s){ return s.cog === 'impaired' || s.cog === 'elope'; }, 'Needs private funds; costs more than open RCFE'],
+      sobriety ],
+    notes:['Requires patient funds', 'TB clearance'],
+    sw:'Confirm independent transfers and pursue benefits with SW.' },
+  { id:'cnh_custodial', grp:'Long-term', name:'CNH', sub:'long-term custodial, open or locked', consult:'CNH', what:'Long-term nursing-home placement for custodial needs.',
+    rules:[ activeOnly, noSkill,
+      ['no', function(s){ return s.func === 'independent' && s.cog === 'intact'; }, 'No nursing-home level need'],
+      ['if', function(s){ return s.fund === 'none' && s.sc !== 'high'; }, 'Medicare does not pay: needs Medi-Cal or private funds'],
+      ['if', function(s){ return s.fund === 'none' && s.sc === 'high'; }, 'VA may pay at 70% SC or more: ask the CNH coordinators'],
+      lockedCnh, offRestraints, hardRso, hardBari, hardBehav ],
+    notes:['Private funds can pay until spent down to Medi-Cal eligibility', 'Will not accept restraints or a sitter', 'Also harder to place: young, active substance use, Medi-Cal only, homeless'],
+    sw:'PASRR Level 1 before the consult. A Medi-Cal number takes about 2 weeks and facilities need it.' },
+  { id:'clc_long', grp:'Long-term', name:'CLC', sub:'long stay', consult:'CLC', what:'Indefinite on-campus custodial living.',
+    rules:[ activeOnly, noSkill,
+      ['no', function(s){ return s.func === 'independent' && s.cog === 'intact'; }, 'No nursing-home level need'],
+      ['no', function(s){ return s.cog === 'elope'; }, 'Elopement risk: see CLC Dementia Care'],
+      ['no', function(s){ return s.sc === 'low'; }, 'Needs 70% SC or more, or 60% with unemployability'],
+      ['if', function(s){ return s.sc === 'mid'; }, 'Veteran must apply for unemployability'] ],
+    sw:'CLC staff must evaluate and accept. Confirm SC and bed availability.' },
+  { id:'clc_2n', grp:'Long-term', name:'CLC Dementia Care', sub:'2N, locked transitional unit', consult:'CLC Dementia Care', what:'Locked unit for severe cognitive impairment with elopement risk, with or without a skilled need.',
+    rules:[ activeOnly,
+      ['no', function(s){ return s.cog === 'intact' || s.cog === 'impaired'; }, 'For severe impairment with elopement risk'],
+      ['if', function(s){ return s.cog === 'elope' && s.surr !== 'yes'; }, 'Needs a DPOA, or a capacity declaration before transfer'],
+      ['if', function(s){ return s.b_restraint === 'yes'; }, 'Must be off restraints before transfer'] ],
+    notes:['No restraints'],
+    sw:'Start capacity paperwork early: it is a common and significant delay. Consider OPG if there is no surrogate.' },
+
+  { id:'home_hospice', grp:'Hospice', name:'Home with hospice', consult:'Palliative Care', what:'Comfort care at home with a community hospice.',
+    rules:[ comfortOnly,
+      ['no', function(s){ return s.home === 'homeless'; }, 'No home for hospice services'],
+      ['if', function(s){ return s.home === 'unsafe'; }, 'Home support uncertain: Palliative Care and SW to assess'] ],
+    sw:'Hospice agencies do not provide 24/7 caregiving. Confirm caregivers are in place.' },
+  { id:'cnh_hospice', grp:'Hospice', name:'CNH with hospice', consult:'Palliative Care', what:'Comfort care in a nursing facility.',
+    rules:[ comfortOnly, offRestraints ],
+    sw:'VA can cover hospice in a CNH; Palliative Care and SW confirm coverage and choose the facility. Confirm whether PASRR is needed.' },
+  { id:'hugs', grp:'Hospice', name:'HUGS', sub:'inpatient hospice, Sepulveda', consult:'Palliative Care', what:'VA inpatient hospice, for when home and facility hospice are not feasible.',
+    rules:[ comfortOnly,
+      ['if', function(s){ return s.goal === 'comfort'; }, 'Very few beds: confirm one is open. Prognosis under 6 months'] ],
+    notes:['Best for complex symptom burden, or when home and facility hospice are not feasible'],
+    sw:'Many who qualify cannot be transferred. Keep a home or facility hospice plan in parallel.' }
+];
+
+function evalDest(d, s) {
+  var no = [], iff = [];
+  d.rules.forEach(function(r) { if (r[1](s)) (r[0] === 'no' ? no : iff).push(r[2]); });
+  return { st: no.length ? 'out' : iff.length ? 'if' : 'yes', no: no, iff: iff, exit: !no.length && !!(d.exit && d.exit(s)) };
+}
+function evalAll(s) { var res = {}; DEST.forEach(function(d) { res[d.id] = evalDest(d, s); }); return res; }
+function withAnswer(s, k, v) { var c = {}; for (var x in s) c[x] = s[x]; c[k] = v; return c; }
+
+// Optional tick boxes: things that commonly block a placement. Each is its own answer, 'yes' when ticked.
+var BARRIERS = [ ['b_restraint','Restraints or sitter'], ['b_rso','Registered sex offender'], ['b_bari','Over 300 lb'], ['b_behav','Behavioral issues'] ];
+
+// After a short stay: when there is no safe home to return to, the long-term options are worked out
+// as if the skilled need were over. These are the destinations considered.
+var AFTER_IDS = ['home_indep', 'dom', 'gpd', 'rcfe_open', 'rcfe_memory', 'cnh_custodial', 'clc_long'];
+function afterState(s) {
+  return s.goal === 'active' && s.skilled === 'yes' && (s.home === 'unsafe' || s.home === 'homeless') ? withAnswer(s, 'skilled', 'no') : null;
+}
+
+// Slow steps worth starting now.
+function todayItems(s, res) {
+  var t = [], live = function(id) { return res[id].st !== 'out'; };
+  if (s.goal === 'comfort') return ['Consult Palliative Care'];
+  if (s.goal !== 'active') return t;
+  if (s.cog === 'impaired' || s.cog === 'elope') {
+    if (s.surr === 'no') t.push('No surrogate: start the capacity declaration and OPG referral now');
+    else if (s.surr !== 'yes') t.push('No DPOA? Start the capacity declaration and OPG referral now');
+  }
+  if ((s.skilled === 'yes' && live('cnh_skilled')) || (s.skilled === 'no' && s.func && s.cog && live('cnh_custodial'))) t.push('Tell SW at the 7:30 call: PASRR Level 1 comes before a CNH consult');
+  if (s.skilled === 'no' && s.fund === 'none' && s.func && s.cog && s.home && live('cnh_custodial')) t.push('Start the Medi-Cal application (number takes about 2 weeks)');
+  if (DEST.some(function(d) { return res[d.id].exit; })) t.push('Agree an exit plan with SW for after the short stay (facilities may decline without one)');
+  var housing = s.home === 'unsafe' || s.home === 'homeless';
+  if (s.skilled === 'no' && housing && (s.func === 'assist' || s.func === 'dependent') && s.b_rso !== 'yes' && s.b_behav !== 'yes') t.push('Discuss CalVet with SW (waitlist a year or more)');
+  if (s.skilled === 'no' && housing && s.func === 'independent') t.push('SW can start a VASH referral (weeks to months)');
+  if (s.skilled === 'no' && (s.cog === 'impaired' || s.cog === 'elope') && s.fund === 'funds') t.push('Start the fiduciary / payee process');
+  return t;
+}
+// Steps for now plus, when an exit plan is needed, the steps for the long-term plan.
+function allToday(s) {
+  var t = todayItems(s, evalAll(s)), s2 = afterState(s);
+  if (s2) todayItems(s2, evalAll(s2)).forEach(function(x) { if (t.indexOf(x) === -1) t.push(x); });
+  return t;
+}
+
+// What the board shows for a set of answers. A ruled-out option counts the same whatever the reason.
+function signature(s) {
+  function part(list, sv) { return list.map(function(d) { var r = evalDest(d, sv); return r.st === 'out' ? 'out' : [r.st, r.iff, r.exit]; }); }
+  var s2 = afterState(s);
+  return JSON.stringify([part(DEST, s), s2 ? part(afterDests(), s2) : null, allToday(s)]);
+}
+function afterDests() { return DEST.filter(function(d) { return AFTER_IDS.indexOf(d.id) !== -1; }); }
+// A question (or tick box) matters if some answer to it would change anything on the board.
+function matters(q, s) {
+  var first = signature(withAnswer(s, q.k, q.opts[0][0]));
+  return q.opts.some(function(o) { return signature(withAnswer(s, q.k, o[0])) !== first; });
+}
+function barrierMatters(key, s) { return signature(withAnswer(s, key, 'yes')) !== signature(withAnswer(s, key, undefined)); }
+
+// For a ruled-out destination: the single answers that, changed, would make it possible. Up to 3.
+// Only answers that can realistically change or be clarified: not goal of care, skilled need or cognition.
+var UNLOCK_KEYS = ['func', 'home', 'surr', 'sud', 'fund', 'sc'];
+function unlocks(d, sv, skip) {
+  var out = [];
+  QUESTIONS.forEach(function(q) {
+    if (!sv[q.k] || q.k === skip || UNLOCK_KEYS.indexOf(q.k) === -1) return;
+    q.opts.forEach(function(o) {
+      if (o[0] !== sv[q.k] && out.length < 3 && evalDest(d, withAnswer(sv, q.k, o[0])).st !== 'out') out.push(q.label + ': ' + o[1]);
+    });
+  });
+  return out;
+}
+
+// Everything the page shows for a set of answers.
+//   ask: questions to show · left: those still unanswered · skipped: questions that cannot change anything
+//   barriers: tick boxes worth showing
+//   rows: every destination with st = 'yes' (fits) | 'if' (check) | 'open' (depends on an unanswered question) | 'out'
+//   after: the same for the long-term options after a short stay, or null when no exit plan is needed
+//   first: id of the destination to consider first, or null · firstLabel: the words for that tag
+//   today: steps to start now · done: nothing left to ask
+function boardFor(s) {
+  var coreDone = !!s.goal && (s.goal === 'comfort' || !!s.skilled);
+  var rel = QUESTIONS.filter(function(q) { return matters(q, s); });
+  var ask = QUESTIONS.filter(function(q) { return (rel.indexOf(q) !== -1 && (!q.extra || coreDone)) || (q.extra && !coreDone && !!s[q.k]); });
+  var left = rel.filter(function(q) { return !s[q.k]; });
+  var skipped = QUESTIONS.filter(function(q) { return rel.indexOf(q) === -1; });
+  function rowsFor(list, sv, skip) {
+    return list.map(function(d) {
+      var r = evalDest(d, sv), base = JSON.stringify(r);
+      var open = r.st !== 'out' && left.some(function(q) { return q.opts.some(function(o) { return JSON.stringify(evalDest(d, withAnswer(sv, q.k, o[0]))) !== base; }); });
+      return { d: d, st: open ? 'open' : r.st, no: r.no, iff: r.iff, exit: r.exit, unlock: r.st === 'out' ? unlocks(d, sv, skip) : [] };
+    });
+  }
+  var rows = rowsFor(DEST, s), s2 = afterState(s);
+  var after = s2 ? rowsFor(afterDests(), s2, 'skilled') : null;
+
+  // Which to consider first: the first destination that fits, once nothing above it is still open.
+  // Elopement risk: CLC Dementia Care is the usual first step whenever it is not ruled out.
+  var live = rows.filter(function(x) { return x.st !== 'out'; }), first = null, firstLabel = 'Consider first';
+  for (var i = 0; coreDone && i < live.length && live[i].st !== 'open'; i++) if (live[i].st === 'yes') { first = live[i].d.id; break; }
+  var dc = rows.filter(function(x) { return x.d.id === 'clc_2n'; })[0];
+  if (s.goal === 'active' && s.cog === 'elope' && coreDone && (dc.st === 'yes' || dc.st === 'if')) { first = 'clc_2n'; firstLabel = 'Usual first step'; }
+
+  return { ask: ask, left: left, skipped: skipped, rows: rows, after: after, first: first, firstLabel: firstLabel,
+    barriers: coreDone ? BARRIERS.filter(function(b) { return s[b[0]] === 'yes' || barrierMatters(b[0], s); }) : [],
+    today: allToday(s), done: left.length === 0, coreDone: coreDone };
+}
+</script>
+
+<!-- ============================================================
+     dp-ui: draws the page. Shows what dp-logic returns.
+     ============================================================ -->
 <script>
-// ============================================================
-// STATE
-// ============================================================
-// history = screens visited in order, ending with the screen currently shown
-function blankState() {
-  return { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] };
-}
-var state = blankState();
-
-// ============================================================
-// ICONS — simple inline SVG (no emoji, no external files)
-// ============================================================
-function svgIcon(paths) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + paths + '</svg>'; }
-var ICONS = {
-  alert:     svgIcon('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>'),
-  users:     svgIcon('<circle cx="9" cy="7" r="4"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><path d="M16 3.1a4 4 0 0 1 0 7.8M22 21v-1a6 6 0 0 0-4-5.7"/>'),
-  home:      svgIcon('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/>'),
-  moon:      svgIcon('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
-  clipboard: svgIcon('<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9z"/><path d="M9 11h6M9 15h6M9 19h3"/>'),
-  // Answer options
-  pulse:     svgIcon('<path d="M3 12h4l3-7 4 14 3-7h4"/>'),
-  medical:   svgIcon('<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>'),
-  none:      svgIcon('<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>'),
-  standing:  svgIcon('<circle cx="12" cy="4.5" r="2.5"/><path d="M12 8v7M8 11h8M12 15l-3 6M12 15l3 6"/>'),
-  cane:      svgIcon('<circle cx="9" cy="4.5" r="2.5"/><path d="M9 8v7M6 11h6M9 15l-3 6M9 15l3 6"/><path d="M17 21V10a2 2 0 0 0-2-2"/>'),
-  bed:       svgIcon('<path d="M3 6v14M3 16h18v4M21 16v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="12" r="2"/>'),
-  checkCircle: svgIcon('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 9.5"/>'),
-  wave:      svgIcon('<circle cx="12" cy="12" r="9"/><path d="M7 12.5c1.6-2 3.4-2 5 0s3.4 2 5 0"/>'),
-  exit:      svgIcon('<path d="M14 3H6v18h8"/><path d="M10 12h11M18 9l3 3-3 3"/>'),
-  homeAlert: svgIcon('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M12 11v4M12 18h.01"/>'),
-  tent:      svgIcon('<path d="M12 3 2 21h20z"/><path d="M12 13l-3 8M12 13l3 8"/>'),
-  capsule:   svgIcon('<path d="M10.5 3.5a5 5 0 0 1 7 7l-7 7a5 5 0 0 1-7-7z"/><path d="M7 7l7 7"/>'),
-  card:      svgIcon('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h5M7 14h7M16 10h1"/>'),
-  dollar:    svgIcon('<path d="M12 2v20M16.5 6.5c-.9-1.3-2.6-2-4.5-2-2.5 0-4.3 1.3-4.3 3.3S9.5 10.7 12 11.3s4.5 1.4 4.5 3.7-1.9 3.6-4.5 3.6c-2.1 0-3.9-.8-4.8-2.3"/>'),
-  question:  svgIcon('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 1 1 3.6 2.4c-.7.3-1.1 1-1.1 1.8M12 17h.01"/>'),
-  shieldCheck: svgIcon('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'),
-  shieldPlus:  svgIcon('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 9v6M9 12h6"/>'),
-  shieldMinus: svgIcon('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12h6"/>'),
-  // Result group labels
-  building:  svgIcon('<path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10M2 21h20M8 7h4M8 11h4M8 15h4"/>'),
-  xCircle:   svgIcon('<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>')
-};
-// Fill static <... data-icon="name"> placeholders in the page markup
-function fillIcons() {
-  document.querySelectorAll('[data-icon]').forEach(function(el) { el.innerHTML = ICONS[el.getAttribute('data-icon')] || ''; });
-}
-
 // ============================================================
 // GLOSSARY — tap an underlined acronym to see its definition.
 // Local programs keep only what this tool already says about them.
@@ -457,7 +440,8 @@ var GLOSSARY = {
   'B&C':      ['Board and care', 'Small non-medical residential care home; a type of RCFE in California.'],
   'Board & Care': ['Board and care', 'Small non-medical residential care home; a type of RCFE in California.'],
   'ARU':      ['Acute Rehab Unit (2E)', 'Intensive inpatient rehab. PM&R becomes the primary team after transfer.'],
-  'CalVet':   ['California Department of Veterans Affairs', 'Runs the state Veterans Homes of California.'],
+  'CalVet':   ['California Department of Veterans Affairs', 'State-funded veterans home offering board and care, CNH-level and memory care. Age 55 or over (waived for disabled or homeless veterans needing long-term care); no SC requirement. Will not accept registered sex offenders or severe behavioral issues. A longer-term plan, not a discharge option for this admission.'],
+  'fiduciary': ['VA fiduciary', 'Appointed by VA to manage VA benefits for a veteran who cannot manage them prudently. A representative payee does the same for Social Security. Slow to set up, and a facility cannot be paid without one.'],
   'CLC':      ['Community Living Center', "VA's on-campus nursing home. Short stay (skilled/rehab, no SC requirement) or long stay (custodial)."],
   'CNH':      ['Community Nursing Home', 'A community (non-VA) nursing facility, used for short-term skilled or long-term custodial care.'],
   'SNF':      ['Skilled nursing facility', 'Nursing facility providing short-term skilled nursing or rehab.'],
@@ -481,12 +465,12 @@ var GLOSSARY = {
   'RSO':      ['Registered sex offender', ''],
   'SW/CM':    ['Social worker / case manager', ''],
   'unemployability': ['Individual unemployability (TDIU)', 'VA pays at the 100% rate when service-connected conditions prevent work.'],
-  'VASH':     ['HUD-VASH (HUD–VA Supportive Housing)', 'Housing voucher plus VA case management.']
+  'VASH':     ['HUD-VASH (HUD–VA Supportive Housing)', 'Subsidized independent housing plus VA case management. Requires full independence in ADLs. An outpatient application taking weeks to months: not a discharge destination for this admission.']
 };
 // Longest terms first so "SW/CM" wins over shorter overlaps
 var GLOSSARY_RE = new RegExp('(^|[^A-Za-z0-9])(' + Object.keys(GLOSSARY).sort(function(a, b) { return b.length - a.length; })
   .map(function(t) { return t.replace(/[.*+?^${}()|[\]\\/&]/g, '\\$&'); }).join('|') + ')(?![A-Za-z0-9])');
-var GLOSSARY_BLOCKS = '.glance-do li, .question-note, .site-note, .req-row, .sw-flag, .downstream-flag, .sw-action-text, .next-steps li, .blocked-reason, .result-subhead';
+var GLOSSARY_BLOCKS = '.q-hint, .defs dd, .d-body dd, .today li, .foot-note, .after-note';
 
 // Wrap the first mention of each term per block in a tappable button (never inside other buttons/links)
 function linkTerms(root) {
@@ -544,884 +528,143 @@ function toggleTerm(btn) {
 document.addEventListener('click', function(e) { if (openTermBtn && !e.target.closest('#term-pop')) closeTerm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && openTermBtn) { var b = openTermBtn; closeTerm(); b.focus(); } });
 
-// ============================================================
-// HELPER BUILDERS — produce requirement-row objects
-// ============================================================
-function met(t)  { return {ic:'met',   text:t}; }
-function warn(t) { return {ic:'warn',  text:t}; }
-function blkr(t) { return {ic:'block', text:t}; }
-function info(t) { return {ic:'info',  text:t}; }
-function res(status, reqs, sw, score, downstream) {
-  return { status:status, reqs:reqs, sw:sw||'', score:score||0, downstream:downstream||false };
-}
-function blk(reason) { return { status:'blocked', blockedReason:reason, score:-1 }; }
+var state = {}, openIds = {}, openWhy = {}, showOut = false, showAfterOut = false;
 
-// ============================================================
-// DOWNSTREAM DISPOSITION FLAG LOGIC
-// Triggers on short-stay destinations when patient has no clear
-// long-term housing or funding pathway after the short stay ends.
-// ============================================================
-function needsDownstreamFlag(s) {
-  // Only relevant for active-care, short-stay destinations
-  if (s.goal === 'comfort') return false;
-  // Safe home = patient has somewhere to return to after the short stay
-  if (s.home === 'safe') return false;
-  // Homeless with Medi-Cal: may be able to convert to long-term CNH,
-  // but this is unconfirmed — flag conservatively pending SW clarification
-  // TODO: confirm with SW/CM whether homelessness alone precludes
-  // long-term custodial CNH conversion even with Medi-Cal
-  return true;
-}
+function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
 
-// Shown once above a group of short-stay options; count = how many options it applies to
-function downstreamText(s, count) {
-  var note = '';
-  if (s.home === 'homeless') {
-    if (s.fund === 'medical') {
-      note = 'Patient is homeless with Medi-Cal — confirm with SW whether Medi-Cal alone is sufficient for long-term custodial CNH conversion after a skilled stay, or whether stable housing is also required (currently unconfirmed).';
-    } else {
-      note = 'Patient is homeless with no confirmed funding for long-term placement — SW work-up for Medi-Cal, benefits, and housing programs is needed in parallel.';
-    }
-  } else if (s.home === 'unsafe') {
-    note = 'Home support/safety is a concern — confirm with SW what the long-term plan is if the patient cannot safely return home after the short stay.';
-  }
-  var scope = count > 1 ? 'Applies to the ' + count + ' options below marked "Exit plan needed." These are short-term placements.'
-                        : 'Applies to the option below marked "Exit plan needed." It is a short-term placement.';
-  return '<strong>Downstream disposition concern.</strong> ' + scope +
-    ' Confirm with SW that the patient has a viable plan for after the stay ends (return home, long-term facility, or housing program). ' +
-    note + ' Receiving facilities may decline if no exit plan exists.';
-}
+function hasAnswers() { return Object.keys(state).some(function(k) { return state[k]; }); }
 
-// ============================================================
-// DESTINATION KNOWLEDGE BASE
-// Each destination: eval(state) → result object or null (not applicable)
-// ============================================================
-var DEST = {
-
-  // ----------------------------------------------------------
-  // COMFORT / HOSPICE
-  // ----------------------------------------------------------
-  home_hospice: {
-    name: 'Home with hospice', full: '', group: 'comfort',
-    tagline: 'Comfort care at home with a community hospice benefit — default when home is viable.',
-    eval: function(s) {
-      if (s.goal !== 'comfort') return null;
-      if (s.home === 'homeless') return blk('No stable home for home hospice — pursue facility hospice instead.');
-      var reqs = [
-        met('Comfort-focused goal of care'),
-        s.home === 'safe' ? met('Home available for hospice services') : warn('Home support uncertain — Palliative/SW to assess feasibility')
-      ];
-      return res(
-        s.home === 'safe' ? 'fit' : 'caution',
-        reqs,
-        'Palliative Care + SW arrange the home hospice benefit. Important: hospice agencies do not provide 24/7 caregiving — confirm that adequate caregiver support is available from family, the patient, or privately hired caregivers before pursuing this option.',
-        s.home === 'safe' ? 5 : 3
-      );
-    }
-  },
-
-  cnh_hospice: {
-    name: 'CNH / facility with hospice', full: '', group: 'comfort',
-    tagline: 'Comfort care in a nursing facility — first-line when home is not an option.',
-    eval: function(s) {
-      if (s.goal !== 'comfort') return null;
-      var homeViable = (s.home === 'safe');
-      var reqs = [
-        met('Comfort-focused goal of care'),
-        homeViable ? info('Alternative if home hospice becomes unworkable') : met('Home hospice not viable — facility hospice is the practical route')
-      ];
-      return res(
-        homeViable ? 'caution' : 'fit',
-        reqs,
-        'Palliative Care + SW coordinate facility selection and the hospice Medicare benefit — a separate payor source (Medi-Cal/private funds) is generally not required when hospice is the goal of care. Confirm with SW whether PASRR is required in this context.',
-        homeViable ? 3 : 5
-      );
-    }
-  },
-
-  hugs: {
-    name: 'HUGS', full: 'inpatient hospice, Sepulveda VA', group: 'comfort',
-    tagline: 'VA inpatient hospice — limited beds; for select cases where home and facility hospice are not feasible.',
-    eval: function(s) {
-      if (s.goal !== 'comfort') return null;
-      var reqs = [
-        met('Comfort-focused goal of care'),
-        warn('Very limited bed availability — confirm with Palliative Care whether a bed is currently open'),
-        warn('Prognosis of <6 months required'),
-        info('Best suited to patients with complex symptom burden or no viable home/facility hospice option')
-      ];
-      // Deliberately low score — always ranked below home hospice and facility hospice
-      return res('caution', reqs,
-        'Consult Palliative Care early to assess HUGS eligibility AND current bed availability. Many patients who qualify cannot be transferred. Always have a home or facility hospice plan in parallel.',
-        1
-      );
-    }
-  },
-
-  // ----------------------------------------------------------
-  // SKILLED-NEED PATHWAYS
-  // ----------------------------------------------------------
-  home_hh: {
-    name: 'Home with home health', full: '', group: 'skilled',
-    tagline: 'Skilled need met at home by visiting services.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-      if (s.cog === 'elope') return blk('Elopement risk makes unsupervised home unsafe.');
-      if (s.home === 'homeless') return blk('No stable housing to return to.');
-      var reqs = [ met('Has a skilled need that home health can deliver') ];
-      var status = 'fit', score = 0;
-      if (s.home === 'safe') { reqs.push(met('Safe home to return to')); score = 3; }
-      else { reqs.push(warn('Home support/safety is a concern — needs SW assessment')); status = 'caution'; score = 1; }
-      if (s.func === 'dependent') { reqs.push(warn('High ADL dependence — confirm caregiver can manage at home')); status = 'caution'; }
-      else reqs.push(met('Functional status manageable at home'));
-      return res(status, reqs, 'Confirm home-health agency can cover the specific skilled need and start promptly. SW/CM sets this up.', score);
-    }
-  },
-
-  cnh_skilled: {
-    name: 'CNH / SNF', full: 'short-term skilled', group: 'skilled',
-    tagline: 'Short-term skilled stay in a community nursing facility.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-      var reqs = [
-        met('Has a skilled need (Medicare may cover short-term skilled stay)'),
-        info('Medicare covers skilled stay only after 3 consecutive inpatient midnights (not obs) + remaining Medicare days')
-      ];
-      var status = 'fit', score = 2;
-      if (s.cog === 'elope') { reqs.push(warn('Elopement risk → needs a secure/locked CNH (requires DPOA or conservator)')); status = 'caution'; }
-      var ds = needsDownstreamFlag(s);
-      return res(status, reqs,
-        'SW confirms PASRR Level 1 eval is complete BEFORE the CNH consult is placed — referrals cannot go out until this is done. For return to a prior CNH, contact the CNH coordinator team first. CNH will not accept patients in restraints or requiring a safety attendant.',
-        score, ds
-      );
-    }
-  },
-
-  clc_short: {
-    name: 'CLC', full: 'short stay', group: 'skilled',
-    tagline: 'On-campus skilled/rehab short stay — no SC requirement.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-      var reqs = [
-        met('Skilled / rehab need — short-stay CLC has no service-connection requirement'),
-        info('Limited PT/OT beds; must be evaluated and accepted by CLC staff')
-      ];
-      var ds = needsDownstreamFlag(s);
-      return res('fit', reqs, 'CLC staff must evaluate and accept the patient for transfer. Flag early to SW.', 2, ds);
-    }
-  },
-
-  aru: {
-    name: 'ARU', full: 'Acute Rehab Unit, 2E', group: 'skilled',
-    tagline: 'Intensive inpatient rehab — PM&R becomes the primary team.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled !== 'yes') return null;
-      if (s.func === 'dependent') return blk('Must tolerate >3 hrs/day of therapy — too functionally dependent currently.');
-      var reqs = [
-        met('Rehab-appropriate skilled need'),
-        s.func === 'independent' ? met('Likely able to participate in >3 hrs/day of PT/OT') : warn('Confirm ability to tolerate >3 hrs/day of PT/OT — required for ARU'),
-        info('PM&R becomes the primary team after transfer; must be evaluated and accepted by PM&R')
-      ];
-      var ds = needsDownstreamFlag(s);
-      return res('fit', reqs, 'Patient must be evaluated and accepted by the PM&R resident prior to ARU transfer.', 2, ds);
-    }
-  },
-
-
-  // ----------------------------------------------------------
-  // CUSTODIAL / LONG-TERM FACILITY
-  // ----------------------------------------------------------
-  rcfe_open: {
-    name: 'RCFE — open', full: 'Board & Care / ALF', group: 'custodial',
-    tagline: 'Non-medical assisted living; help with ADLs, not nursing-level care.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.cog === 'elope') return null; // memory-care RCFE is a separate destination
-      if (s.func === 'dependent') return blk('Must independently transfer bed↔wheelchair — too dependent for RCFE.');
-      var reqs = [
-        met('No skilled need — custodial/assistance level fits RCFE'),
-        met('Can transfer independently (RCFE requirement)'),
-        info('Requires 90 days sobriety and TB clearance')
-      ];
-      var status = 'fit', score = 2;
-      if (s.fund === 'funds') { reqs.push(met('Has private funds (RCFE requires payment, ~$2,000+/mo shared room)')); score += 2; }
-      else if (s.fund === 'medical') { reqs.push(blkr('RCFE is NOT covered by Medi-Cal — requires private funds')); status = 'caution'; }
-      else if (s.fund === 'none') { reqs.push(warn('Funding unclear — RCFE requires private funds; explore Aid & Attendance / NSC pension / SSA with SW')); status = 'caution'; }
-      return res(status, reqs, 'SW can pursue NSC pension, Aid & Attendance, or SSA/SSI/SSDI to boost monthly income toward RCFE cost.', score);
-    }
-  },
-
-  rcfe_memory: {
-    name: 'RCFE — memory care', full: 'secured Board & Care / ALF', group: 'custodial',
-    tagline: 'Secured assisted living for cognitive impairment with elopement risk.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.cog !== 'elope' && s.cog !== 'impaired') return null;
-      if (s.func === 'dependent') return blk('Must independently transfer — too dependent for RCFE-level care.');
-      var reqs = [
-        met('Cognitive impairment with safety/elopement concern fits secured memory care'),
-        warn('Secured facilities cost more than open RCFE — requires private funds')
-      ];
-      if (s.cog === 'elope') reqs.push(info('Locked/secured setting addresses elopement risk'));
-      // Score deliberately lower than clc_2n (caution, score 4) so the on-campus locked
-      // unit ranks above RCFE memory care when elopement is present. Note: custodial CNH
-      // can still rank first when it is a 'fit' (Medi-Cal or private funds) — intended.
-      // RCFE memory care is an alternative for patients with private funds and
-      // independent transfers.
-      return res('caution', reqs, 'Secured RCFE requires private funds. Confirm independent transfer ability and pursue benefits with SW.', 1);
-    }
-  },
-
-  cnh_custodial: {
-    name: 'CNH — custodial', full: 'long-term, open or secure', group: 'custodial',
-    tagline: 'Long-term nursing-home placement for custodial needs.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      // If fully independent and cognitively intact — RCFE or housing is more appropriate
-      if (s.func === 'independent' && s.cog === 'intact') return null;
-      var reqs = [ met('Custodial nursing-home level of care') ];
-      var status = 'fit', score = 2;
-      if (s.fund === 'medical') { reqs.push(met('Has/can get Medi-Cal — covers long-term custodial CNH')); score += 2; }
-      else if (s.fund === 'none') { reqs.push(blkr('Medicare does NOT cover custodial CNH — needs Medi-Cal or private funds; SW work-up required')); status = 'caution'; }
-      else if (s.fund === 'funds') { reqs.push(info('Private funds can cover custodial CNH until spent down to Medi-Cal eligibility')); }
-      if (s.cog === 'elope') reqs.push(warn('Elopement risk → secure/locked CNH required; DPOA or conservator needed'));
-      return res(status, reqs,
-        'SW confirms PASRR Level 1 before consult. Medi-Cal number takes ~2 weeks and facilities will not accept referrals without it. Hard-to-place: young patients, registered sex offenders (RSO), active substance use, >300 lbs, behavioral issues, Medi-Cal-only, or homeless.',
-        score
-      );
-    }
-  },
-
-  clc_long: {
-    name: 'CLC', full: 'long stay, on-campus', group: 'custodial',
-    tagline: 'Indefinite on-campus custodial living — requires high service connection.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.cog === 'elope') return null; // CLC 2N is the locked route
-      if (!s.sc) return null;
-      if (s.sc === 'high') {
-        return res('fit',
-          [ met('>70% SC — qualifies for CLC long-stay custodial'), info('Must be evaluated and accepted by CLC staff') ],
-          'Confirm SC status and CLC bed availability with SW.',
-          5
-        );
-      }
-      if (s.sc === 'mid') {
-        return res('caution',
-          [ met('>60% SC + unemployability — qualifies if unemployability is applied for'), warn('Veteran must actively apply for unemployability rating') ],
-          'Veteran may need to apply for unemployability. Confirm with SW and confirm CLC bed availability.',
-          3
-        );
-      }
-      // sc === 'low'
-      return blk('CLC long-stay requires >70% SC (or >60% + unemployability). Short-stay CLC has no SC requirement.');
-    }
-  },
-
-  clc_2n: {
-    name: 'CLC Dementia Care', full: '2N — locked', group: 'custodial',
-    tagline: 'Locked transitional unit for severe cognitive impairment + elopement risk.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.cog !== 'elope') return null;
-      var reqs = [
-        met('Severe cognitive impairment + elopement risk fits the locked 2N unit'),
-        blkr('Patient cannot be on restraints'),
-        warn('Requires DPOA — if none and patient cannot assign one, primary team must submit capacity declaration paperwork BEFORE transfer')
-      ];
-      return res('caution', reqs,
-        'Start capacity-declaration paperwork early with SW if there is no DPOA — this is a common and significant delay. Consider OPG referral if no surrogate exists.',
-        4
-      );
-    }
-  },
-
-
-  // ----------------------------------------------------------
-  // HOME & HOUSING PROGRAMS
-  // ----------------------------------------------------------
-  home_indep: {
-    name: 'Home', full: '', group: 'home',
-    tagline: 'Discharge home — no skilled or custodial need.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.home !== 'safe') return null;
-      var reqs = [ met('No skilled need'), met('Safe, stable housing to return to') ];
-      if (s.func === 'dependent') {
-        reqs.push(warn('High ADL dependence — confirm adequate caregiver support at home'));
-        return res('caution', reqs, 'Confirm caregiver capacity and outpatient follow-up with SW/CM.', 2);
-      }
-      return res('fit', reqs, 'Confirm outpatient follow-up and any durable medical equipment or caregiver needs with SW/CM.', 4);
-    }
-  },
-
-  dom: {
-    name: 'DOM', full: 'Domiciliary', group: 'home',
-    tagline: 'On-campus residential SUD treatment program — requires active SUD + treatment interest.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.func !== 'independent') return null;
-      if (s.cog !== 'intact') return null;
-      // DOM requires active SUD + willingness to engage in treatment
-      if (s.sud !== 'yes') return null;
-      var reqs = [
-        met('Active SUD with interest in treatment (required for DOM)'),
-        met('Independent in ADLs including medication management (required)'),
-        met('Cognitively intact (required)'),
-        info('Residential Rehabilitation Treatment Program on campus'),
-        warn('Requires Suicide Risk Assessment and TB clearance')
-      ];
-      return res('fit', reqs,
-        'Patient does not need to be homeless to receive DOM treatment — it is open to all veterans with active SUD seeking treatment. SW coordinates; if DOM is full, Tarzana may be offered as an alternative.',
-        s.home === 'homeless' ? 4 : 3
-      );
-    }
-  },
-
-  gpd: {
-    name: 'GPD', full: 'Grant & Per Diem', group: 'home',
-    tagline: 'Transitional housing for homeless veterans.',
-    eval: function(s) {
-      if (s.goal !== 'active' || s.skilled === 'yes') return null;
-      if (s.func !== 'independent') return null;
-      if (s.home !== 'homeless') return null;
-      var reqs = [
-        met('Homeless veteran (required for GPD)'),
-        met('Independent in ADLs including medication management'),
-        info('On-campus options: New Directions (SUD + low-demand), A Bridge Home (low-demand)')
-      ];
-      return res('fit', reqs, 'SW coordinates GPD placement. New Directions requires active SUD; A Bridge Home is low-demand transitional housing.', 3);
-    }
-  }
-
-}; // end DEST
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function setProgress(p) { document.getElementById('progress').style.width = p + '%'; }
-// Human-readable labels for each answer value
-var ANSWER_LABELS = {
-  goal:    { comfort:'Comfort / hospice', active:'Active / curative care' },
-  skilled: { yes:'Has a skilled need', no:'No skilled need' },
-  func:    { independent:'Independent ADLs', assist:'Needs some assistance', dependent:'Largely dependent' },
-  cog:     { intact:'Cognitively intact', impaired:'Impaired, no elopement risk', elope:'Severe impairment + elopement risk' },
-  home:    { safe:'Safe home', unsafe:'Housing concern', homeless:'Homeless / no stable housing' },
-  sud:     { yes:'Active SUD, wants treatment', no:'No SUD / not interested' },
-  fund:    { medical:'Has / can get Medi-Cal', funds:'Has private funds', none:'No funding / unclear' },
-  sc:      { high:'>70% SC', mid:'>60% SC + unemployability', low:'Below threshold / unknown' }
-};
-// Compact wording for the one-line answer summary on the results page
-var SHORT_LABELS = {
-  goal:    { comfort:'Comfort care', active:'Active care' },
-  skilled: { yes:'Skilled need', no:'No skilled need' },
-  func:    { independent:'Independent', assist:'Needs assistance', dependent:'Dependent' },
-  cog:     { intact:'Cognitively intact', impaired:'Cognitively impaired', elope:'Elopement risk' },
-  home:    { safe:'Safe home', unsafe:'Housing concern', homeless:'Homeless' },
-  sud:     { yes:'Active SUD', no:'No SUD' },
-  fund:    { medical:'Medi-Cal', funds:'Private funds', none:'No funding' },
-  sc:      { high:'>70% SC', mid:'>60% SC + unemployability', low:'SC below threshold' }
-};
-var STEP_NAMES = { q1:'Goal of care', q2:'Skilled need', q3:'Function', q4:'Cognition', q5:'Housing', q6:'Substance use', q7:'Funding', q8:'Service connection' };
-// Order in which questions appear (for summary display); STATE_KEYS[i] is answered on QUESTION_ORDER[i]
-var QUESTION_ORDER = ['q1','q2','q3','q4','q5','q6','q7','q8'];
-var STATE_KEYS =     ['goal','skilled','func','cog','home','sud','fund','sc'];
-function keyForScreen(id) { return STATE_KEYS[QUESTION_ORDER.indexOf(id)]; }
-
-function updateStepLabel(id) {
-  var el = document.getElementById('label-' + id);
-  if (!el) return;
-  // Count how many questions have been answered so far (before this one)
-  var answered = 0;
-  var idx = QUESTION_ORDER.indexOf(id);
-  for (var i = 0; i < idx; i++) {
-    if (state[STATE_KEYS[i]] !== null) answered++;
-  }
-  el.textContent = 'Step ' + (answered + 1) + ' — ' + STEP_NAMES[id];
-}
-
-// Answer chips are buttons — tapping one jumps back to that question
-function answerChipsHTML(keys, label) {
-  var html = '<div class="answer-summary-label">' + label + ' <span class="hint">· tap to change</span></div>';
-  keys.forEach(function(key) {
-    var val = state[key];
-    var text = (ANSWER_LABELS[key] && ANSWER_LABELS[key][val]) ? ANSWER_LABELS[key][val] : val;
-    html += '<button type="button" class="answer-chip" onclick="editAnswer(\'' + key + '\')" aria-label="Change ' + STEP_NAMES[QUESTION_ORDER[STATE_KEYS.indexOf(key)]] + ': ' + text + '">' +
-      '<span class="answer-chip-step">' + STEP_NAMES[QUESTION_ORDER[STATE_KEYS.indexOf(key)]] + '</span>' +
-      '<span class="answer-chip-val">' + text + '</span><span class="answer-chip-edit" aria-hidden="true">✎</span></button>';
-  });
-  return html;
-}
-
-function renderAnswerSummary(currentId) {
-  // Answered questions before the current screen
-  var keys = STATE_KEYS.slice(0, QUESTION_ORDER.indexOf(currentId)).filter(function(k) { return state[k] !== null; });
-  var screen = document.getElementById('screen-' + currentId);
-  if (!screen) return;
-  var existing = screen.querySelector('.answer-summary');
-  if (keys.length === 0) {
-    if (existing) existing.remove();
-    return;
-  }
-  if (!existing) {
-    existing = document.createElement('div');
-    existing.className = 'answer-summary';
-    // Insert before the options div
-    var opts = screen.querySelector('.options');
-    if (opts) screen.insertBefore(existing, opts);
-    else screen.appendChild(existing);
-  }
-  existing.innerHTML = answerChipsHTML(keys, 'Your answers so far');
-}
-
-// Highlight the option chosen last time this question was answered (after Back / chip edit)
-function markSelected(id, val) {
-  var key = keyForScreen(id);
-  var target = val ? "answer('" + key + "','" + val + "')" : null;
-  document.querySelectorAll('#screen-' + id + ' .opt-btn').forEach(function(btn) {
-    btn.classList.toggle('selected', btn.getAttribute('onclick') === target);
-  });
-}
-
-function show(id) {
-  document.querySelectorAll('.screen').forEach(function(e) { e.classList.remove('active'); });
-  document.getElementById('screen-' + id).classList.add('active');
-  // Results use a wider layout on desktop so guidance can sit beside requirements
-  document.querySelector('.main').classList.toggle('wide', id === 'result');
+function render() {
+  var b = boardFor(state), keep = document.activeElement && document.activeElement.id, none = !hasAnswers();
   closeTerm();
-  window.scrollTo(0, 0);
-  if (id !== 'home' && id !== 'result') {
-    updateStepLabel(id);
-    renderAnswerSummary(id);
+
+  // Questions
+  var h = '';
+  if (none) h += '<p class="lede">Answer what you know. The list narrows with each answer, and any answer can be changed.</p>';
+  b.ask.forEach(function(q) {
+    h += '<div class="q" role="group" aria-labelledby="ql-' + q.k + '"><div><div class="q-top"><span class="q-label" id="ql-' + q.k + '">' + esc(q.label) + '</span>' +
+      '<button type="button" class="why" id="why-' + q.k + '" data-why="' + q.k + '" aria-expanded="' + !!openWhy[q.k] + '">What these mean</button></div>' +
+      (q.hint ? '<div class="q-hint">' + esc(q.hint) + '</div>' : '') + '</div><div class="opts">';
+    q.opts.forEach(function(o) {
+      h += '<button type="button" id="o-' + q.k + '-' + o[0] + '" data-k="' + q.k + '" data-v="' + o[0] + '" aria-pressed="' + (state[q.k] === o[0]) + '">' + esc(o[1]) + '</button>';
+    });
+    h += '</div>';
+    if (openWhy[q.k]) h += '<dl class="defs">' + q.opts.map(function(o) { return '<dt>' + esc(o[1]) + '</dt><dd>' + esc(o[2]) + '</dd>'; }).join('') + '</dl>';
+    h += '</div>';
+  });
+  if (b.barriers.length) {
+    h += '<div class="q" role="group" aria-labelledby="ql-bar"><div class="q-top"><span class="q-label" id="ql-bar">Placement barriers <span class="opt-tag">optional, tick any</span></span></div><div class="opts bars">';
+    b.barriers.forEach(function(x) { h += '<button type="button" id="o-' + x[0] + '" data-bar="' + x[0] + '" aria-pressed="' + (state[x[0]] === 'yes') + '">' + esc(x[1]) + '</button>'; });
+    h += '</div></div>';
   }
-}
+  if (b.skipped.length && b.coreDone) h += '<p class="skipped">Not needed here: ' + b.skipped.map(function(q) { return q.label.toLowerCase(); }).join(', ') + '</p>';
+  else if (!b.coreDone) h += '<p class="skipped">More may appear: surrogate, substance use, funding, service connection, placement barriers</p>';
+  document.getElementById('ask').innerHTML = h;
 
-function currentScreen() { return state.history.length ? state.history[state.history.length - 1] : 'home'; }
+  // Summary
+  var inn = b.rows.filter(function(x) { return x.st !== 'out'; }), out = b.rows.filter(function(x) { return x.st === 'out'; });
+  var fits = inn.filter(function(x) { return x.st === 'yes'; }).length, chk = inn.filter(function(x) { return x.st === 'if'; }).length;
+  var shown = b.left.filter(function(q) { return b.ask.indexOf(q) !== -1; }).length || b.left.length;
+  var sumMain = none ? 'All ' + inn.length + ' options'
+    : !b.done ? inn.length + ' still possible'
+    : fits ? fits + (fits === 1 ? ' fits' : ' fit') + (chk ? ' · ' + chk + ' to check' : '')
+    : chk ? chk + ' to check' : 'No standard option fits';
+  var sumSub = none ? 'Nothing ruled out yet'
+    : b.done ? (!fits && chk ? 'None fit outright · ' : '') + out.length + ' ruled out'
+    : shown + ' question' + (shown > 1 ? 's' : '') + ' left · ' + out.length + ' ruled out';
+  var o = '<div class="sum"><b>' + sumMain + '</b><span>' + sumSub + '</span></div>';
+  if (b.today.length) o += '<div class="today"><h2>Start today</h2><ul>' + b.today.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
 
-// Draw whatever screen state.history ends on. prev = state before a Back/Forward,
-// used to highlight the answer previously given on the screen being revisited.
-function renderCurrent(prev) {
-  var cur = currentScreen();
-  show(cur);
-  if (cur === 'home') setProgress(0);
-  else if (cur === 'result') { buildResult(); setProgress(100); }
-  else {
-    setProgress(progressFor(cur));
-    markSelected(cur, prev ? prev[keyForScreen(cur)] : null);
+  // One destination row. pre keeps ids apart between the main list and the "after the short stay" list.
+  function row(x, pre) {
+    var d = x.d, key = pre + d.id, open = !!openIds[key];
+    var sym = { yes:'✓', 'if':'!', open:'·', out:'✕' }[x.st], pill = { yes:'Fits', 'if':'Check', open:'Possible' }[x.st];
+    var line = x.st === 'out' ? x.no[0] : x.iff.length ? x.iff.join(' · ') : d.consult ? 'Consult: ' + d.consult : d.what;
+    var s = '<div class="d" data-st="' + x.st + '"><button type="button" class="d-head" id="d-' + key + '" data-id="' + key + '" aria-expanded="' + open + '">' +
+      '<span class="ic" aria-hidden="true">' + sym + '</span><span>' + (!pre && d.id === b.first ? '<span class="first">' + b.firstLabel + '</span>' : '') +
+      '<span class="d-name">' + esc(d.name) + (d.sub ? ' <small>' + esc(d.sub) + '</small>' : '') + '</span>' +
+      '<span class="d-line' + (x.iff.length && x.st !== 'out' ? ' chk' : '') + '">' + (x.st === 'out' ? '<span class="sr">Ruled out: </span>' : '') + esc(line) + '</span>' +
+      (x.exit && !pre ? '<span class="exit">Exit plan needed</span>' : '') + '</span>' +
+      (pill ? '<span class="pill">' + pill + '</span>' : '<span></span>') + '</button>';
+    if (open) {
+      s += '<dl class="d-body"><dt>What it is</dt><dd>' + esc(d.what) + '</dd>';
+      if (x.st === 'out') s += '<dt>Why not</dt><dd>' + x.no.map(esc).join('<br>') + '</dd>';
+      else if (x.iff.length) s += '<dt>To check</dt><dd>' + x.iff.map(esc).join('<br>') + '</dd>';
+      if (x.unlock.length) s += '<dt>Would be possible with</dt><dd>' + x.unlock.map(esc).join('<br>') + '</dd>';
+      if (x.st !== 'out' && d.consult) s += '<dt>Consult</dt><dd>' + esc(d.consult) + '</dd>';
+      if (d.notes) s += '<dt>Know</dt><dd>' + d.notes.map(esc).join('<br>') + '</dd>';
+      if (d.sw) s += '<dt>With SW/CM</dt><dd>' + esc(d.sw) + '</dd>';
+      s += '</dl>';
+    }
+    return s + '</div>';
   }
-  if (appReady) focusScreen(cur);
+  o += '<div class="list">';
+  var g = '';
+  inn.forEach(function(x) { if (x.d.grp !== g) { g = x.d.grp; o += '<div class="grp">' + g + '</div>'; } o += row(x, ''); });
+  if (!inn.length) o += '<div class="d" data-st="out"><div class="d-head"><span class="ic" aria-hidden="true">?</span><span><span class="d-name">No standard option fits</span><span class="d-line">Talk it through with SW/CM. Reasons are below.</span></span><span></span></div></div>';
+  if (out.length) {
+    o += '<button type="button" class="out-toggle" id="out-toggle" aria-expanded="' + showOut + '"><span>Ruled out · ' + out.length + '</span><span aria-hidden="true">' + (showOut ? '−' : '+') + '</span></button>';
+    if (showOut) out.forEach(function(x) { o += row(x, ''); });
+  }
+  o += '</div>';
+
+  // After the short stay: the long-term plan when there is no safe home to return to
+  if (b.after) {
+    var ain = b.after.filter(function(x) { return x.st !== 'out'; }), aout = b.after.length - ain.length;
+    o += '<div class="after"><h2>After the short stay</h2><p class="after-note">The exit plan if the patient cannot go home. Based on today\'s function: re-check after rehab.</p></div><div class="list">';
+    ain.forEach(function(x) { o += row(x, 'after-'); });
+    if (!ain.length) o += '<div class="d" data-st="out"><div class="d-head"><span class="ic" aria-hidden="true">?</span><span><span class="d-name">No long-term option fits yet</span><span class="d-line">Needs a work-up with SW/CM.</span></span><span></span></div></div>';
+    if (aout) {
+      o += '<button type="button" class="out-toggle" id="after-toggle" aria-expanded="' + showAfterOut + '"><span>Ruled out · ' + aout + '</span><span aria-hidden="true">' + (showAfterOut ? '−' : '+') + '</span></button>';
+      if (showAfterOut) b.after.forEach(function(x) { if (x.st === 'out') o += row(x, 'after-'); });
+    }
+    o += '</div>';
+  }
+
+  o += '<div class="foot">' +
+    '<p class="foot-note">A guide, not a determination. Listed least restrictive first. Final disposition depends on beds, patient and family preference, insurance, and the judgment of SW/CM and the accepting service. Assumes the patient is medically stable to leave acute medicine.</p>' +
+    '<p>More detail: <a href="https://tinyurl.com/vagladispo" target="_blank" rel="noopener">VA GLA Disposition Primer</a></p>' +
+    '<p>Created by George Tran, MD · Last updated November 2026</p></div>';
+  document.getElementById('board').innerHTML = o;
+
+  document.getElementById('jump-text').textContent = sumMain + (b.done || none ? '' : ' · ' + shown + ' left');
+  document.getElementById('live').textContent = none ? '' : sumMain + '. ' + sumSub + '.';
+  document.getElementById('clear').disabled = none;
+  linkTerms(document.querySelector('.wrap'));
+  var again = keep && document.getElementById(keep);
+  if (again && again !== document.activeElement) again.focus({ preventScroll: true });
 }
 
-// Move keyboard / screen-reader focus to the new screen's heading, since the
-// button just pressed is now hidden. Skipped on first page load.
-var appReady = false;
-function focusScreen(cur) {
-  var el = cur === 'result' ? document.querySelector('#result-content .result-headline')
-                            : document.querySelector('#screen-' + cur + ' .question, #screen-' + cur + ' .home-title');
-  if (!el) return;
-  el.setAttribute('tabindex', '-1');
-  el.focus({ preventScroll: true });
-}
-
-// ------------------------------------------------------------
-// Browser history: every step is its own history entry holding a snapshot
-// of state, so the browser / phone Back and Forward buttons move between
-// questions instead of leaving the tool.
-// ------------------------------------------------------------
-function snapshot() { return JSON.parse(JSON.stringify(state)); }
-function pushEntry() { try { history.pushState({ app: snapshot() }, ''); } catch (e) {} }
-
-window.addEventListener('popstate', function(e) {
-  if (!document.getElementById('screen-home')) return;
-  var prev = state;
-  state = (e.state && e.state.app) ? e.state.app : blankState();
-  renderCurrent(prev);
+document.addEventListener('click', function(e) {
+  var t = e.target, opt = t.closest('.opts button[data-k]'), bar = t.closest('.opts button[data-bar]'), why = t.closest('.why'), head = t.closest('.d-head[data-id]');
+  if (opt) { if (state[opt.dataset.k] === opt.dataset.v) delete state[opt.dataset.k]; else state[opt.dataset.k] = opt.dataset.v; render(); }
+  else if (bar) { if (state[bar.dataset.bar]) delete state[bar.dataset.bar]; else state[bar.dataset.bar] = 'yes'; render(); }
+  else if (why) { openWhy[why.dataset.why] = !openWhy[why.dataset.why]; render(); }
+  else if (head) { openIds[head.dataset.id] = !openIds[head.dataset.id]; render(); }
+  else if (t.closest('#out-toggle')) { showOut = !showOut; render(); }
+  else if (t.closest('#after-toggle')) { showAfterOut = !showAfterOut; render(); }
+  else if (t.closest('#clear')) { state = {}; openIds = {}; openWhy = {}; showOut = false; showAfterOut = false; render(); window.scrollTo(0, 0); var f = document.querySelector('.opts button'); if (f) f.focus({ preventScroll: true }); }
+  else if (t.closest('#jump-btn')) { var bd = document.getElementById('board'); bd.scrollIntoView(); bd.focus({ preventScroll: true }); }
+  else if (t.closest('#text-smaller')) changeTextSize(-1);
+  else if (t.closest('#text-larger')) changeTextSize(1);
 });
 
-function start() {
-  state = blankState();
-  state.history = ['q1'];
-  renderCurrent(null);
-  pushEntry();
-}
-
-function answer(key, val) {
-  state[key] = val;
-  state.history.push(nextScreen());
-  renderCurrent(null);
-  pushEntry();
-}
-
-// Jump back to the question that set `key`; history entries after it are discarded
-// by the browser when the user answers again, so later answers are re-asked.
-function editAnswer(key) {
-  var idx = state.history.indexOf(QUESTION_ORDER[STATE_KEYS.indexOf(key)]);
-  if (idx === -1) return;
-  var steps = state.history.length - 1 - idx;
-  if (steps > 0) history.go(-steps);
-}
-
-function nextScreen() {
-  // --- COMFORT BRANCH: only needs housing to rank the three options ---
-  if (state.goal === 'comfort') {
-    if (state.home === null) return 'q5';
-    return 'result';
-  }
-
-  // --- ACTIVE CARE BRANCH ---
-  if (state.skilled === null) return 'q2';
-  if (state.func === null) return 'q3';
-  if (state.cog === null) return 'q4';
-  if (state.home === null) return 'q5';
-
-  // SUD question: only relevant on non-skilled, independent, intact-cognition branch
-  // (the only branch where DOM is potentially applicable)
-  var sudRelevant = (state.skilled === 'no' && state.func === 'independent' && state.cog === 'intact');
-  if (sudRelevant && state.sud === null) return 'q6';
-
-  // Funding: only when a custodial facility is plausible
-  // (not: fully independent + intact cognition + safe home — that's pure home/housing)
-  var custodialPlausible = !(state.func === 'independent' && state.cog === 'intact' && state.home === 'safe');
-  if (custodialPlausible && state.fund === null) return 'q7';
-
-  // SC: only when CLC long-stay is plausible (non-skilled, not elopement risk, custodial branch)
-  var clcPlausible = (state.skilled === 'no') && (state.cog !== 'elope') && custodialPlausible;
-  if (clcPlausible && state.sc === null) return 'q8';
-
-  return 'result';
-}
-
-function progressFor(id) {
-  var map = { q1:12, q2:24, q3:36, q4:48, q5:60, q6:72, q7:84, q8:92 };
-  return map[id] || 50;
-}
-
-// Start over: a new history entry, so browser Back can still return to the results
-function restart() {
-  state = blankState();
-  renderCurrent(null);
-  pushEntry();
-}
-
-// ============================================================
-// TEXT SIZE (A− / A+) — remembered per browser; works without storage
-// ============================================================
-var TEXT_SIZES = ['sm', 'md', 'lg', 'xl'];
-var TEXT_SIZE_KEY = 'dispo-text-size';
-var textSizeIdx = 1;
-
+// Text size (A− / A+), remembered per browser; works without storage.
+var TEXT_SIZES = ['sm', 'md', 'lg', 'xl'], TEXT_SIZE_KEY = 'dispo-text-size', textSizeIdx = 1;
 function applyTextSize() {
   document.documentElement.setAttribute('data-text', TEXT_SIZES[textSizeIdx]);
-  var smaller = document.getElementById('text-smaller'), larger = document.getElementById('text-larger');
-  if (smaller) smaller.disabled = (textSizeIdx === 0);
-  if (larger) larger.disabled = (textSizeIdx === TEXT_SIZES.length - 1);
+  document.getElementById('text-smaller').disabled = (textSizeIdx === 0);
+  document.getElementById('text-larger').disabled = (textSizeIdx === TEXT_SIZES.length - 1);
 }
-
 function changeTextSize(delta) {
   textSizeIdx = Math.max(0, Math.min(TEXT_SIZES.length - 1, textSizeIdx + delta));
   applyTextSize();
   try { localStorage.setItem(TEXT_SIZE_KEY, TEXT_SIZES[textSizeIdx]); } catch (e) {}
 }
 
-// ============================================================
-// RESULT BUILD
-// ============================================================
-var GROUP_ICONS = { comfort:'moon', skilled:'medical', custodial:'building', home:'home' };
-var GROUP_LABELS = {
-  comfort:   'Comfort-focused options',
-  skilled:   'Skilled-need pathways',
-  custodial: 'Custodial / long-term facilities',
-  home:      'Home & housing programs'
-};
-
-// Evaluate every destination for state s; fits sorted best-first (fit before caution, then score)
-function rankDestinations(s) {
-  var fits = [], blocked = [];
-  Object.keys(DEST).forEach(function(k) {
-    var r = DEST[k].eval(s);
-    if (!r) return;
-    if (r.status === 'blocked') blocked.push({ key:k, d:DEST[k], r:r });
-    else fits.push({ key:k, d:DEST[k], r:r });
-  });
-  fits.sort(function(a, b) {
-    var sa = a.r.status === 'fit' ? 0 : 1, sb = b.r.status === 'fit' ? 0 : 1;
-    if (sa !== sb) return sa - sb;
-    return b.r.score - a.r.score;
-  });
-  return { fits:fits, blocked:blocked };
-}
-
-// Group the ranked fits for display. Groups appear in order of their best-ranked
-// member, so the top suggestion is always card #1.
-function displayGroups(fits) {
-  var groups = [];
-  fits.forEach(function(f) {
-    var g = groups.filter(function(x) { return x.group === f.d.group; })[0];
-    if (!g) { g = { group:f.d.group, items:[] }; groups.push(g); }
-    g.items.push(f);
-  });
-  return groups;
-}
-
-// Destination keys in the order the cards are numbered on screen
-function displayOrder(fits) {
-  var keys = [];
-  displayGroups(fits).forEach(function(g) { g.items.forEach(function(f) { keys.push(f.key); }); });
-  return keys;
-}
-
-// "Good fit" / "Needs confirmation · N items" (+ "Exit plan needed") for a ranked option.
-// Items to confirm = requirement rows flagged warn (!) or block (✕).
-function statusTagsHTML(f) {
-  var toCheck = f.r.reqs.filter(function(rq) { return rq.ic === 'warn' || rq.ic === 'block'; }).length;
-  var html = f.r.status === 'caution'
-    ? '<span class="status-tag caution">Needs confirmation' + (toCheck ? ' · ' + toCheck + ' item' + (toCheck > 1 ? 's' : '') : '') + '</span>'
-    : '<span class="status-tag fit">Good fit' + (toCheck ? ' · ' + toCheck + ' to check' : '') + '</span>';
-  if (f.r.downstream) html += '<span class="status-tag exit">Exit plan needed</span>';
-  return html;
-}
-
-// Short "do first" actions for the plan-at-a-glance box, pulled from content shown below
-var SW_ACTION_SHORT = {
-  calvet: 'Discuss CalVet with SW (waitlist ≥1 year — plan ahead)',
-  vash: 'SW can start a VASH referral this admission',
-  fiduciary: 'Start the fiduciary / representative payee process early'
-};
-function doFirstItems(s, fits) {
-  var items = [], top = fits[0];
-  if (top && top.r.sw) {
-    var first = top.r.sw.match(/^.*?\.(?=\s|$)/);
-    items.push(first ? first[0] : top.r.sw);
-  }
-  if (top && top.r.downstream) items.push('Confirm with SW an exit plan for after the short stay');
-  swActionItems(s).forEach(function(a) { items.push(SW_ACTION_SHORT[a]); });
-  if ((s.cog === 'impaired' || s.cog === 'elope') && !/capacity/i.test(items.join(' '))) {
-    items.push('If no DPOA, start capacity-declaration / OPG paperwork now');
-  }
-  return items;
-}
-
-// Conditional SW action items for state s, e.g. ['calvet', 'fiduciary']
-function swActionItems(s) {
-  var items = [];
-  var nonSkilledActive = (s.goal === 'active' && s.skilled === 'no');
-  var housingConcern = (s.home === 'unsafe' || s.home === 'homeless');
-  // CalVet: custodial-needs profile (needs assistance or dependent) + unsafe/homeless
-  if (nonSkilledActive && (s.func === 'dependent' || s.func === 'assist') && housingConcern) items.push('calvet');
-  // VASH: independent but housing-insecure
-  if (nonSkilledActive && s.func === 'independent' && housingConcern) items.push('vash');
-  // Fiduciary / representative payee: cognitively impaired patients headed toward
-  // private-pay custodial facilities (RCFE, CNH) may be unable to prudently manage
-  // their own finances. Without a fiduciary or representative payee in place, the
-  // facility cannot be paid. Slow process — same family as DPOA/capacity delays.
-  if (nonSkilledActive && s.cog !== null && s.cog !== 'intact' && s.fund === 'funds') items.push('fiduciary');
-  return items;
-}
-
-var SW_ACTION_TEXT = {
-  calvet: '<strong>CalVet (state veterans home):</strong> Worth discussing with SW during this admission. ' +
-    'CalVet is a state-funded veterans home offering B&amp;C, CNH-level, and memory care — but waitlists are typically ≥1 year, so it is a longer-term possibility to plan for, not an immediate discharge option. ' +
-    'Eligible age ≥55 (waived for disabled or homeless veterans needing long-term care); no SC requirement. ' +
-    'Will not accept registered sex offenders or patients with severe behavioral issues.',
-  vash: '<strong>VASH (VA Section-8 housing):</strong> This patient may be a candidate for VA subsidized independent housing — SW can initiate the referral during this admission. ' +
-    'Requires full independence in ADLs. Outpatient process taking weeks to months — not a discharge destination for this admission.',
-  fiduciary: '<strong>Fiduciary / representative payee:</strong> This patient has cognitive impairment and private funds are part of the payment plan. ' +
-    'If they cannot prudently manage their own finances and there is no DPOA or existing legal financial arrangement, ' +
-    'the process of appointing a VA fiduciary or SSA representative payee should be started as soon as possible — ' +
-    'this takes significant time, and a facility cannot be paid without it. Discuss with SW early.'
-};
-
-function buildResult() {
-  var ranked = rankDestinations(state);
-  var fits = ranked.fits, blocked = ranked.blocked;
-  var html = '';
-  var top = fits[0];
-
-  // Answers: one compact line; "Edit answers" reveals the tappable chips
-  var answeredKeys = STATE_KEYS.filter(function(k) { return state[k] !== null; });
-  html += '<button type="button" class="answer-compact" aria-expanded="false" aria-controls="result-answers" onclick="toggleAnswers(this)">' +
-    '<span class="answer-compact-text">' + answeredKeys.map(function(k) { return SHORT_LABELS[k][state[k]]; }).join(' · ') + '</span>' +
-    '<span class="answer-compact-edit">Edit answers <span class="chev" aria-hidden="true">▾</span></span></button>';
-  html += '<div class="answer-summary" id="result-answers" hidden>' + answerChipsHTML(answeredKeys, 'Your answers') + '</div>';
-
-  html += '<div class="result-intro">';
-  html += '<p class="result-eyebrow">Disposition options</p>';
-  if (top) {
-    html += '<p class="result-headline">Start with: ' + top.d.name +
-      (top.d.full ? ' <span class="full">(' + top.d.full + ')</span>' : '') + '</p>';
-    html += '<p class="result-subhead">' + top.d.tagline +
-      ' Below is the full filtered list — most cases need more than one option on the table. Confirm everything with SW/CM.</p>';
-  } else {
-    html += '<p class="result-headline">No clear standard pathway matched.</p>';
-    html += '<p class="result-subhead">This combination needs direct discussion with your social worker and case manager. The ruled-out options below show why.</p>';
-  }
-  html += '</div>';
-
-  // Plan at a glance: the essentials from the full results below
-  if (top) {
-    var optLine = function(f) {
-      return '<span class="glance-opt"><strong>' + f.d.name + '</strong>' + (f.d.full ? ' · ' + f.d.full : '') + '</span> ' + statusTagsHTML(f);
-    };
-    var doFirst = doFirstItems(state, fits);
-    html += '<div class="glance"><p class="glance-title">' + ICONS.clipboard + 'Plan at a glance</p>';
-    html += '<div class="glance-row"><span class="glance-k">Top option</span><span class="glance-v">' + optLine(top) + '</span></div>';
-    if (fits[1]) html += '<div class="glance-row"><span class="glance-k">Backup</span><span class="glance-v">' + optLine(fits[1]) + '</span></div>';
-    if (blocked.length) {
-      html += '<div class="glance-row"><span class="glance-k">Ruled out</span><span class="glance-v muted">' +
-        blocked.map(function(b) { return b.d.name; }).join(', ') + ' <span class="glance-note">(reasons below)</span></span></div>';
-    }
-    if (doFirst.length) {
-      html += '<div class="glance-row"><span class="glance-k">Do first</span><ul class="glance-v glance-do">' +
-        doFirst.map(function(t) { return '<li>' + t + '</li>'; }).join('') + '</ul></div>';
-    }
-    // Make it obvious the full details continue below the summary
-    html += '<button type="button" class="glance-more" onclick="jumpToDetails()">See full details below: ' +
-      fits.length + ' option' + (fits.length > 1 ? 's' : '') + ' with requirements and SW/CM notes' +
-      (blocked.length ? ', plus why ' + blocked.length + ' ' + (blocked.length > 1 ? 'were' : 'was') + ' ruled out' : '') +
-      ' <span aria-hidden="true">↓</span></button>';
-    html += '</div>';
-  }
-
-  // Legend for the status tags, plus Expand all
-  html += '<div class="results-toolbar" id="result-details" tabindex="-1"><div class="legend">' +
-    '<span><span class="status-tag fit">Good fit</span> meets the listed criteria</span>' +
-    '<span><span class="status-tag caution">Needs confirmation</span> has items to check</span></div>';
-  if (fits.length > 1) {
-    html += '<button type="button" class="expand-all-btn" id="expand-all" onclick="toggleAllCards()">Expand all</button>';
-  }
-  html += '</div>';
-
-  var rank = 1;
-  displayGroups(fits).forEach(function(g) {
-    html += '<div class="group-label">' + ICONS[GROUP_ICONS[g.group]] + GROUP_LABELS[g.group] + '</div>';
-    var downstreamCount = g.items.filter(function(f) { return f.r.downstream; }).length;
-    if (downstreamCount) {
-      html += '<div class="downstream-flag group-banner">' + ICONS.alert + '<span>' + downstreamText(state, downstreamCount) + '</span></div>';
-    }
-    g.items.forEach(function(f) {
-      var isTop = (top && f.key === top.key);
-      var caution = f.r.status === 'caution';
-      var hasNotes = !!f.r.sw;
-      var statusTag = statusTagsHTML(f);
-      // Each suggestion is a row: the card (header + requirements) and, beside it, separate
-      // guidance boxes. Top suggestion starts expanded so its details show without a tap.
-      html += '<div class="dest-row' + (isTop ? ' open' : '') + (hasNotes ? ' has-notes' : '') + '">';
-      html += '<div class="dest-card' + (isTop ? ' top' : '') + (caution ? ' caution' : '') + '">';
-      html += '<button type="button" class="dest-head" aria-expanded="' + (isTop ? 'true' : 'false') + '" onclick="toggleCard(this)">';
-      html += '<span class="dest-rank">' + rank + '</span>';
-      html += '<span class="dest-main">';
-      if (isTop) html += '<span class="top-flag">Top suggestion</span><br>';
-      html += '<span class="dest-name">' + f.d.name +
-        (f.d.full ? ' <span class="full">· ' + f.d.full + '</span>' : '') + '</span>';
-      html += '<span class="dest-tags">' + statusTag + '</span>';
-      html += '<span class="dest-tagline">' + f.d.tagline + '</span>';
-      html += '</span>';
-      html += '<span class="dest-toggle" aria-hidden="true">+</span>';
-      html += '</button>';
-      html += '<div class="dest-body">';
-      f.r.reqs.forEach(function(rq) {
-        var sym = rq.ic === 'met' ? '✓' : rq.ic === 'warn' ? '!' : rq.ic === 'block' ? '✕' : 'i';
-        html += '<div class="req-row"><span class="req-ic ' + rq.ic + '">' + sym + '</span><span>' + rq.text + '</span></div>';
-      });
-      html += '</div></div>';
-      if (hasNotes) {
-        html += '<div class="dest-notes">';
-        html += '<div class="sw-flag">' + ICONS.users + '<span><strong>Confirm with SW/CM:</strong> ' + f.r.sw + '</span></div>';
-        html += '</div>';
-      }
-      html += '</div>';
-      rank++;
-    });
-  });
-
-  if (blocked.length) {
-    html += '<div class="group-label">' + ICONS.xCircle + 'Ruled out for this patient</div>';
-    blocked.forEach(function(b) {
-      html += '<div class="blocked-card"><div class="blocked-rank">✕</div><div>' +
-        '<div class="blocked-name">' + b.d.name + (b.d.full ? ' (' + b.d.full + ')' : '') + '</div>' +
-        '<div class="blocked-reason">' + b.r.blockedReason + '</div>' +
-        '</div></div>';
-    });
-  }
-
-  // Conditional SW action items — rendered BEFORE universal next steps so they are seen first
-  var actions = swActionItems(state);
-  if (actions.length) {
-    html += '<div class="sw-action-box">';
-    html += '<h3>SW action items for this admission</h3>';
-    actions.forEach(function(a) {
-      html += '<div class="sw-action-item"><div class="sw-action-dot">SW</div><div class="sw-action-text">' + SW_ACTION_TEXT[a] + '</div></div>';
-    });
-    html += '</div>';
-  }
-
-  html += '<div class="next-steps"><h3>Universal next steps</h3><ul>';
-  html += '<li>Loop in your team social worker / case manager early — many consults have multi-day lead times (Medi-Cal number ~2 weeks, PASRR before CNH consult, capacity declarations).</li>';
-  html += '<li>Verify insurance and benefits; SW can pursue NSC pension, Aid &amp; Attendance, or SSA/SSI/SSDI to expand options.</li>';
-  html += '<li>Confirm patient and family preference — it can override the "best fit" on paper.</li>';
-  if (state.cog === 'elope' || state.cog === 'impaired') {
-    html += '<li>If decision-making capacity is in question and there is no DPOA, start capacity-declaration / OPG paperwork now — it is a frequent discharge delay.</li>';
-  }
-  html += '<li>Re-check that the patient remains medically stable for the chosen level of care before the transfer.</li>';
-  html += '</ul></div>';
-
-  document.getElementById('result-content').innerHTML = html;
-  linkTerms(document.getElementById('result-content'));
-  syncExpandAll();
-}
-
-function setCardOpen(row, open) {
-  row.classList.toggle('open', open);
-  row.querySelector('.dest-head').setAttribute('aria-expanded', open ? 'true' : 'false');
-}
-
-function toggleCard(btn) {
-  var row = btn.closest('.dest-row');
-  setCardOpen(row, !row.classList.contains('open'));
-  syncExpandAll();
-}
-
-// Expand all if any card is closed; otherwise collapse all
-function toggleAllCards() {
-  var rows = document.querySelectorAll('#result-content .dest-row');
-  var anyClosed = Array.prototype.some.call(rows, function(r) { return !r.classList.contains('open'); });
-  rows.forEach(function(r) { setCardOpen(r, anyClosed); });
-  syncExpandAll();
-}
-
-function jumpToDetails() {
-  var target = document.getElementById('result-details');
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-  target.focus({ preventScroll: true });
-}
-
-function toggleAnswers(btn) {
-  var list = document.getElementById('result-answers');
-  list.hidden = !list.hidden;
-  btn.setAttribute('aria-expanded', list.hidden ? 'false' : 'true');
-}
-
-function syncExpandAll() {
-  var btn = document.getElementById('expand-all');
-  if (!btn) return;
-  var anyClosed = document.querySelector('#result-content .dest-row:not(.open)') !== null;
-  btn.textContent = anyClosed ? 'Expand all' : 'Collapse all';
-}
-
-// ============================================================
-// INIT — skipped when this script is loaded by tests.html (no app markup there)
-// ============================================================
-if (document.getElementById('screen-home')) {
-  fillIcons();
-  linkTerms(document);
-  try { textSizeIdx = Math.max(0, TEXT_SIZES.indexOf(localStorage.getItem(TEXT_SIZE_KEY) || 'md')); } catch (e) {}
-  applyTextSize();
-  // Restore the step the user was on if the page is reloaded mid-way
-  if (history.state && history.state.app) { state = history.state.app; renderCurrent(state); }
-  else { try { history.replaceState({ app: snapshot() }, ''); } catch (e) {} }
-  appReady = true;
-}
+try { var saved = TEXT_SIZES.indexOf(localStorage.getItem(TEXT_SIZE_KEY)); if (saved !== -1) textSizeIdx = saved; } catch (e) {}
+applyTextSize();
+render();
 </script>
 </body>
 </html>

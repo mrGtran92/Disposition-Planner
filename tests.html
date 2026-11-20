@@ -1,507 +1,81 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Disposition Planner — Test Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Disposition Planner — tests</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; background: #f5f6fa; color: #1a1d2e; padding: 24px 20px; }
-  .header { margin-bottom: 28px; }
-  h1 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 13px; color: #2563eb; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
-  .subtitle { font-size: 13px; color: #9ca3b8; font-weight: 300; }
-  .summary { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
-  .stat { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 18px; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; }
-  .stat-num { font-size: 26px; font-weight: 500; }
-  .stat-label { font-size: 10px; color: #9ca3b8; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
-  .stat.pass .stat-num { color: #16a34a; }
-  .stat.fail .stat-num { color: #dc2626; }
-  .stat.warn .stat-num { color: #ca8a04; }
-  .section-label { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #9ca3b8; letter-spacing: 0.08em; text-transform: uppercase; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: #e4e6f0; }
-  .test-row { background: #fff; border: 1.5px solid #e4e6f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: start; }
-  .test-row.fail { border-color: #fca5a5; background: #fff5f5; }
-  .test-row.warn-row { border-color: #fde68a; background: #fffdf0; }
-  .test-ic { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-  .test-ic.pass { background: #dcfce7; color: #16a34a; }
-  .test-ic.fail { background: #fee2e2; color: #dc2626; }
-  .test-ic.skip { background: #f3f4f8; color: #b0b8d0; }
-  .test-name { font-size: 13.5px; font-weight: 500; color: #1a1d2e; margin-bottom: 3px; }
-  .test-detail { font-size: 11.5px; color: #6b7494; line-height: 1.55; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; }
-  .test-detail .got { color: #dc2626; }
-  .test-detail .expected-val { color: #16a34a; }
-  .test-badge { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; white-space: nowrap; align-self: start; }
-  .test-badge.pass { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
-  .test-badge.fail { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
-  .test-badge.skip { background: #f3f4f8; color: #b0b8d0; border: 1px solid #e4e6f0; }
-  .issues-box { background: #fff; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
-  .issues-box h3 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #dc2626; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
-  .issues-box li { font-size: 12.5px; color: #4a5070; line-height: 1.55; margin-bottom: 6px; padding-left: 16px; position: relative; list-style: none; }
-  .issues-box li::before { content: '✕'; position: absolute; left: 0; color: #dc2626; font-size: 10px; }
-  .all-pass { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #15803d; margin-bottom: 20px; font-weight: 500; }
-  .refresh-btn { background: #2563eb; border: none; border-radius: 8px; padding: 10px 18px; color: #fff; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 11px; letter-spacing: 0.05em; cursor: pointer; margin-bottom: 24px; }
-  .refresh-btn:hover { background: #1d4fd8; }
-  .log-note { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #c8cdd8; margin-top: 28px; line-height: 1.7; }
-  .log-note a { color: #93c5fd; }
-  .pending-box { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 13px 16px; margin-bottom: 20px; }
-  .pending-box h3 { font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; color: #92400e; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 9px; }
-  .pending-box li { font-size: 12px; color: #78350f; line-height: 1.6; margin-bottom: 5px; padding-left: 16px; position: relative; list-style: none; font-weight: 300; }
-  .pending-box li::before { content: '?'; position: absolute; left: 0; color: #ca8a04; font-family: 'DM Mono', ui-monospace, Consolas, Menlo, monospace; font-size: 10px; font-weight: 600; }
+  :root { --bg: #f3f4f8; --surface: #fff; --line: #d8dce8; --fg: #171a2b; --fg-2: #434964; --ok: #1c7c44; --ok-soft: #e2f3e9; --bad: #b3261e; --bad-soft: #fbe7e5; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e111c; --surface: #171b2b; --line: #2c3249; --fg: #eef0f8; --fg-2: #bcc1d8; --ok: #62d394; --ok-soft: #12301f; --bad: #ff9088; --bad-soft: #3a1714; color-scheme: dark; } }
+  body { margin: 0; padding: 24px 16px; background: var(--bg); color: var(--fg); font: 1rem/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; display: grid; gap: 14px; }
+  h1 { font-size: 1.25rem; margin: 0; }
+  p { margin: 0; color: var(--fg-2); }
+  #verdict { font-size: 1.375rem; font-weight: 700; padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+  #verdict.pass { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+  #verdict.fail { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+  ul { margin: 0; padding: 0; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  li { padding: 10px 14px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+  li:first-child { border-top: 0; }
+  li b { color: var(--ok); } li.bad b { color: var(--bad); }
+  code { font-size: .875rem; }
 </style>
 </head>
 <body>
-
-<div class="header">
-  <h1>Disposition Planner · Test Dashboard</h1>
-  <p class="subtitle">Automated regression tests — run after every change to index.html</p>
-</div>
-
-<button class="refresh-btn" onclick="location.reload()">↺ Re-run tests</button>
-
-<div class="summary" id="summary"></div>
-<div id="pending-section"></div>
-<div id="issues-section"></div>
-<div id="results"></div>
-
-<p class="log-note">
-  HOW TO USE: Upload both index.html and tests.html to your GitHub repo.<br>
-  After any change to index.html, wait ~60 seconds for Pages to rebuild, then reload this page.<br>
-  All tests should show PASS. Any FAIL means a change broke something — investigate before sharing the tool.<br>
-  <br>
-  TO ADD A SCENARIO: Edit the SCENARIOS array at the top of the &lt;script&gt; in this file.<br>
-  Each scenario has: name, state (patient answers), type (top/contains/not_top), expected (destination key or array of keys).<br>
-  Destination keys: home_hospice · cnh_hospice · hugs · home_hh · cnh_skilled · clc_short · aru ·<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcfe_open · rcfe_memory · cnh_custodial · clc_long · clc_2n · home_indep · dom · gpd<br>
-  SW action item keys (flag_fires): calvet · vash · fiduciary
-</p>
-
+<main>
+  <h1>Disposition Planner — tests</h1>
+  <p>Walks every path through the tool using the rules in <code>index.html</code> and compares each result with the recorded list in <code>checks/golden-paths.json</code>. Open this page on the live site after any change.</p>
+  <div id="verdict" role="status">Running…</div>
+  <ul id="out"></ul>
+</main>
 <script>
-// ============================================================
-// SCENARIOS — EDIT THIS SECTION TO ADD / CHANGE TEST CASES
-// Each object:
-//   name     : human-readable label shown in the dashboard
-//   state    : patient answers (omit keys that aren't asked on this branch)
-//   type     : 'top'      — checks that expected key is the #1 ranked result
-//              'contains' — checks that ALL keys in expected[] appear in fit results
-//              'not_top'  — checks that expected key is NOT ranked #1
-//              'not_contains' — checks that NONE of the keys in expected[] appear in fit results
-//              'display_top'  — checks that expected key is the FIRST card shown on screen (#1)
-//              'do_first'     — checks the plan-at-a-glance "Do first" list mentions every phrase in expected[]
-//              'flag_fires'   — checks the SW action items box: expected 'fiduciary' (must show)
-//                               or 'no_fiduciary' (must not show)
-//   expected : destination key (string) for top/not_top/display_top, array of keys for contains/not_contains
-//   note     : optional annotation shown in the dashboard
-// ============================================================
-var SCENARIOS = [
-  {
-    name: '01 · Clean home discharge',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'safe', sud:'no' },
-    type: 'top', expected: 'home_indep',
-    note: 'Fully independent, intact, safe home, no SUD — straightforward home discharge.'
-  },
-  {
-    name: '02 · Home with home health',
-    state: { goal:'active', skilled:'yes', func:'independent', cog:'intact', home:'safe' },
-    type: 'top', expected: 'home_hh',
-    note: 'Skilled need, independent, intact, safe home — home with HH beats SNF.'
-  },
-  {
-    name: '03 · SNF / skilled CNH (no safe home)',
-    state: { goal:'active', skilled:'yes', func:'assist', cog:'intact', home:'unsafe', fund:'medical', sc:'low' },
-    type: 'top', expected: 'cnh_skilled',
-    note: 'Skilled need, needs assistance, unsafe home — SNF is the top skilled option.'
-  },
-  {
-    name: '04 · ARU appears for skilled rehab candidate',
-    state: { goal:'active', skilled:'yes', func:'independent', cog:'intact', home:'safe' },
-    type: 'contains', expected: ['aru'],
-    note: 'ARU must appear in results for a skilled, independent patient.'
-  },
-  {
-    name: '05 · Comfort care — safe home → home hospice first',
-    state: { goal:'comfort', home:'safe' },
-    type: 'top', expected: 'home_hospice',
-    note: 'Comfort goal, safe home — home hospice should be #1.'
-  },
-  {
-    name: '06 · Comfort care — homeless → facility hospice first',
-    state: { goal:'comfort', home:'homeless' },
-    type: 'top', expected: 'cnh_hospice',
-    note: 'Comfort goal, homeless — CNH/facility hospice should be #1; home hospice blocked.'
-  },
-  {
-    name: '07 · HUGS never #1 (safe home comfort)',
-    state: { goal:'comfort', home:'safe' },
-    type: 'not_top', expected: 'hugs',
-    note: 'HUGS must never be ranked #1 — limited beds, always behind home/facility hospice.'
-  },
-  {
-    name: '08 · HUGS never #1 (homeless comfort)',
-    state: { goal:'comfort', home:'homeless' },
-    type: 'not_top', expected: 'hugs',
-    note: 'HUGS must never be ranked #1 even when home hospice is blocked.'
-  },
-  {
-    name: '09 · Custodial CNH with Medi-Cal',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'medical', sc:'low' },
-    type: 'top', expected: 'cnh_custodial',
-    note: 'No skilled need, dependent, impaired, unsafe home, Medi-Cal — custodial CNH.'
-  },
-  {
-    name: '10 · CLC long-stay, high SC',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'none', sc:'high' },
-    type: 'top', expected: 'clc_long',
-    note: '>70% SC, non-skilled, impaired, no funding — CLC long-stay should lead.'
-  },
-  {
-    name: '11 · CLC 2N for elopement risk',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'none', sc:'low' },
-    type: 'top', expected: 'clc_2n',
-    note: 'Severe impairment + elopement risk — locked 2N unit should be top.'
-  },
-  {
-    name: '12 · Homeless, independent, no SUD → GPD (not DOM)',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'no' },
-    type: 'top', expected: 'gpd',
-    note: 'Homeless + independent + no SUD → GPD, not DOM.'
-  },
-  {
-    name: '13 · DOM absent when no SUD',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'no' },
-    type: 'not_contains', expected: ['dom'],
-    note: 'DOM must not appear at all when SUD answer is no.'
-  },
-  {
-    name: '14 · Homeless, independent, active SUD → both GPD and DOM appear',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'homeless', sud:'yes' },
-    type: 'contains', expected: ['gpd', 'dom'],
-    note: 'Homeless + SUD → both GPD and DOM must appear in results.'
-  },
-  {
-    name: '15 · SUD + safe home → DOM appears',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'safe', sud:'yes' },
-    type: 'contains', expected: ['dom'],
-    note: 'DOM is not only for homeless patients — safe home + active SUD + treatment interest also qualifies.'
-  },
-  {
-    name: '16 · RCFE for independent patient with private funds',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'unsafe', sud:'no', fund:'funds', sc:'low' },
-    type: 'top', expected: 'rcfe_open',
-    note: 'Non-skilled, independent, intact, private funds, unsafe home — RCFE should lead.'
-  },
-  {
-    name: '17 · Skilled + elopement risk → locked CNH flagged',
-    state: { goal:'active', skilled:'yes', func:'independent', cog:'elope', home:'safe' },
-    type: 'contains', expected: ['cnh_skilled'],
-    note: 'Skilled + elopement — CNH skilled must appear (with locked-unit warning).'
-  },
-  {
-    name: '18 · High SC custodial, no Medi-Cal → CLC long-stay',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'none', sc:'high' },
-    type: 'top', expected: 'clc_long',
-    note: 'High SC + no Medi-Cal + non-skilled — CLC long-stay should beat custodial CNH.'
-  },
-  {
-    name: '19 · Low SC + no funds + no Medi-Cal → custodial CNH flagged (not blocked)',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'homeless', fund:'none', sc:'low' },
-    type: 'contains', expected: ['cnh_custodial'],
-    note: 'No funding pathway — CNH custodial should still appear but flagged, not ruled out entirely.'
-  },
-  {
-    name: '20 · Comfort, unsafe home → both home hospice and CNH hospice appear',
-    state: { goal:'comfort', home:'unsafe' },
-    type: 'contains', expected: ['home_hospice', 'cnh_hospice'],
-    note: 'Ambiguous home situation — both options must be surfaced, not just one.'
-  },
-
-  // ── FIDUCIARY / REPRESENTATIVE PAYEE FLAG TESTS ──────────────────────────
-  // type: 'flag_fires' checks swActionItems() — the same function that builds the SW box.
-  // Trigger: goal=active + skilled=no + cog!==intact + fund=funds
-  {
-    name: '21 · Fiduciary flag fires: impaired + no-skilled + private funds',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'impaired', home:'unsafe', fund:'funds', sc:'low' },
-    type: 'flag_fires', expected: 'fiduciary',
-    note: 'Cognitively impaired + non-skilled + private funds → fiduciary flag must appear in SW action items.'
-  },
-  {
-    name: '22 · Fiduciary flag fires: elopement risk + no-skilled + private funds',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'elope', home:'unsafe', fund:'funds', sc:'low' },
-    type: 'flag_fires', expected: 'fiduciary',
-    note: 'Elopement risk + non-skilled + private funds → fiduciary flag must fire.'
-  },
-  {
-    name: '23 · Fiduciary flag fires: dependent + impaired + homeless + private funds',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'homeless', fund:'funds', sc:'low' },
-    type: 'flag_fires', expected: 'fiduciary',
-    note: 'Fully dependent + impaired + homeless + private funds → fiduciary flag must fire.'
-  },
-  {
-    name: '24 · No fiduciary flag: intact cognition',
-    state: { goal:'active', skilled:'no', func:'independent', cog:'intact', home:'unsafe', fund:'funds', sc:'low' },
-    type: 'flag_fires', expected: 'no_fiduciary',
-    note: 'Cognitively intact — fiduciary flag must NOT fire even with private funds.'
-  },
-  {
-    name: '25 · No fiduciary flag: Medi-Cal (not private funds)',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'medical', sc:'low' },
-    type: 'flag_fires', expected: 'no_fiduciary',
-    note: 'Medi-Cal pathway — fiduciary flag must NOT fire.'
-  },
-  {
-    name: '26 · No fiduciary flag: skilled branch',
-    state: { goal:'active', skilled:'yes', func:'independent', cog:'impaired', home:'unsafe', fund:'funds' },
-    type: 'flag_fires', expected: 'no_fiduciary',
-    note: 'Skilled branch — fiduciary flag must NOT fire even with impaired cognition + private funds.'
-  },
-  {
-    name: '27 · No fiduciary flag: comfort goal',
-    state: { goal:'comfort', home:'safe', cog:'impaired', fund:'funds' },
-    type: 'flag_fires', expected: 'no_fiduciary',
-    note: 'Comfort branch — fiduciary flag must NOT fire.'
-  },
-  {
-    name: '28 · No fiduciary flag: no funds',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'unsafe', fund:'none', sc:'low' },
-    type: 'flag_fires', expected: 'no_fiduciary',
-    note: 'No private funds — fiduciary flag must NOT fire.'
-  },
-  {
-    name: '29 · Fiduciary flag fires with a SAFE home (no CalVet/VASH)',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'funds', sc:'low' },
-    type: 'flag_fires', expected: 'fiduciary',
-    note: 'Regression: fiduciary item used to render only when CalVet or VASH also applied, so it never showed with a safe home.'
-  },
-
-  // ── DISPLAY ORDER ────────────────────────────────────────────────────────
-  {
-    name: '30 · Top suggestion is card #1 even when Home also fits',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'medical', sc:'low' },
-    type: 'display_top', expected: 'cnh_custodial',
-    note: 'Regression: cards were numbered by fixed group order, so Home showed as #1 and the Top suggestion as #2.'
-  },
-  {
-    name: '31 · Top suggestion is card #1 on the skilled branch',
-    state: { goal:'active', skilled:'yes', func:'assist', cog:'intact', home:'unsafe', fund:'medical' },
-    type: 'display_top', expected: 'cnh_skilled',
-    note: 'Skilled pathways group must lead when it holds the top-ranked option.'
-  },
-
-  // ── ELOPEMENT RANKING (confirmed intended behavior, Oct 2026) ─────────────
-  {
-    name: '32 · Elopement + Medi-Cal → custodial CNH leads, 2N still shown',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
-    type: 'top', expected: 'cnh_custodial',
-    note: 'With a funding pathway, custodial CNH (secure unit) ranks above locked CLC 2N. Intended.'
-  },
-  {
-    name: '33 · Elopement + Medi-Cal → 2N and RCFE memory care both listed',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
-    type: 'contains', expected: ['clc_2n', 'rcfe_memory'],
-    note: 'Locked alternatives must remain on the list below custodial CNH.'
-  },
-
-  // ── PLAN AT A GLANCE: "Do first" list ────────────────────────────────────
-  {
-    name: '34 · Do first: skilled + homeless → PASRR and exit plan',
-    state: { goal:'active', skilled:'yes', func:'dependent', cog:'intact', home:'homeless', fund:'none' },
-    type: 'do_first', expected: ['PASRR', 'exit plan'],
-    note: 'Top option is CNH/SNF with a downstream concern — both must surface in Do first.'
-  },
-  {
-    name: '35 · Do first: fiduciary item surfaces',
-    state: { goal:'active', skilled:'no', func:'dependent', cog:'impaired', home:'safe', fund:'funds', sc:'low' },
-    type: 'do_first', expected: ['fiduciary'],
-    note: 'SW action items must be carried into the glance box.'
-  },
-  {
-    name: '36 · Do first: elopement → capacity / DPOA reminder',
-    state: { goal:'active', skilled:'no', func:'assist', cog:'elope', home:'unsafe', fund:'medical' },
-    type: 'do_first', expected: ['capacity'],
-    note: 'Impaired cognition without a capacity step in the top SW note → add the capacity-declaration reminder.'
+(function() {
+  var out = document.getElementById('out'), verdict = document.getElementById('verdict'), failed = 0;
+  function line(ok, text) {
+    if (!ok) failed++;
+    var li = document.createElement('li'); if (!ok) li.className = 'bad';
+    var b = document.createElement('b'); b.textContent = ok ? '✓ ' : '✕ ';
+    li.appendChild(b); li.appendChild(document.createTextNode(text)); out.appendChild(li);
   }
-];
+  function get(url) { return fetch(url, { cache: 'no-store' }).then(function(r) { if (!r.ok) throw new Error(url + ': ' + r.status); return r.text(); }); }
 
-// ============================================================
-// OPEN ISSUES LOG — items awaiting clinical clarification
-// These are NOT test failures — they are known uncertainties
-// to resolve with SW/CM or colleagues before finalizing logic.
-// ============================================================
-var PENDING_CLARIFICATIONS = [
-  'HOMELESS + MEDI-CAL → CUSTODIAL CNH: Does homelessness alone preclude long-term custodial CNH conversion even if Medi-Cal is present, or does Medi-Cal resolve the concern? Currently flagged conservatively. Confirm with SW/CM. (Encoded in: cnh_skilled, clc_short, aru downstream flag logic)',
-  'DOM SCREENING: Are there other formal screening requirements for DOM admission beyond active SUD + treatment willingness + independent ADLs + intact cognition? (e.g., mental health clearance, medical stability criteria)',
-  'ARU CRITERIA: Are there other PM&R acceptance criteria beyond tolerance of >3hrs/day therapy that should be surfaced in the tool? (e.g., specific diagnoses, medical stability requirements)'
-];
+  Promise.all([get('index.html'), get('checks/walk.js'), get('checks/golden-paths.json')]).then(function(files) {
+    var block = new DOMParser().parseFromString(files[0], 'text/html').getElementById('dp-logic');
+    if (!block) throw new Error('index.html has no <script id="dp-logic"> block');
+    (0, eval)(block.textContent + '\n' + files[1]);   // defines the rules and walkAll() as globals
 
-// ============================================================
-// ENGINE — loads and runs logic from index.html
-// Injected as a real <script> tag so DEST and all helpers land
-// on window/global scope correctly.
-// ============================================================
-function loadEngine(cb) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'index.html', true);
-  xhr.onload = function() {
-    var m = xhr.responseText.match(/<script>([\s\S]*?)<\/script>/);
-    if (!m) { cb(new Error('Could not extract script from index.html')); return; }
-    try {
-      // Inject as a real <script> tag so DEST lands on window
-      var tag = document.createElement('script');
-      tag.textContent = m[1];
-      document.head.appendChild(tag);
-      if (typeof DEST === 'undefined' || typeof rankDestinations === 'undefined' || typeof swActionItems === 'undefined') {
-        cb(new Error('DEST / rankDestinations / swActionItems failed to initialize — check index.html for syntax errors'));
-        return;
-      }
-      cb(null);
-    } catch(e) { cb(e); }
-  };
-  xhr.onerror = function() {
-    cb(new Error('Could not load index.html — make sure both files are in the same GitHub repo folder.'));
-  };
-  xhr.send();
-}
+    var w = walkAll(), rec = JSON.parse(files[2]), golden = rec.paths, old = {}, seen = {};
+    golden.forEach(function(p) { old[p.a] = p; });
+    line(true, w.paths.length + ' paths walked');
 
-function evalScenario(scenario) {
-  // Build a clean state from the scenario definition
-  var s = Object.assign(
-    { goal:null, skilled:null, func:null, cog:null, home:null, sud:null, fund:null, sc:null, history:[] },
-    scenario.state
-  );
+    var problems = w.problems.concat(invariants(w.paths));
+    line(!problems.length, problems.length ? problems.length + ' rule problem(s)' : 'Checks that must always hold: all pass');
+    problems.slice(0, 20).forEach(function(p) { line(false, p); });
 
-  // Rank with the exact functions index.html uses to draw the results page
-  var fits = rankDestinations(s).fits;
-  var shownFirst = displayOrder(fits)[0] || null;
+    var changed = [], added = [];
+    w.paths.forEach(function(p) {
+      seen[p.a] = true;
+      if (!old[p.a]) added.push(p.a);
+      else if (JSON.stringify(p) !== JSON.stringify(old[p.a])) changed.push(p.a);
+    });
+    var gone = golden.filter(function(p) { return !seen[p.a]; }).map(function(p) { return p.a; });
+    line(!changed.length && !added.length && !gone.length,
+      changed.length || added.length || gone.length
+        ? changed.length + ' changed, ' + added.length + ' new, ' + gone.length + ' gone, compared with the recorded list'
+        : 'Every path matches the recorded list (' + golden.length + ')');
+    [['Changed', changed], ['New', added], ['Gone', gone]].forEach(function(g) {
+      g[1].slice(0, 20).forEach(function(a) { line(false, g[0] + ': ' + a); });
+    });
 
-  var fitKeys = fits.map(function(f) { return f.key; });
-  var topKey = fitKeys[0] || null;
+    line(JSON.stringify(allText()) === JSON.stringify(rec.text), JSON.stringify(allText()) === JSON.stringify(rec.text) ? 'Wording matches the recorded list' : 'Wording differs from the recorded list (questions, definitions or destination text)');
 
-  var pass = false, detail = '';
-  if (scenario.type === 'top') {
-    pass = (topKey === scenario.expected);
-    detail = 'Expected top: ' + scenario.expected + ' | Got top: ' + (topKey || '(none)');
-  } else if (scenario.type === 'not_top') {
-    pass = (topKey !== scenario.expected);
-    detail = 'Must NOT be top: ' + scenario.expected + ' | Actual top: ' + (topKey || '(none)');
-  } else if (scenario.type === 'contains') {
-    var missing = scenario.expected.filter(function(k) { return fitKeys.indexOf(k) === -1; });
-    pass = (missing.length === 0);
-    detail = 'Must contain: [' + scenario.expected.join(', ') + '] | ' +
-      (pass ? 'All present ✓' : 'Missing: [' + missing.join(', ') + ']') +
-      ' | All fits: [' + fitKeys.join(', ') + ']';
-  } else if (scenario.type === 'not_contains') {
-    var present = scenario.expected.filter(function(k) { return fitKeys.indexOf(k) !== -1; });
-    pass = (present.length === 0);
-    detail = 'Must NOT contain: [' + scenario.expected.join(', ') + '] | ' +
-      (pass ? 'None present ✓' : 'Present: [' + present.join(', ') + ']') +
-      ' | All fits: [' + fitKeys.join(', ') + ']';
-  } else if (scenario.type === 'display_top') {
-    pass = (shownFirst === scenario.expected && topKey === scenario.expected);
-    detail = 'Expected card #1 + top: ' + scenario.expected + ' | Got top: ' + (topKey || '(none)') + ' | Card #1 shown: ' + (shownFirst || '(none)');
-  } else if (scenario.type === 'do_first') {
-    var doFirst = doFirstItems(s, fits).join(' | ');
-    var missingPhrases = scenario.expected.filter(function(t) { return doFirst.toLowerCase().indexOf(t.toLowerCase()) === -1; });
-    pass = (missingPhrases.length === 0);
-    detail = 'Must mention: [' + scenario.expected.join(', ') + '] | ' + (pass ? 'All present ✓' : 'Missing: [' + missingPhrases.join(', ') + ']') + ' | Do first: ' + doFirst;
-  } else if (scenario.type === 'flag_fires') {
-    // Same function that decides what goes in the SW action items box
-    var fires = swActionItems(s).indexOf('fiduciary') !== -1;
-    if (scenario.expected === 'fiduciary') {
-      pass = fires;
-      detail = 'Fiduciary flag should fire | fires: ' + fires;
-    } else if (scenario.expected === 'no_fiduciary') {
-      pass = !fires;
-      detail = 'Fiduciary flag should NOT fire | fires: ' + fires;
-    }
-  }
-  return { pass:pass, detail:detail, fitKeys:fitKeys, topKey:topKey };
-}
-
-function render(results) {
-  var total = results.length;
-  var passes = results.filter(function(r) { return r.pass; }).length;
-  var fails = total - passes;
-
-  // Summary stats
-  var summaryEl = document.getElementById('summary');
-  summaryEl.innerHTML =
-    '<div class="stat pass"><div class="stat-num">' + passes + '</div><div class="stat-label">Passed</div></div>' +
-    '<div class="stat fail"><div class="stat-num">' + fails + '</div><div class="stat-label">Failed</div></div>' +
-    '<div class="stat"><div class="stat-num">' + total + '</div><div class="stat-label">Total</div></div>';
-
-  // Pending clarifications
-  if (PENDING_CLARIFICATIONS.length) {
-    var pEl = document.getElementById('pending-section');
-    var pHTML = '<div class="pending-box"><h3>Open clinical questions (' + PENDING_CLARIFICATIONS.length + ')</h3><ul>';
-    PENDING_CLARIFICATIONS.forEach(function(c) { pHTML += '<li>' + c + '</li>'; });
-    pHTML += '</ul></div>';
-    pEl.innerHTML = pHTML;
-  }
-
-  // Issues box
-  var iEl = document.getElementById('issues-section');
-  if (fails === 0) {
-    iEl.innerHTML = '<div class="all-pass">✓ All ' + total + ' tests passing — safe to deploy.</div>';
-  } else {
-    var failList = results.filter(function(r) { return !r.pass; });
-    var iHTML = '<div class="issues-box"><h3>' + fails + ' test' + (fails > 1 ? 's' : '') + ' failing</h3><ul>';
-    failList.forEach(function(r) { iHTML += '<li>' + r.name + ' — ' + r.detail + '</li>'; });
-    iHTML += '</ul></div>';
-    iEl.innerHTML = iHTML;
-  }
-
-  // Individual rows — failures first, then passes
-  var sorted = results.slice().sort(function(a, b) {
-    if (a.pass !== b.pass) return a.pass ? 1 : -1;
-    return 0;
+    verdict.textContent = failed ? 'Failed' : 'All tests pass';
+    verdict.className = failed ? 'fail' : 'pass';
+  }).catch(function(e) {
+    verdict.textContent = 'Could not run'; verdict.className = 'fail';
+    line(false, String(e.message || e) + '. This page needs to be opened from a web address (the live site), not as a file.');
   });
-
-  var failsHTML = '', passesHTML = '';
-  sorted.forEach(function(r) {
-    var ic = r.pass ? '✓' : '✕';
-    var icClass = r.pass ? 'pass' : 'fail';
-    var rowClass = r.pass ? '' : 'fail';
-    var row = '<div class="test-row ' + rowClass + '">' +
-      '<div class="test-ic ' + icClass + '">' + ic + '</div>' +
-      '<div><div class="test-name">' + r.name + '</div>' +
-      '<div class="test-detail">' + r.detail.replace(/Got top: ([^|]+)/, function(m, g) {
-        return 'Got top: <span class="got">' + g.trim() + '</span>';
-      }) + '</div>' +
-      (r.note ? '<div class="test-detail" style="margin-top:3px;color:#b0b8d0;">' + r.note + '</div>' : '') +
-      '</div>' +
-      '<span class="test-badge ' + icClass + '">' + (r.pass ? 'PASS' : 'FAIL') + '</span>' +
-      '</div>';
-    if (r.pass) passesHTML += row;
-    else failsHTML += row;
-  });
-
-  var rEl = document.getElementById('results');
-  rEl.innerHTML = '';
-  if (failsHTML) {
-    rEl.innerHTML += '<div class="section-label">Failing tests</div>' + failsHTML;
-  }
-  if (passesHTML) {
-    rEl.innerHTML += '<div class="section-label">Passing tests</div>' + passesHTML;
-  }
-}
-
-function renderError(msg) {
-  document.getElementById('results').innerHTML =
-    '<div class="issues-box"><h3>Engine load error</h3><ul><li>' + msg + '</li></ul></div>';
-}
-
-// ============================================================
-// MAIN
-// ============================================================
-loadEngine(function(err) {
-  if (err) { renderError(err.message); return; }
-  var results = SCENARIOS.map(function(s) {
-    var r = evalScenario(s);
-    return Object.assign({ name: s.name, note: s.note || '' }, r);
-  });
-  render(results);
-});
+})();
 </script>
 </body>
 </html>
